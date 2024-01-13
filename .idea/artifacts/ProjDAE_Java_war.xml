@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="ProjDAE_Java-1.0-SNAPSHOT.war">
+    <root id="archive" name="ProjDAE_Java.war">
       <element id="artifact" artifact-name="ProjDAE_Java:war exploded" />
     </root>
   </artifact>
