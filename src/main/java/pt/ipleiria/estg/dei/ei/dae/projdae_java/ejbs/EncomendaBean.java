@@ -18,34 +18,34 @@ public class EncomendaBean {
 
     private OperadorBean operadorBean;
 
-    public Encomenda find(long codigo) {
-        return em.find(Encomenda.class, codigo);
+    public Encomenda find(long code) {
+        return em.find(Encomenda.class, code);
     }
 
     public List<Encomenda> getAll() {
         return em.createNamedQuery("getAllEncomendas", Encomenda.class).getResultList();
     }
 
-    public void create(long codigo, String clienteUsername, String morada, String estado) throws MyEntityExistsException, MyEntityNotFoundException {
-        Encomenda encomenda = find(codigo);
+    public void create(long code, String clienteUsername, String address, String state) throws MyEntityExistsException, MyEntityNotFoundException {
+        Encomenda encomenda = find(code);
 
         if (encomenda != null) {
             throw new MyEntityExistsException(
-                    "Encomenda com o codigo '" + codigo + "' ja existe");
+                    "Encomenda com o codigo '" + code + "' ja existe");
         }
         Cliente cliente = clienteBean.find(clienteUsername);
         if (cliente == null) {
             throw new MyEntityNotFoundException(
                     "Cliente '" + clienteUsername + "' não existe");
         }
-        encomenda = new Encomenda(codigo, cliente, morada, estado);
+        encomenda = new Encomenda(code, cliente, address, state);
         em.persist(encomenda);
     }
 
-    public void update(long codigo, String clienteUsername,String operadorUsername, String morada, String estado) throws MyEntityNotFoundException {
-        Encomenda encomenda = em.find(Encomenda.class, codigo);
+    public void update(long code, String clienteUsername,String operadorUsername, String address, String state) throws MyEntityNotFoundException {
+        Encomenda encomenda = em.find(Encomenda.class, code);
         if (encomenda == null) {
-            throw new MyEntityNotFoundException("Encomenda com o código '" + codigo +"' não existe");
+            throw new MyEntityNotFoundException("Encomenda com o código '" + code +"' não existe");
         }
         Cliente cliente = clienteBean.find(clienteUsername);
         if (cliente == null) {
@@ -60,14 +60,14 @@ public class EncomendaBean {
         em.lock(encomenda, LockModeType.OPTIMISTIC);
         encomenda.setCliente(cliente);
         encomenda.setOperador(operador);
-        encomenda.setMorada(morada);
-        encomenda.setEstado(estado);
+        encomenda.setAddress(address);
+        encomenda.setState(state);
     }
 
-    public void delete(long codigo) throws MyEntityNotFoundException{
-        Encomenda encomenda = em.find(Encomenda.class, codigo);
+    public void delete(long code) throws MyEntityNotFoundException{
+        Encomenda encomenda = em.find(Encomenda.class, code);
         if (encomenda == null) {
-            throw new MyEntityNotFoundException("Encomenda com o código '" + codigo +"' não existe");
+            throw new MyEntityNotFoundException("Encomenda com o código '" + code +"' não existe");
         }
         List<Produto> produtos = encomenda.getProdutos();
         List<EmbalagemTransporte> embalagemTransportes = encomenda.getEmbalagemTransportes();

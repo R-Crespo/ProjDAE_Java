@@ -1,14 +1,14 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @NamedQueries({
         @NamedQuery(
@@ -26,16 +26,47 @@ public class Produto implements Serializable {
     @NotNull
     private float price;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "encomenda_code")
+    private Encomenda encomenda;
+
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_username")
+    @NotNull
+    private Fornecedor fornecedor;
+
+    @ManyToMany
+    @JoinTable(
+            name = "produto_embalagens",
+            joinColumns = @JoinColumn(
+                    name = "produto_code",
+                    referencedColumnName = "code"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "embalagem_code",
+                    referencedColumnName = "codigo"
+            )
+    )
+    private List<EmbalagemProduto> embalagensProduto = new ArrayList<>();
 
     public Produto(){
     }
 
-    public Produto(long code,String name, String type, float price, String description) {
+    public Produto(long code,String name, String type, float price, String description, Fornecedor fornecedor) {
         this.code = code;
         this.name = name;
         this.type = type;
         this.price = price;
         this.description = description;
+        this.fornecedor = fornecedor;
+    }
+
+    public Encomenda getEncomenda() {
+        return encomenda;
+    }
+
+    public void setEncomenda(Encomenda encomenda) {
+        this.encomenda = encomenda;
     }
 
     public long getCode() {
@@ -76,5 +107,21 @@ public class Produto implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public List<EmbalagemProduto> getEmbalagensProduto() {
+        return embalagensProduto;
+    }
+
+    public void setEmbalagensProduto(List<EmbalagemProduto> embalagensProduto) {
+        this.embalagensProduto = embalagensProduto;
     }
 }
