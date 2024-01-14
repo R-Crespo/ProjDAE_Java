@@ -17,18 +17,18 @@ import java.util.List;
 )
 public class Encomenda implements Serializable {
     @Id
-    private long codigo;
+    private long code;
     @ManyToOne
-    @JoinColumn(name = "operator_username")
+    @JoinColumn(name = "operador_username")
     private Operador operador;
     @ManyToOne
-    @JoinColumn(name = "client_username")
+    @JoinColumn(name = "cliente_username")
     @NotNull
     private Cliente cliente;
     @NotNull
-    private String morada;
+    private String address;
     @NotNull
-    private String estado;
+    private String state;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE)
     private List<Produto> produtos = new ArrayList<>();
     @ManyToMany
@@ -36,11 +36,11 @@ public class Encomenda implements Serializable {
             name = "encomendas_embalagens",
             joinColumns = @JoinColumn(
                     name = "encomenda_codigo",
-                    referencedColumnName = "codigo"
+                    referencedColumnName = "code"
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "embalagem_codigo",
-                    referencedColumnName = "codigo"
+                    referencedColumnName = "code"
             )
     )
     private List<EmbalagemTransporte> embalagemTransportes = new ArrayList<>();
@@ -49,27 +49,27 @@ public class Encomenda implements Serializable {
 
     }
 
-    public Encomenda(long codigo, Cliente cliente, String morada, String estado) {
-        this.codigo = codigo;
+    public Encomenda(long code, Cliente cliente, String address, String state) {
+        this.code = code;
         this.cliente = cliente;
-        this.morada = morada;
-        this.estado = estado;
+        this.address = address;
+        this.state = state;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getState() {
+        return state;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setState(String estado) {
+        this.state = estado;
     }
 
-    public long getCodigo() {
-        return codigo;
+    public long getCode() {
+        return code;
     }
 
-    public void setCodigo(long codigo) {
-        this.codigo = codigo;
+    public void setCode(long codigo) {
+        this.code = codigo;
     }
 
     public Operador getOperador() {
@@ -88,12 +88,12 @@ public class Encomenda implements Serializable {
         this.cliente = cliente;
     }
 
-    public String getMorada() {
-        return morada;
+    public String getAddress() {
+        return address;
     }
 
-    public void setMorada(String morada) {
-        this.morada = morada;
+    public void setAddress(String morada) {
+        this.address = morada;
     }
 
     public List<Produto> getProdutos() {
