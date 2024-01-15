@@ -18,7 +18,7 @@ import java.util.List;
         )
 })
 public class EmbalagemProduto extends Embalagem{
-    @ManyToMany(mappedBy = "produtos")
+    @ManyToMany(mappedBy = "embalagensProduto")
     /*
     @ManyToMany
     @JoinTable(
@@ -50,5 +50,12 @@ public class EmbalagemProduto extends Embalagem{
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public void addProduto(Produto produto){
+        this.produtos.add(produto);
+    }
+    public void removeProduto(Produto produto){
+        this.produtos.remove(produto);
     }
 }

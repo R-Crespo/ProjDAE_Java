@@ -1,52 +1,22 @@
-package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
+package pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Id;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-@Entity
-@Table(name = "embalagens")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllEmbalagens",
-                query = "SELECT e FROM Embalagem e ORDER BY e.id" // JPQL
-        )
-})
-public class Embalagem implements Serializable {
+public class EmbalagemTransporteDTO {
     @Id
     private int id;
-    @NotNull
     private String tipo;
-    @NotNull
     private String funcao;
-
     private Date dataFabrico;
-    @NotNull
     private String material;
-    @NotNull
     private int peso;
-    @NotNull
     private int volume;
-    @ManyToMany(mappedBy = "embalagemTransportes")
-    private List<Sensor> sensores;
+    private List<SensorDTO> sensoreDTOs;
+    private List<EncomendaDTO> encomendaDTOs;
 
-    public Embalagem() {
-            this.id = 0;
-            this.tipo = "";
-            this.funcao = "";
-            this.dataFabrico = null;
-            this.material = "";
-            this.peso = 0;
-            this.volume = 0;
-        this.sensores = new ArrayList<>();
-    }
-
-    public Embalagem(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
+    public EmbalagemProdutoDTO(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
         this.id = id;
         this.tipo = tipo;
         this.funcao = funcao;
@@ -54,7 +24,13 @@ public class Embalagem implements Serializable {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.sensores = new ArrayList<>();
+        sensoreDTOs = new ArrayList<SensorDTO>();
+        encomendaDTOs = new ArrayList<EncomendaDTO>();
+    }
+
+    public EmbalagemProdutoDTO() {
+        sensoreDTOs = new ArrayList<SensorDTO>();
+        encomendaDTOs = new ArrayList<EncomendaDTO>();
     }
 
     public int getId() {
@@ -113,11 +89,19 @@ public class Embalagem implements Serializable {
         this.volume = volume;
     }
 
-    public List<Sensor> getSensores() {
-        return new ArrayList<>(sensores);
+    public List<SensorDTO> getSensoreDTOs() {
+        return sensoreDTOs;
     }
 
-    public void setSensores(List<Sensor> sensores) {
-        this.sensores = sensores;
+    public void setSensoreDTOs(List<SensorDTO> sensoreDTOs) {
+        this.sensoreDTOs = sensoreDTOs;
+    }
+
+    public List<EncomendaDTO> getEncomendaDTOs() {
+        return encomendaDTOs;
+    }
+
+    public void setEncomendaDTOs(List<EncomendaDTO> encomendaDTOs) {
+        this.encomendaDTOs = encomendaDTOs;
     }
 }

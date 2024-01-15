@@ -51,4 +51,11 @@ public class EmbalagemTransporte extends Embalagem implements Serializable {
     public void setEncomendas(List<Encomenda> encomendas) {
         this.encomendas = encomendas;
     }
+
+    public void addEncomenda(Encomenda encomenda){
+        this.encomendas.add(encomenda);
+    }
+    public void removeEncomenda(Encomenda encomenda){
+        this.encomendas.remove(encomenda);
+    }
 }

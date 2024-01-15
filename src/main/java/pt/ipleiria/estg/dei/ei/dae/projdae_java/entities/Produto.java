@@ -44,7 +44,7 @@ public class Produto implements Serializable {
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "embalagem_code",
-                    referencedColumnName = "codigo"
+                    referencedColumnName = "id"
             )
     )
     private List<EmbalagemProduto> embalagensProduto = new ArrayList<>();
