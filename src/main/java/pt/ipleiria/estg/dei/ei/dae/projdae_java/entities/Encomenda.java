@@ -29,20 +29,21 @@ public class Encomenda implements Serializable {
     private String address;
     @NotNull
     private String state;
-    @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Produto> produtos = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "encomendas_embalagens",
             joinColumns = @JoinColumn(
-                    name = "encomenda_codigo",
+                    name = "encomenda_code",
                     referencedColumnName = "code"
             ),
             inverseJoinColumns = @JoinColumn(
-                    name = "embalagem_codigo",
+                    name = "embalagem_code",
                     referencedColumnName = "code"
             )
     )
+    @NotNull
     private List<EmbalagemTransporte> embalagemTransportes = new ArrayList<>();
 
     public Encomenda() {
