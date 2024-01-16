@@ -6,32 +6,51 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+@Entity
+@Table(name = "sensores")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllSensores",
+                query = "SELECT s FROM Sensor s ORDER BY s.id" // JPQL
+        )
+})
 public class Sensor implements Serializable {
     @Id
-    private String name;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "sensor_embalagem",
-            joinColumns = @JoinColumn(
-                    name = "sensor_name",
-                    referencedColumnName = "name"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "embalagem_code",
-                    referencedColumnName = "code"
-            )
-    )
+    private long id;
     @NotNull
-    private List<EmbalagemTransporte> embalagemTransportes = new ArrayList<>();
+    private String name;
+    @ManyToOne
+    @JoinColumn(name = "embalagem_id")
+    private Embalagem embalagem;
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Observacao> observacoes;
 
     public Sensor() {
+        this.id = 0;
+        this.name = "";
+        this.embalagem = new Embalagem();
     }
 
-    public Sensor(String name) {
+    public Sensor(long id,String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Embalagem getEmbalagem() {
+        return embalagem;
+    }
+
+    public void setEmbalagem(Embalagem embalagem) {
+        this.embalagem = embalagem;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,19 +61,27 @@ public class Sensor implements Serializable {
         this.name = name;
     }
 
-    public List<EmbalagemTransporte> getEmbalagemTransportes() {
-        return embalagemTransportes;
-    }
-
-    public void setEmbalagemTransportes(List<EmbalagemTransporte> embalagemTransportes) {
-        this.embalagemTransportes = embalagemTransportes;
-    }
-
     public List<Observacao> getObservacoes() {
         return observacoes;
     }
 
     public void setObservacoes(List<Observacao> observacoes) {
         this.observacoes = observacoes;
+    }
+
+    public void addObservacao(Observacao observacao){
+        if(observacao == null || observacoes.contains(observacao)){
+            return;
+        }
+
+        observacoes.add(observacao);
+    }
+
+    public void removeObservacao(Observacao observacao){
+        if(observacao == null || !(observacoes.contains(observacao))){
+            return;
+        }
+
+        observacoes.remove(observacao);
     }
 }

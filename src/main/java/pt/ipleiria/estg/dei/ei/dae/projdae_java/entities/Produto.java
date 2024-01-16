@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "produtos")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQueries({
         @NamedQuery(
                 name = "getAllProdutos",
-                query = "SELECT p FROM Produto p ORDER BY p.name" // JPQL
+                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProduto ORDER BY p.name" // JPQL
         )
 })
 public class Produto implements Serializable {
@@ -23,6 +25,12 @@ public class Produto implements Serializable {
     private String name;
     @NotNull
     private String type;
+    @NotNull
+    private String brand;
+    @NotNull
+    private long quantity;
+    @NotNull
+    private String measure;
     @NotNull
     private float price;
     private String description;
@@ -35,30 +43,55 @@ public class Produto implements Serializable {
     @NotNull
     private Fornecedor fornecedor;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "produto_embalagens",
-            joinColumns = @JoinColumn(
-                    name = "produto_code",
-                    referencedColumnName = "code"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "embalagem_code",
-                    referencedColumnName = "codigo"
-            )
-    )
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
     private List<EmbalagemProduto> embalagensProduto = new ArrayList<>();
 
     public Produto(){
+        this.code = 0;
+        this.name = "";
+        this.type = "";
+        this.price = 00.00f;
+        this.description = "";
+        this.fornecedor = new Fornecedor();
+        this.brand = "";
+        this.quantity = 0;
+        this.measure = "";
     }
 
-    public Produto(long code,String name, String type, float price, String description, Fornecedor fornecedor) {
+    public Produto(long code,String name, String type, float price, String description, Fornecedor fornecedor, String brand, long quantity, String measure) {
         this.code = code;
         this.name = name;
         this.type = type;
         this.price = price;
         this.description = description;
         this.fornecedor = fornecedor;
+        this.quantity = quantity;
+        this.measure = measure;
+        this.brand = brand;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
     }
 
     public Encomenda getEncomenda() {
@@ -129,7 +162,7 @@ public class Produto implements Serializable {
         if(embalagemProduto == null || embalagensProduto.contains(embalagemProduto)){
             return;
         }
-
+        embalagemProduto.setProduto(this);
         embalagensProduto.add(embalagemProduto);
     }
 
@@ -137,7 +170,7 @@ public class Produto implements Serializable {
         if(embalagemProduto == null || !(embalagensProduto.contains(embalagemProduto))){
             return;
         }
-
+        embalagemProduto.setProduto(null);
         embalagensProduto.remove(embalagemProduto);
     }
 }

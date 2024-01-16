@@ -5,7 +5,15 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.List;
-
+@Entity
+@Table(name = "observacoes")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllObservacoes",
+                query = "SELECT o FROM Observacao o ORDER BY o.code" // JPQL
+        )
+})
 public class Observacao implements Serializable {
     @Id
     private long code;
@@ -17,11 +25,15 @@ public class Observacao implements Serializable {
     private Sensor sensor;
 
     public Observacao() {
+        this.code = 0;
+        this.description = "";
+        this.sensor = new Sensor();
     }
 
-    public Observacao(long code, String description) {
+    public Observacao(long code, String description, Sensor sensor) {
         this.code = code;
         this.description = description;
+        this.sensor = sensor;
     }
 
     public long getCode() {

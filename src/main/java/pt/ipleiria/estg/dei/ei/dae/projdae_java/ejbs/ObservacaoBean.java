@@ -20,33 +20,40 @@ public class ObservacaoBean {
         return em.find(Observacao.class, code);
     }
 
-    public void create(long code, String description) throws MyEntityExistsException {
+    public void create(long code, String description, long sensorId) throws MyEntityExistsException, MyEntityNotFoundException {
         Observacao observacao = find(code);
+        Sensor sensor = sensorBean.find(sensorId);
 
         if(observacao != null){
             throw new MyEntityExistsException("Observacão com o codigo '" + code +"' já existe");
         }
 
-        observacao = new Observacao(code, description);
+        if(sensor == null){
+            throw new MyEntityNotFoundException("Sensor com o ID '" + sensorId +"' não existe");
+        }
+
+        observacao = new Observacao(code, description, sensor);
+        sensor.addObservacao(observacao);
         em.persist(observacao);
     }
 
-    public void update(long code, String description, String name) throws MyEntityNotFoundException {
+    public void update(long code, String description, long sensorId) throws MyEntityNotFoundException {
         Observacao observacao = find(code);
 
         if(observacao == null){
             throw new MyEntityNotFoundException("Observacão com o codigo '" + code +"' não existe");
         }
 
-        Sensor sensor = sensorBean.find(name);
+        Sensor sensor = sensorBean.find(sensorId);
 
         if(sensor == null){
-            throw new MyEntityNotFoundException("Sensor com o nome '" + name +"' não existe");
+            throw new MyEntityNotFoundException("Sensor com o ID '" + sensorId +"' não existe");
         }
 
         em.lock(observacao, LockModeType.OPTIMISTIC);
         observacao.setDescription(description);
         observacao.setSensor(sensor);
+        sensor.addObservacao(observacao);
     }
 
     public void delete(long code) throws MyEntityNotFoundException{
@@ -56,6 +63,8 @@ public class ObservacaoBean {
             throw new MyEntityNotFoundException("Observacão com o codigo '" + code +"' não existe");
         }
 
+        Sensor sensor = observacao.getSensor();
+        sensor.removeObservacao(observacao);
         em.remove(observacao);
     }
 }

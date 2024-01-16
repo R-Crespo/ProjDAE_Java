@@ -3,10 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemTransporte;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Observacao;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
@@ -16,48 +13,46 @@ public class SensorBean {
     @PersistenceContext
     private EntityManager em;
 
-    public Sensor find(String name) {
-        return em.find(Sensor.class, name);
+    public Sensor find(long id) {
+        return em.find(Sensor.class, id);
     }
 
-    public void create(String name) throws MyEntityExistsException {
-        Sensor sensor = find(name);
+    public void create(long id,String name) throws MyEntityExistsException {
+        Sensor sensor = find(id);
 
         if(sensor != null){
             throw new MyEntityExistsException("Sensor " + name + " já existe");
         }
 
-        sensor = new Sensor(name);
+        sensor = new Sensor(id,name);
         em.persist(sensor);
     }
 
-    public void update(String name) throws MyEntityNotFoundException {
-        Sensor sensor = find(name);
+    public void update(long id, String name) throws MyEntityNotFoundException {
+        Sensor sensor = find(id);
 
         if(sensor == null){
-            throw new MyEntityNotFoundException("Sensor "+ name +" não existe");
+            throw new MyEntityNotFoundException("Sensor "+ id +" não existe");
         }
         em.lock(sensor, LockModeType.OPTIMISTIC);
         sensor.setName(name);
     }
 
-    public void delete(String name) throws MyEntityNotFoundException{
-        Sensor sensor = find(name);
+    public void delete(long id) throws MyEntityNotFoundException{
+        Sensor sensor = find(id);
 
         if(sensor == null){
-            throw new MyEntityNotFoundException("Sensor "+ name +" não existe");
+            throw new MyEntityNotFoundException("Sensor "+ id +" não existe");
         }
 
         List<Observacao> observacoes = sensor.getObservacoes();
-        List<EmbalagemTransporte> embalagemTransportes = sensor.getEmbalagemTransportes();
 
         if (observacoes != null) {
             observacoes.clear();
+            for(Observacao observacao : observacoes){
+                em.remove(observacao);
+            }
         }
-        if(embalagemTransportes != null){
-            embalagemTransportes.clear();
-        }
-
         em.remove(sensor);
     }
 }

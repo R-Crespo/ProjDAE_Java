@@ -20,6 +20,8 @@ public class EmbalagemTransporteBean {
     @PersistenceContext
     private EntityManager em;
 
+    private EncomendaBean encomendaBean;
+
     public EmbalagemTransporte find(int id) {
         return em.find(EmbalagemTransporte.class, id);
     }
@@ -37,14 +39,20 @@ public class EmbalagemTransporteBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) throws MyEntityExistsException, MyConstraintViolationException {
+    public void create(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long encomenda_code) throws MyEntityExistsException, MyConstraintViolationException, MyEntityNotFoundException {
         if (exists(id)) {
             throw new MyEntityExistsException("EmbalagemTransporte with id '" + id + "' already exists");
         }
+        Encomenda encomenda = encomendaBean.find(encomenda_code);
+        if(encomenda == null){
+            throw new MyEntityNotFoundException("Encomenda com o código "+ encomenda_code + " não existe");
+        }
+
         EmbalagemTransporte embalagemTransporte = null;
 
         try {
-            embalagemTransporte = new EmbalagemTransporte(id, tipo, funcao, dataFabrico, material, peso, volume);
+            embalagemTransporte = new EmbalagemTransporte(id, tipo, funcao, dataFabrico, material, peso, volume, encomenda);
+            encomenda.addEmbalagem(embalagemTransporte);
             em.persist(embalagemTransporte);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -57,10 +65,8 @@ public class EmbalagemTransporteBean {
         if (embalagemTransporte == null) {
             throw new MyEntityNotFoundException("EmbalagemTransporte with id '" + id + "' not found");
         }
-        /* TODO
-        for (Encomenda embalagemTransporteEncomenda : embalagemTransporte.getEncomendas()) {
-            embalagemTransporteEncomenda.removeEmbalagem(embalagemTransporte);
-        }*/
+
+        embalagemTransporte.getEncomenda().removeEmbalagem(embalagemTransporte);
         em.remove(embalagemTransporte);
         return embalagemTransporte;
     }

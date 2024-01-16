@@ -41,4 +41,14 @@ public class Cliente extends User{
         encomendas.add(encomenda);
     }
 
+    public void removeEncomenda(Encomenda encomenda){
+        if(encomenda == null){
+            return;
+        }
+        if(!(encomendas.contains(encomenda))){
+            return;
+        }
+        encomendas.remove(encomenda);
+    }
+
 }

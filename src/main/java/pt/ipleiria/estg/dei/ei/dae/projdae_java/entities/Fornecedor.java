@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 public class Fornecedor extends User{
-    @OneToMany(mappedBy = "operador", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fornecedor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Produto> produtos;
 
     public Fornecedor() {
