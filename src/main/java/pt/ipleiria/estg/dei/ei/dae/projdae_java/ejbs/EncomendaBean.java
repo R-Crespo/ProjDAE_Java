@@ -81,4 +81,5 @@ public class EncomendaBean {
 
         em.remove(encomenda);
     }
+
 }

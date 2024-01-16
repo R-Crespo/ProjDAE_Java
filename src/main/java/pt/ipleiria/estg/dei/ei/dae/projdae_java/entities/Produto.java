@@ -35,7 +35,7 @@ public class Produto implements Serializable {
     @NotNull
     private Fornecedor fornecedor;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "produto_embalagens",
             joinColumns = @JoinColumn(
@@ -123,5 +123,21 @@ public class Produto implements Serializable {
 
     public void setEmbalagensProduto(List<EmbalagemProduto> embalagensProduto) {
         this.embalagensProduto = embalagensProduto;
+    }
+
+    public void addEmbalagemProduto(EmbalagemProduto embalagemProduto){
+        if(embalagemProduto == null || embalagensProduto.contains(embalagemProduto)){
+            return;
+        }
+
+        embalagensProduto.add(embalagemProduto);
+    }
+
+    public void removeEmbalagemProduto(EmbalagemProduto embalagemProduto){
+        if(embalagemProduto == null || !(embalagensProduto.contains(embalagemProduto))){
+            return;
+        }
+
+        embalagensProduto.remove(embalagemProduto);
     }
 }
