@@ -7,6 +7,8 @@ import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemTransporte;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -18,8 +20,9 @@ import java.util.List;
 public class EmbalagemProdutoBean {
     @PersistenceContext
     private EntityManager em;
+    private ProdutoBean produtoBean;
 
-    public EmbalagemProduto find(int id) {
+    public EmbalagemProduto find(long id) {
         return em.find(EmbalagemProduto.class, id);
     }
 
@@ -27,7 +30,7 @@ public class EmbalagemProdutoBean {
         return em.createNamedQuery("getAllEmbalagensProduto", EmbalagemProduto.class).getResultList();
     }
 
-    public boolean exists(int id) {
+    public boolean exists(long id) {
         Query query = em.createQuery(
                 "SELECT COUNT(e.id) FROM EmbalagemProduto e WHERE e.id = :id",
                 Long.class
@@ -36,24 +39,24 @@ public class EmbalagemProdutoBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) throws MyEntityExistsException,/* MyEntityNotFoundException,*/ MyConstraintViolationException {
+    public void create(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long produtoId) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         if (exists(id)) {
-            throw new MyEntityExistsException("EmbalagemProduto with id '" + id + "' already exists");
+            throw new MyEntityExistsException("EmbalagemProduto com id '" + id + "' já existe");
         }
         EmbalagemProduto embalagemProduto = null;
 
-        try {
-            embalagemProduto = new EmbalagemProduto(id, tipo, funcao, dataFabrico, material, peso, volume);
-            em.persist(embalagemProduto);
-        } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(e);
+        Produto produto = produtoBean.find(produtoId);
+        if(produto == null){
+            throw new MyEntityNotFoundException("Produto com id "+ produtoId + " não existe");
         }
+
+        EmbalagemTransporte embalagemTransporte = null;
     }
 
-    public EmbalagemProduto delete(int id) throws MyEntityNotFoundException {
+    public EmbalagemProduto delete(long id) throws MyEntityNotFoundException {
         EmbalagemProduto embalagemProduto = find(id);
         if (embalagemProduto == null) {
-            throw new MyEntityNotFoundException("EmbalagemProduto with id '" + id + "' not found");
+            throw new MyEntityNotFoundException("EmbalagemProduto com id '" + id + "' não existe");
         }
 
         embalagemProduto.getProduto().removeEmbalagemProduto(embalagemProduto);

@@ -10,18 +10,16 @@ import java.util.List;
 
 @Entity
 public class Operador extends User{
-
     @OneToMany(mappedBy = "operador", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Encomenda> encomendas;
 
     public Operador() {
-        super("","","","");
-        this.encomendas = new ArrayList<>();
+        this.encomendas = new ArrayList<Encomenda>();
     }
 
     public Operador (String username, String password, String name, String email){
         super(username, password,name, email);
-        this.encomendas = new ArrayList<>();
+        this.encomendas = new ArrayList<Encomenda>();
     }
 
     public List<Encomenda> getEncomendas() {

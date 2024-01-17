@@ -16,13 +16,13 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEncomendas",
-                query = "Select e From Encomenda e JOIN FETCH e.produtos JOIN FETCH e.embalagemTransportes Order By e.deliveryDate"
+                query = "Select e From Encomenda e JOIN FETCH e.produtos JOIN FETCH e.embalagemTransportes Order By e.dataEntrega"
         )
 }
 )
 public class Encomenda implements Serializable {
     @Id
-    private long code;
+    private long id;
     @ManyToOne
     @JoinColumn(name = "operador_username")
     private Operador operador;
@@ -31,66 +31,73 @@ public class Encomenda implements Serializable {
     @NotNull
     private Cliente cliente;
     @NotNull
-    private String address;
+    private String morada;
     @NotNull
-    private String state;
+    private String estado;
     @NotNull
-    private Date deliveryDate;
+    private Date dataEntrega;
     @NotNull
-    private String warehouse;
+    private String armazem;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Produto> produtos = new ArrayList<>();
+    private List<Produto> produtos;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<EmbalagemTransporte> embalagemTransportes = new ArrayList<>();
+    private List<EmbalagemTransporte> embalagemTransportes;
 
     public Encomenda() {
-        this.code = 0;
-        this.cliente = new Cliente();
-        this.address = "";
-        this.state = "";
-        this.warehouse = "";
-        this.deliveryDate = new Date();
+        this.produtos = new ArrayList<Produto>();
+        this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
     }
 
-    public Encomenda(long code, Cliente cliente, String address, String state, String warehouse, Date deliveryDate) {
-        this.code = code;
+    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem, Date dataEntrega) {
+        this.id = id;
         this.cliente = cliente;
-        this.address = address;
-        this.state = state;
-        this.warehouse = warehouse;
-        this.deliveryDate = deliveryDate;
+        this.morada = morada;
+        this.estado = estado;
+        this.armazem = armazem;
+        this.dataEntrega = dataEntrega;
+        this.produtos = new ArrayList<Produto>();
+        this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
+        this.operador = null;
     }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public long getId() {
+        return id;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getWarehouse() {
-        return warehouse;
+    public String getMorada() {
+        return morada;
     }
 
-    public void setWarehouse(String warehouse) {
-        this.warehouse = warehouse;
+    public void setMorada(String morada) {
+        this.morada = morada;
     }
 
-    public String getState() {
-        return state;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setState(String estado) {
-        this.state = estado;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public long getCode() {
-        return code;
+    public Date getDataEntrega() {
+        return dataEntrega;
     }
 
-    public void setCode(long codigo) {
-        this.code = codigo;
+    public void setDataEntrega(Date dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
+
+    public String getArmazem() {
+        return armazem;
+    }
+
+    public void setArmazem(String armazem) {
+        this.armazem = armazem;
     }
 
     public Operador getOperador() {
@@ -109,16 +116,8 @@ public class Encomenda implements Serializable {
         this.cliente = cliente;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String morada) {
-        this.address = morada;
-    }
-
     public List<Produto> getProdutos() {
-        return produtos;
+        return new ArrayList<>(produtos);
     }
 
     public void setProdutos(List<Produto> produtos) {
@@ -126,7 +125,7 @@ public class Encomenda implements Serializable {
     }
 
     public List<EmbalagemTransporte> getEmbalagemTransportes() {
-        return embalagemTransportes;
+        return new ArrayList<>(embalagemTransportes);
     }
 
     public void setEmbalagemTransportes(List<EmbalagemTransporte> embalagemTransportes) {

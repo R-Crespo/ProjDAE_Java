@@ -20,15 +20,15 @@ import java.util.List;
 })
 public class EmbalagemProduto extends Embalagem{
     @ManyToOne
-    @JoinColumn(name = "produto_code")
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
     public EmbalagemProduto() {
-        super(0, "", "", null, "", 0, 0);
     }
 
-    public EmbalagemProduto(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
+    public EmbalagemProduto(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) {
         super(id, tipo, funcao, dataFabrico, material, peso, volume);
+        this.produto = produto;
     }
 
     public Produto getProduto() {

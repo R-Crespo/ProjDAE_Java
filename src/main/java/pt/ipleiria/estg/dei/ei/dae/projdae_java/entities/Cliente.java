@@ -9,7 +9,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllClientes",
-                query = "SELECT DISTINCT c FROM Cliente c LEFT JOIN FETCH c.encomendas ORDER BY c.name"
+                query = "SELECT DISTINCT c FROM Cliente c LEFT JOIN FETCH c.encomendas ORDER BY c.nome"
         )
 })
 public class Cliente extends User{
@@ -18,13 +18,12 @@ public class Cliente extends User{
     private List<Encomenda> encomendas;
 
     public Cliente() {
-        super("","","","");
-        this.encomendas = new ArrayList<>();
+        this.encomendas = new ArrayList<Encomenda>();
     }
 
     public Cliente (String username, String password, String name, String email){
         super(username, password,name, email);
-        this.encomendas = new ArrayList<>();
+        this.encomendas = new ArrayList<Encomenda>();
     }
 
     public List<Encomenda> getEncomendas() {

@@ -26,47 +26,51 @@ public class ProdutoBean {
 
     private FornecedorBean fornecedorBean;
 
-    public Produto find(long code){
-        return em.find(Produto.class, code);
+    public Produto find(long id){
+        return em.find(Produto.class, id);
     }
 
     public List<Produto> getAll() {
         return em.createNamedQuery("getAllProdutos", Produto.class).getResultList();
     }
 
-    public void create(long code,String name, String type, float price, String description, String fornecedorUsername, String brand, long quantity, String measure) throws MyEntityNotFoundException,MyEntityExistsException{
-        Produto produto = find(code);
+    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, long encomendaId, String fornecedorUsername) throws MyEntityNotFoundException,MyEntityExistsException{
+        Produto produto = find(id);
         if(produto != null){
-            throw new MyEntityExistsException("Produto with code '"+ code +"' already exists");
+            throw new MyEntityExistsException("Produto com id '"+ id +"' já existe");
         }
         Fornecedor fornecedor = fornecedorBean.find(fornecedorUsername);
         if(fornecedor == null){
             throw new MyEntityNotFoundException(
                     "Fornecedor '" + fornecedorUsername + "' não existe");
         }
-        produto = new Produto(code, name, type, price, description, fornecedor, brand, quantity, measure);
+        Encomenda encomenda = encomendaBean.find(encomendaId);
+        if(encomenda == null){
+            throw new MyEntityNotFoundException(
+                    "Encomenda '" + encomenda + "' não existe");
+        }
+        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao, encomenda, fornecedor);
         fornecedor.addProduto(produto);
         em.persist(produto);
     }
 
-    public void update(long code, String name, String type,
-                       float price, String description, Long encomendaCode, String fornecedorUsername, String brand, long quantity, String measure) throws MyEntityNotFoundException {
-        Produto produto = em.find(Produto.class, code);
+    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, long encomendaId, String fornecedorUsername) throws MyEntityNotFoundException {
+        Produto produto = em.find(Produto.class, id);
         if (produto == null) {
-            throw new MyEntityNotFoundException("Produto with code '" + code + "' not found");
+            throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
         }
         em.lock(produto, LockModeType.OPTIMISTIC);
-        produto.setName(name);
-        produto.setType(type);
-        produto.setPrice(price);
-        produto.setDescription(description);
-        produto.setBrand(brand);
-        produto.setMeasure(measure);
-        produto.setQuantity(quantity);
-        Encomenda encomenda = encomendaBean.find(encomendaCode);
-        if(encomenda == null & encomendaCode != null){
+        produto.setNome(nome);
+        produto.setTipo(tipo);
+        produto.setPreco(preco);
+        produto.setDescricao(descricao);
+        produto.setMarca(marca);
+        produto.setUnidadeMedida(unidadeMedida);
+        produto.setQuantidade(quantidade);
+        Encomenda encomenda = encomendaBean.find(encomendaId);
+        if(encomenda == null){
             throw new MyEntityNotFoundException(
-                    "Encomenda '" + encomendaCode + "' não existe");
+                    "Encomenda '" + encomendaId + "' não existe");
         }
         if(encomenda != produto.getEncomenda()){
             produto.getEncomenda().removeProduto(produto);
@@ -86,11 +90,11 @@ public class ProdutoBean {
 
     }
 
-    public void delete(long code) throws  MyEntityNotFoundException,MyConstraintViolationException {
+    public void delete(long id) throws  MyEntityNotFoundException,MyConstraintViolationException {
         try {
-            Produto produto = em.find(Produto.class, code);
+            Produto produto = em.find(Produto.class, id);
             if (produto == null) {
-                throw new MyEntityNotFoundException("Produto with code '" + code + "' not found");
+                throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
             }
             produto.getFornecedor().removeProduto(produto);
             if(produto.getEmbalagensProduto() != null){

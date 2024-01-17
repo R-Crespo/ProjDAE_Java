@@ -19,35 +19,35 @@ public class EncomendaBean {
 
     private OperadorBean operadorBean;
 
-    public Encomenda find(long code) {
-        return em.find(Encomenda.class, code);
+    public Encomenda find(long id) {
+        return em.find(Encomenda.class, id);
     }
 
     public List<Encomenda> getAll() {
         return em.createNamedQuery("getAllEncomendas", Encomenda.class).getResultList();
     }
 
-    public void create(long code, String clienteUsername, String address, String state, String warehouse, Date deliveryDate) throws MyEntityExistsException, MyEntityNotFoundException {
-        Encomenda encomenda = find(code);
+    public void create(long id, String clienteUsername, String morada, String estado, String armazem, Date dataEntrega) throws MyEntityExistsException, MyEntityNotFoundException {
+        Encomenda encomenda = find(id);
 
         if (encomenda != null) {
             throw new MyEntityExistsException(
-                    "Encomenda com o codigo '" + code + "' ja existe");
+                    "Encomenda com id '" + id + "' ja existe");
         }
         Cliente cliente = clienteBean.find(clienteUsername);
         if (cliente == null) {
             throw new MyEntityNotFoundException(
                     "Cliente '" + clienteUsername + "' não existe");
         }
-        encomenda = new Encomenda(code, cliente, address, state, warehouse, deliveryDate);
+        encomenda = new Encomenda(id, cliente, morada, estado, armazem, dataEntrega);
         cliente.addEncomenda(encomenda);
         em.persist(encomenda);
     }
 
-    public void update(long code, String clienteUsername,String operadorUsername, String address, String state) throws MyEntityNotFoundException {
-        Encomenda encomenda = em.find(Encomenda.class, code);
+    public void update(long id, String clienteUsername, String morada, String estado, String armazem, Date dataEntrega, String operadorUsername) throws MyEntityNotFoundException {
+        Encomenda encomenda = em.find(Encomenda.class, id);
         if (encomenda == null) {
-            throw new MyEntityNotFoundException("Encomenda com o código '" + code +"' não existe");
+            throw new MyEntityNotFoundException("Encomenda com id '" + id +"' não existe");
         }
 
         Cliente cliente = clienteBean.find(clienteUsername);
@@ -71,14 +71,14 @@ public class EncomendaBean {
             operador.addEncomenda(encomenda);
         }
         em.lock(encomenda, LockModeType.OPTIMISTIC);
-        encomenda.setAddress(address);
-        encomenda.setState(state);
+        encomenda.setMorada(morada);
+        encomenda.setEstado(estado);
     }
 
-    public void delete(long code) throws MyEntityNotFoundException{
-        Encomenda encomenda = em.find(Encomenda.class, code);
+    public void delete(long id) throws MyEntityNotFoundException{
+        Encomenda encomenda = em.find(Encomenda.class, id);
         if (encomenda == null) {
-            throw new MyEntityNotFoundException("Encomenda com o código '" + code +"' não existe");
+            throw new MyEntityNotFoundException("Encomenda com id '" + id +"' não existe");
         }
         List<Produto> produtos = encomenda.getProdutos();
         List<EmbalagemTransporte> embalagemTransportes = encomenda.getEmbalagemTransportes();
@@ -101,9 +101,9 @@ public class EncomendaBean {
         em.remove(encomenda);
     }
 
-    public void enrollProdutoInEncomenda(long produtoCode, long encomendaCode){
-        Produto produto = em.find(Produto.class, produtoCode);
-        Encomenda encomenda = find(encomendaCode);
+    public void enrollProdutoInEncomenda(long produtoId, long encomendaId){
+        Produto produto = em.find(Produto.class, produtoId);
+        Encomenda encomenda = find(encomendaId);
 
         if(produto == null || encomenda == null || produto.getEncomenda() != null || encomenda.getProdutos().contains(produto)){
             return;
@@ -114,9 +114,9 @@ public class EncomendaBean {
         encomenda.addProduto(produto);
     }
 
-    public void unrollProdutoInEncomenda(long produtoCode, long encomendaCode){
-        Produto produto = em.find(Produto.class, produtoCode);
-        Encomenda encomenda = find(encomendaCode);
+    public void unrollProdutoInEncomenda(long produtoId, long encomendaId){
+        Produto produto = em.find(Produto.class, produtoId);
+        Encomenda encomenda = find(encomendaId);
 
         if(produto == null || encomenda == null || produto.getEncomenda() == null || !(encomenda.getProdutos().contains(produto))){
             return;

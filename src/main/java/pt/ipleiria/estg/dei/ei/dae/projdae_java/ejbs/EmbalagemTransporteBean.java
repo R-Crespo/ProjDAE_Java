@@ -22,7 +22,7 @@ public class EmbalagemTransporteBean {
 
     private EncomendaBean encomendaBean;
 
-    public EmbalagemTransporte find(int id) {
+    public EmbalagemTransporte find(long id) {
         return em.find(EmbalagemTransporte.class, id);
     }
 
@@ -30,7 +30,7 @@ public class EmbalagemTransporteBean {
         return em.createNamedQuery("getAllEmbalagensTransporte", EmbalagemTransporte.class).getResultList();
     }
 
-    public boolean exists(int id) {
+    public boolean exists(long id) {
         Query query = em.createQuery(
                 "SELECT COUNT(e.id) FROM EmbalagemTransporte e WHERE e.id = :id",
                 Long.class
@@ -39,13 +39,13 @@ public class EmbalagemTransporteBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long encomenda_code) throws MyEntityExistsException, MyConstraintViolationException, MyEntityNotFoundException {
+    public void create(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long encomendaId) throws MyEntityExistsException, MyConstraintViolationException, MyEntityNotFoundException {
         if (exists(id)) {
-            throw new MyEntityExistsException("EmbalagemTransporte with id '" + id + "' already exists");
+            throw new MyEntityExistsException("EmbalagemTransporte com id '" + id + "' já existe");
         }
-        Encomenda encomenda = encomendaBean.find(encomenda_code);
+        Encomenda encomenda = encomendaBean.find(encomendaId);
         if(encomenda == null){
-            throw new MyEntityNotFoundException("Encomenda com o código "+ encomenda_code + " não existe");
+            throw new MyEntityNotFoundException("Encomenda com id "+ encomendaId + " não existe");
         }
 
         EmbalagemTransporte embalagemTransporte = null;
@@ -60,10 +60,10 @@ public class EmbalagemTransporteBean {
     }
 
 
-    public EmbalagemTransporte delete(int id) throws MyEntityNotFoundException {
+    public EmbalagemTransporte delete(long id) throws MyEntityNotFoundException {
         EmbalagemTransporte embalagemTransporte = find(id);
         if (embalagemTransporte == null) {
-            throw new MyEntityNotFoundException("EmbalagemTransporte with id '" + id + "' not found");
+            throw new MyEntityNotFoundException("EmbalagemTransporte com id '" + id + "' não existe");
         }
 
         embalagemTransporte.getEncomenda().removeEmbalagem(embalagemTransporte);

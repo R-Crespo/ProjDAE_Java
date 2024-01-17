@@ -15,27 +15,27 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllProdutos",
-                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProduto ORDER BY p.name" // JPQL
+                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProduto ORDER BY p.nome" // JPQL
         )
 })
 public class Produto implements Serializable {
     @Id
-    private long code;
+    private long id;
     @NotNull
-    private String name;
+    private String nome;
     @NotNull
-    private String type;
+    private String tipo;
     @NotNull
-    private String brand;
+    private String marca;
     @NotNull
-    private long quantity;
+    private long quantidade;
     @NotNull
-    private String measure;
+    private String unidadeMedida;
     @NotNull
-    private float price;
-    private String description;
+    private float preco;
+    private String descricao;
     @ManyToOne
-    @JoinColumn(name = "encomenda_code")
+    @JoinColumn(name = "encomenda_id")
     private Encomenda encomenda;
 
     @ManyToOne
@@ -44,54 +44,103 @@ public class Produto implements Serializable {
     private Fornecedor fornecedor;
 
     @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
-    private List<EmbalagemProduto> embalagensProduto = new ArrayList<>();
+    private List<EmbalagemProduto> embalagensProduto;
+
+    @ManyToMany
+    @JoinTable(
+        name = "produtos_regras",
+        joinColumns = @JoinColumn(
+            name = "produto_id",
+            referencedColumnName = "id"
+        ),
+        inverseJoinColumns = @JoinColumn(
+            name = "regra_id",
+            referencedColumnName = "id"
+        )
+    )
+    private List<Regra> regras;
 
     public Produto(){
-        this.code = 0;
-        this.name = "";
-        this.type = "";
-        this.price = 00.00f;
-        this.description = "";
-        this.fornecedor = new Fornecedor();
-        this.brand = "";
-        this.quantity = 0;
-        this.measure = "";
+        this.embalagensProduto = new ArrayList<EmbalagemProduto>();
     }
 
-    public Produto(long code,String name, String type, float price, String description, Fornecedor fornecedor, String brand, long quantity, String measure) {
-        this.code = code;
-        this.name = name;
-        this.type = type;
-        this.price = price;
-        this.description = description;
+    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Encomenda encomenda, Fornecedor fornecedor) {
+        this.id = id;
+        this.nome = nome;
+        this.tipo = tipo;
+        this.marca = marca;
+        this.quantidade = quantidade;
+        this.unidadeMedida = unidadeMedida;
+        this.preco = preco;
+        this.descricao = descricao;
+        this.encomenda = encomenda;
         this.fornecedor = fornecedor;
-        this.quantity = quantity;
-        this.measure = measure;
-        this.brand = brand;
+        this.embalagensProduto = new ArrayList<EmbalagemProduto>();
+        this.regras = new ArrayList<Regra>();
     }
 
-    public String getBrand() {
-        return brand;
+    public long getId() {
+        return id;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getQuantity() {
-        return quantity;
+    public String getNome() {
+        return nome;
     }
 
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getMeasure() {
-        return measure;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setMeasure(String measure) {
-        this.measure = measure;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public long getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(long quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public String getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public void setUnidadeMedida(String unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
+
+    public float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(float preco) {
+        this.preco = preco;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Encomenda getEncomenda() {
@@ -100,46 +149,6 @@ public class Produto implements Serializable {
 
     public void setEncomenda(Encomenda encomenda) {
         this.encomenda = encomenda;
-    }
-
-    public long getCode() {
-        return code;
-    }
-
-    public void setCode(long code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Fornecedor getFornecedor() {
@@ -151,7 +160,7 @@ public class Produto implements Serializable {
     }
 
     public List<EmbalagemProduto> getEmbalagensProduto() {
-        return embalagensProduto;
+        return new ArrayList<>(embalagensProduto);
     }
 
     public void setEmbalagensProduto(List<EmbalagemProduto> embalagensProduto) {
@@ -172,5 +181,27 @@ public class Produto implements Serializable {
         }
         embalagemProduto.setProduto(null);
         embalagensProduto.remove(embalagemProduto);
+    }
+
+    public List<Regra> getRegras() {
+        return regras;
+    }
+
+    public void setRegras(List<Regra> regras) {
+        this.regras = regras;
+    }
+
+    public void addRegra(Regra regra){
+        if(regra == null || regras.contains(regra)){
+            return;
+        }
+        regras.add(regra);
+    }
+
+    public void removeRegra(Regra regra){
+        if(regra == null || !(regras.contains(regra))){
+            return;
+        }
+        regras.remove(regra);
     }
 }

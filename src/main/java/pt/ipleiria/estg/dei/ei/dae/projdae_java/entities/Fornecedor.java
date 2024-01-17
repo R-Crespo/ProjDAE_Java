@@ -14,13 +14,12 @@ public class Fornecedor extends User{
     private List<Produto> produtos;
 
     public Fornecedor() {
-        super("","","","");
-        this.produtos = new ArrayList<>();
+        this.produtos = new ArrayList<Produto>();
     }
 
     public Fornecedor (String username, String password, String name, String email){
         super(username, password,name, email);
-        this.produtos = new ArrayList<>();
+        this.produtos = new ArrayList<Produto>();
     }
 
     public List<Produto> getProdutos() {

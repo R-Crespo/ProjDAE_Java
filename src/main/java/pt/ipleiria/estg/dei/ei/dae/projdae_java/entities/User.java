@@ -14,22 +14,19 @@ public class User implements Serializable {
     @NotNull
     private String password;
     @NotNull
-    private String name;
+    private String nome;
     @Email
     @NotNull
     private String email;
 
     public User(){
-        this.username = "";
-        this.password = "";
-        this.name = "";
-        this.email = "";
+
     }
     // Constructor with all arguments ...
-    public User(String username, String password, String name, String email) {
+    public User(String username, String password, String nome, String email) {
         this.username = username;
         this.password = password;
-        this.name = name;
+        this.nome = nome;
         this.email = email;
     }
     // Getters and Setters ...
@@ -50,12 +47,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {

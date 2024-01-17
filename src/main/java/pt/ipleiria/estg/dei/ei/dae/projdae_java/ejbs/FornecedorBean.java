@@ -25,7 +25,7 @@ public class FornecedorBean {
         return fornecedor;
     }
 
-    public void create(String username, String password, String name, String email) throws MyEntityExistsException {
+    public void create(String username, String password, String nome, String email) throws MyEntityExistsException {
         Fornecedor fornecedor = find(username);
 
         if (fornecedor != null) {
@@ -33,7 +33,7 @@ public class FornecedorBean {
                     "Fornecedor com o username '" + username + "' ja existe");
         }
 
-        fornecedor = new Fornecedor(username, hasher.hash(password), name, email);
+        fornecedor = new Fornecedor(username, hasher.hash(password), nome, email);
         em.persist(fornecedor);
     }
 }

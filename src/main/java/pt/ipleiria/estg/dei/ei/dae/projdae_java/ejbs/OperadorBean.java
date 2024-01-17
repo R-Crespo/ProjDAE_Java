@@ -24,7 +24,7 @@ public class OperadorBean {
         return operador;
     }
 
-    public void create(String username, String password, String name, String email) throws MyEntityExistsException {
+    public void create(String username, String password, String nome, String email) throws MyEntityExistsException {
         Operador operador = find(username);
 
         if (operador != null) {
@@ -32,7 +32,7 @@ public class OperadorBean {
                     "Operador com o username '" + username + "' ja existe");
         }
 
-        operador = new Operador(username, hasher.hash(password), name, email);
+        operador = new Operador(username, hasher.hash(password), nome, email);
         em.persist(operador);
     }
 }

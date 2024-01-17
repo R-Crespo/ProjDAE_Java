@@ -17,16 +17,14 @@ import java.util.List;
 })
 public class EmbalagemTransporte extends Embalagem implements Serializable {
     @ManyToOne
-    @JoinColumn(name = "encomenda_code")
+    @JoinColumn(name = "encomenda_id")
     @NotNull
     private Encomenda encomenda;
 
     public EmbalagemTransporte() {
-        super(0, "", "", null, "", 0, 0);
-        encomenda = new Encomenda();
     }
 
-    public EmbalagemTransporte(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Encomenda encomenda) {
+    public EmbalagemTransporte(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Encomenda encomenda) {
         super(id, tipo, funcao, dataFabrico, material, peso, volume);
         this.encomenda = encomenda;
     }

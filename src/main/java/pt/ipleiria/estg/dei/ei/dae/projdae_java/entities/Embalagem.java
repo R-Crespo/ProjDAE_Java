@@ -19,7 +19,7 @@ import java.util.List;
 })
 public class Embalagem implements Serializable {
     @Id
-    private int id;
+    private long id;
     @NotNull
     private String tipo;
     @NotNull
@@ -35,17 +35,10 @@ public class Embalagem implements Serializable {
     private int volume;
 
     public Embalagem() {
-            this.id = 0;
-            this.tipo = "";
-            this.funcao = "";
-            this.dataFabrico = null;
-            this.material = "";
-            this.peso = 0;
-            this.volume = 0;
-        this.sensores = new ArrayList<>();
+        this.sensores = new ArrayList<Sensor>();
     }
 
-    public Embalagem(int id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
+    public Embalagem(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
         this.id = id;
         this.tipo = tipo;
         this.funcao = funcao;
@@ -53,14 +46,14 @@ public class Embalagem implements Serializable {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.sensores = new ArrayList<>();
+        this.sensores = new ArrayList<Sensor>();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -118,5 +111,19 @@ public class Embalagem implements Serializable {
 
     public void setSensores(List<Sensor> sensores) {
         this.sensores = sensores;
+    }
+
+    public void addSensor(Sensor sensor){
+        if(sensor == null || sensores.contains(sensor)){
+            return;
+        }
+        sensores.add(sensor);
+    }
+
+    public void removeSensor(Sensor sensor){
+        if(sensor == null || !(sensores.contains(sensor))){
+            return;
+        }
+        sensores.remove(sensor);
     }
 }
