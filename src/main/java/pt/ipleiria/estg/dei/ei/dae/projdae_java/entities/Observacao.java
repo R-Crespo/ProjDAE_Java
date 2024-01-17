@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 @Entity
 @Table(name = "observacoes")
@@ -18,22 +19,34 @@ public class Observacao implements Serializable {
     @Id
     private long code;
     @NotNull
-    private String description;
+    private Date timestamp;
+    @NotNull
+    private String type;
     @ManyToOne
     @JoinColumn(name = "sensor_name")
     @NotNull
     private Sensor sensor;
+    @NotNull
+    private long value;
+    @NotNull
+    private String unit;
 
     public Observacao() {
         this.code = 0;
-        this.description = "";
+        this.type = "";
         this.sensor = new Sensor();
+        this.unit = "";
+        this.value = 0;
+        this.timestamp = new Date();
     }
 
-    public Observacao(long code, String description, Sensor sensor) {
+    public Observacao(long code, String type, Sensor sensor, long value, String unit, Date timestamp) {
         this.code = code;
-        this.description = description;
+        this.type = type;
         this.sensor = sensor;
+        this.value = value;
+        this.unit = unit;
+        this.timestamp = timestamp;
     }
 
     public long getCode() {
@@ -44,12 +57,36 @@ public class Observacao implements Serializable {
         this.code = code;
     }
 
-    public String getDescription() {
-        return description;
+    public Date getTimestamp() {
+        return timestamp;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public long getValue() {
+        return value;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public Sensor getSensor() {
