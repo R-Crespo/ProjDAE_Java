@@ -9,6 +9,8 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
+import java.util.Date;
+
 public class ObservacaoBean {
 
     @PersistenceContext
@@ -20,33 +22,46 @@ public class ObservacaoBean {
         return em.find(Observacao.class, code);
     }
 
-    public void create(long code, String description) throws MyEntityExistsException {
+    public void create(long code, long sensorId, long value, String type, String unit, Date timestamp) throws MyEntityExistsException, MyEntityNotFoundException {
         Observacao observacao = find(code);
+        Sensor sensor = sensorBean.find(sensorId);
 
         if(observacao != null){
             throw new MyEntityExistsException("Observacão com o codigo '" + code +"' já existe");
         }
 
-        observacao = new Observacao(code, description);
+        if(sensor == null){
+            throw new MyEntityNotFoundException("Sensor com o ID '" + sensorId +"' não existe");
+        }
+
+        observacao = new Observacao(code, type, sensor,value, unit, timestamp);
+        sensor.addObservacao(observacao);
         em.persist(observacao);
     }
 
-    public void update(long code, String description, String name) throws MyEntityNotFoundException {
+    public void update(long code, long sensorId, long value, String type, String unit, Date timestamp) throws MyEntityNotFoundException {
         Observacao observacao = find(code);
 
         if(observacao == null){
             throw new MyEntityNotFoundException("Observacão com o codigo '" + code +"' não existe");
         }
 
-        Sensor sensor = sensorBean.find(name);
+        Sensor sensor = sensorBean.find(sensorId);
 
         if(sensor == null){
-            throw new MyEntityNotFoundException("Sensor com o nome '" + name +"' não existe");
+            throw new MyEntityNotFoundException("Sensor com o ID '" + sensorId +"' não existe");
         }
-
         em.lock(observacao, LockModeType.OPTIMISTIC);
-        observacao.setDescription(description);
-        observacao.setSensor(sensor);
+        if(sensor != observacao.getSensor()){
+            observacao.getSensor().removeObservacao(observacao);
+            observacao.setSensor(sensor);
+            sensor.addObservacao(observacao);
+        }
+        
+        observacao.setType(type);
+        observacao.setUnit(unit);
+        observacao.setValue(value);
+        observacao.setTimestamp(timestamp);
     }
 
     public void delete(long code) throws MyEntityNotFoundException{
@@ -56,6 +71,8 @@ public class ObservacaoBean {
             throw new MyEntityNotFoundException("Observacão com o codigo '" + code +"' não existe");
         }
 
+        Sensor sensor = observacao.getSensor();
+        sensor.removeObservacao(observacao);
         em.remove(observacao);
     }
 }

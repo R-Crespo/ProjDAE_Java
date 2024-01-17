@@ -24,7 +24,8 @@ public class Embalagem implements Serializable {
     private String tipo;
     @NotNull
     private String funcao;
-
+    @OneToMany(mappedBy = "embalagem" ,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Sensor> sensores;
     private Date dataFabrico;
     @NotNull
     private String material;
@@ -32,8 +33,6 @@ public class Embalagem implements Serializable {
     private int peso;
     @NotNull
     private int volume;
-    @ManyToMany //TODO
-    private List<Sensor> sensores;
 
     public Embalagem() {
             this.id = 0;

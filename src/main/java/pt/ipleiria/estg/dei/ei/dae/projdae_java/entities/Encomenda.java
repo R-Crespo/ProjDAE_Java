@@ -4,14 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "encomendas")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEncomendas",
-                query = "Select e From Encomenda e JOIN FETCH e.produtos JOIN FETCH e.embalagemTransportes Order By e.code"
+                query = "Select e From Encomenda e JOIN FETCH e.produtos JOIN FETCH e.embalagemTransportes Order By e.deliveryDate"
         )
 }
 )
@@ -29,32 +34,47 @@ public class Encomenda implements Serializable {
     private String address;
     @NotNull
     private String state;
+    @NotNull
+    private Date deliveryDate;
+    @NotNull
+    private String warehouse;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Produto> produtos = new ArrayList<>();
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "encomendas_embalagens",
-            joinColumns = @JoinColumn(
-                    name = "encomenda_code",
-                    referencedColumnName = "code"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "embalagem_code",
-                    referencedColumnName = "code"
-            )
-    )
-    @NotNull
+    @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<EmbalagemTransporte> embalagemTransportes = new ArrayList<>();
 
     public Encomenda() {
-
+        this.code = 0;
+        this.cliente = new Cliente();
+        this.address = "";
+        this.state = "";
+        this.warehouse = "";
+        this.deliveryDate = new Date();
     }
 
-    public Encomenda(long code, Cliente cliente, String address, String state) {
+    public Encomenda(long code, Cliente cliente, String address, String state, String warehouse, Date deliveryDate) {
         this.code = code;
         this.cliente = cliente;
         this.address = address;
         this.state = state;
+        this.warehouse = warehouse;
+        this.deliveryDate = deliveryDate;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public String getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(String warehouse) {
+        this.warehouse = warehouse;
     }
 
     public String getState() {

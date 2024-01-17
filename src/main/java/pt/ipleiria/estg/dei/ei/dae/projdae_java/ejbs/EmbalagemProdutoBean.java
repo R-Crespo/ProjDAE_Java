@@ -55,10 +55,8 @@ public class EmbalagemProdutoBean {
         if (embalagemProduto == null) {
             throw new MyEntityNotFoundException("EmbalagemProduto with id '" + id + "' not found");
         }
-        /* TODO
-        for (Produto embalagemProdutoProduto : embalagemProduto.getProdutos()) {
-            embalagemProtutoProduto.removeEmbalagem(embalagemProduto);
-        }*/
+
+        embalagemProduto.getProduto().removeEmbalagemProduto(embalagemProduto);
         em.remove(embalagemProduto);
         return embalagemProduto;
     }
