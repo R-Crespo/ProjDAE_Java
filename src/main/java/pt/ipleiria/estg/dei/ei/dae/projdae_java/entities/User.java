@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 @Entity
 @Table(name = "users")
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User implements Serializable {
     @Id
@@ -18,6 +19,9 @@ public class User implements Serializable {
     @Email
     @NotNull
     private String email;
+
+    @Column(insertable = false, updatable = false)
+    private String dtype;
 
     public User(){
 
@@ -61,5 +65,9 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDtype() {
+        return this.dtype;
     }
 }
