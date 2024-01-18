@@ -6,10 +6,7 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.ConstraintViolationException;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Fornecedor;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -34,7 +31,7 @@ public class ProdutoBean {
         return em.createNamedQuery("getAllProdutos", Produto.class).getResultList();
     }
 
-    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, long encomendaId, String fornecedorUsername) throws MyEntityNotFoundException,MyEntityExistsException{
+    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, String fornecedorUsername) throws MyEntityNotFoundException,MyEntityExistsException{
         Produto produto = find(id);
         if(produto != null){
             throw new MyEntityExistsException("Produto com id '"+ id +"' já existe");
@@ -44,17 +41,13 @@ public class ProdutoBean {
             throw new MyEntityNotFoundException(
                     "Fornecedor '" + fornecedorUsername + "' não existe");
         }
-        Encomenda encomenda = encomendaBean.find(encomendaId);
-        if(encomenda == null){
-            throw new MyEntityNotFoundException(
-                    "Encomenda '" + encomenda + "' não existe");
-        }
-        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao, encomenda, fornecedor);
+
+        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao, fornecedor);
         fornecedor.addProduto(produto);
         em.persist(produto);
     }
 
-    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, long encomendaId, String fornecedorUsername) throws MyEntityNotFoundException {
+    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, String fornecedorUsername) throws MyEntityNotFoundException {
         Produto produto = em.find(Produto.class, id);
         if (produto == null) {
             throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
@@ -67,16 +60,7 @@ public class ProdutoBean {
         produto.setMarca(marca);
         produto.setUnidadeMedida(unidadeMedida);
         produto.setQuantidade(quantidade);
-        Encomenda encomenda = encomendaBean.find(encomendaId);
-        if(encomenda == null){
-            throw new MyEntityNotFoundException(
-                    "Encomenda '" + encomendaId + "' não existe");
-        }
-        if(encomenda != produto.getEncomenda()){
-            produto.getEncomenda().removeProduto(produto);
-            encomenda.addProduto(produto);
-            produto.setEncomenda(encomenda);
-        }
+
         Fornecedor fornecedor = fornecedorBean.find(fornecedorUsername);
         if(fornecedor == null){
             throw new MyEntityNotFoundException(

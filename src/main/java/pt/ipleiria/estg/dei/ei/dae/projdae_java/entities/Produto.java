@@ -1,9 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllProdutos",
-                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProduto ORDER BY p.nome" // JPQL
+                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProdutos ORDER BY p.nome" // JPQL
         )
 })
 public class Produto implements Serializable {
@@ -34,9 +32,8 @@ public class Produto implements Serializable {
     @NotNull
     private float preco;
     private String descricao;
-    @ManyToOne
-    @JoinColumn(name = "encomenda_id")
-    private Encomenda encomenda;
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<EncomendaProduto> encomendaProdutos;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_username")
@@ -44,7 +41,7 @@ public class Produto implements Serializable {
     private Fornecedor fornecedor;
 
     @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
-    private List<EmbalagemProduto> embalagensProduto;
+    private List<EmbalagemProduto> embalagensProdutos;
 
     @ManyToMany
     @JoinTable(
@@ -61,10 +58,11 @@ public class Produto implements Serializable {
     private List<Regra> regras;
 
     public Produto(){
-        this.embalagensProduto = new ArrayList<EmbalagemProduto>();
+        this.encomendaProdutos = new ArrayList<EncomendaProduto>();
+        this.embalagensProdutos = new ArrayList<EmbalagemProduto>();
     }
 
-    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Encomenda encomenda, Fornecedor fornecedor) {
+    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
@@ -73,9 +71,9 @@ public class Produto implements Serializable {
         this.unidadeMedida = unidadeMedida;
         this.preco = preco;
         this.descricao = descricao;
-        this.encomenda = encomenda;
+        this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.fornecedor = fornecedor;
-        this.embalagensProduto = new ArrayList<EmbalagemProduto>();
+        this.embalagensProdutos = new ArrayList<EmbalagemProduto>();
         this.regras = new ArrayList<Regra>();
     }
 
@@ -143,12 +141,26 @@ public class Produto implements Serializable {
         this.descricao = descricao;
     }
 
-    public Encomenda getEncomenda() {
-        return encomenda;
+    public List<EncomendaProduto> getEncomendaProduto() {
+        return new ArrayList<>(encomendaProdutos);
     }
 
-    public void setEncomenda(Encomenda encomenda) {
-        this.encomenda = encomenda;
+    public void setEncomendaProduto(List<EncomendaProduto> encomendaProduto) {
+        this.encomendaProdutos = encomendaProduto;
+    }
+
+    public void addEncomendaProduto(EncomendaProduto encomendaProduto){
+        if(encomendaProduto == null || encomendaProdutos.contains(encomendaProduto)){
+            return;
+        }
+        encomendaProdutos.add(encomendaProduto);
+    }
+
+    public void removeEncomendaProduto(EncomendaProduto encomendaProduto){
+        if(encomendaProduto == null || !(encomendaProdutos.contains(encomendaProduto))){
+            return;
+        }
+        encomendaProdutos.remove(encomendaProduto);
     }
 
     public Fornecedor getFornecedor() {
@@ -160,27 +172,27 @@ public class Produto implements Serializable {
     }
 
     public List<EmbalagemProduto> getEmbalagensProduto() {
-        return new ArrayList<>(embalagensProduto);
+        return new ArrayList<>(embalagensProdutos);
     }
 
     public void setEmbalagensProduto(List<EmbalagemProduto> embalagensProduto) {
-        this.embalagensProduto = embalagensProduto;
+        this.embalagensProdutos = embalagensProduto;
     }
 
     public void addEmbalagemProduto(EmbalagemProduto embalagemProduto){
-        if(embalagemProduto == null || embalagensProduto.contains(embalagemProduto)){
+        if(embalagemProduto == null || embalagensProdutos.contains(embalagemProduto)){
             return;
         }
         embalagemProduto.setProduto(this);
-        embalagensProduto.add(embalagemProduto);
+        embalagensProdutos.add(embalagemProduto);
     }
 
     public void removeEmbalagemProduto(EmbalagemProduto embalagemProduto){
-        if(embalagemProduto == null || !(embalagensProduto.contains(embalagemProduto))){
+        if(embalagemProduto == null || !(embalagensProdutos.contains(embalagemProduto))){
             return;
         }
         embalagemProduto.setProduto(null);
-        embalagensProduto.remove(embalagemProduto);
+        embalagensProdutos.remove(embalagemProduto);
     }
 
     public List<Regra> getRegras() {

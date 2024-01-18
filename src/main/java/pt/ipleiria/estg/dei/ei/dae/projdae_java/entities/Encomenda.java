@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEncomendas",
-                query = "Select e From Encomenda e JOIN FETCH e.produtos JOIN FETCH e.embalagemTransportes Order By e.dataEntrega"
+                query = "Select e From Encomenda e JOIN FETCH e.encomendaProdutos JOIN FETCH e.embalagemTransportes Order By e.dataEntrega"
         )
 }
 )
@@ -39,12 +37,12 @@ public class Encomenda implements Serializable {
     @NotNull
     private String armazem;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Produto> produtos;
+    private List<EncomendaProduto> encomendaProdutos;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<EmbalagemTransporte> embalagemTransportes;
 
     public Encomenda() {
-        this.produtos = new ArrayList<Produto>();
+        this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
     }
 
@@ -55,7 +53,7 @@ public class Encomenda implements Serializable {
         this.estado = estado;
         this.armazem = armazem;
         this.dataEntrega = dataEntrega;
-        this.produtos = new ArrayList<Produto>();
+        this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
         this.operador = null;
     }
@@ -116,12 +114,12 @@ public class Encomenda implements Serializable {
         this.cliente = cliente;
     }
 
-    public List<Produto> getProdutos() {
-        return new ArrayList<>(produtos);
+    public List<EncomendaProduto> getEncomendaProdutos() {
+        return new ArrayList<>(encomendaProdutos);
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProdutos(List<EncomendaProduto> encomendaProdutos) {
+        this.encomendaProdutos = encomendaProdutos;
     }
 
     public List<EmbalagemTransporte> getEmbalagemTransportes() {
@@ -132,20 +130,20 @@ public class Encomenda implements Serializable {
         this.embalagemTransportes = embalagemTransportes;
     }
 
-    public void addProduto(Produto produto){
-        if(produto == null || produtos.contains(produto)){
+    public void addEncomendaProduto(EncomendaProduto encomendaProduto){
+        if(encomendaProduto == null || encomendaProdutos.contains(encomendaProduto)){
             return;
         }
 
-        produtos.add(produto);
+        encomendaProdutos.add(encomendaProduto);
     }
 
-    public void removeProduto(Produto produto){
-        if(produto == null || !(produtos.contains(produto))){
+    public void removeEncomendaProduto(EncomendaProduto encomendaProduto){
+        if(encomendaProduto == null || !(encomendaProdutos.contains(encomendaProduto))){
             return;
         }
 
-        produtos.remove(produto);
+        encomendaProdutos.remove(encomendaProduto);
     }
 
     public void addEmbalagem(EmbalagemTransporte embalagemTransporte) {

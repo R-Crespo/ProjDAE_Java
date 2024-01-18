@@ -2,14 +2,12 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-
 @Entity
 @Table(
-        name="produtoQuantidades",
+        name="EncomendaProduto",
         uniqueConstraints = @UniqueConstraint(columnNames = {"id"})
 )
-public class ProdutoQuantidade{
+public class EncomendaProduto {
     @Id
     private long id;
     @ManyToOne
@@ -20,10 +18,10 @@ public class ProdutoQuantidade{
     private Produto produto;
     private int quantidade;
 
-    public ProdutoQuantidade() {
+    public EncomendaProduto() {
     }
 
-    public ProdutoQuantidade(long id, Encomenda encomenda, Produto produto, int quantidade) {
+    public EncomendaProduto(long id, Encomenda encomenda, Produto produto, int quantidade) {
         this.id = id;
         this.encomenda = encomenda;
         this.produto = produto;

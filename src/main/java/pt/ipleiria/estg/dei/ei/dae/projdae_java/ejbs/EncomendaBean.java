@@ -80,14 +80,14 @@ public class EncomendaBean {
         if (encomenda == null) {
             throw new MyEntityNotFoundException("Encomenda com id '" + id +"' não existe");
         }
-        List<Produto> produtos = encomenda.getProdutos();
+        List<EncomendaProduto> Encomendaprodutos = encomenda.getEncomendaProdutos();
         List<EmbalagemTransporte> embalagemTransportes = encomenda.getEmbalagemTransportes();
 
-        if (produtos != null) {
-            produtos.clear();
-            for (Produto produto : produtos){
-                em.lock(produto, LockModeType.OPTIMISTIC);
-                produto.setEncomenda(null);
+        if (Encomendaprodutos != null) {
+            Encomendaprodutos.clear();
+            for (EncomendaProduto Encomendaproduto : Encomendaprodutos){
+                em.lock(Encomendaproduto, LockModeType.OPTIMISTIC);
+                Encomendaproduto.setEncomenda(null);
             }
         }
         if(embalagemTransportes != null){
@@ -101,6 +101,7 @@ public class EncomendaBean {
         em.remove(encomenda);
     }
 
+    /* TODO meter a funcionar com a EncomendaProduto
     public void enrollProdutoInEncomenda(long produtoId, long encomendaId){
         Produto produto = em.find(Produto.class, produtoId);
         Encomenda encomenda = find(encomendaId);
@@ -126,4 +127,5 @@ public class EncomendaBean {
         produto.setEncomenda(null);
         encomenda.removeProduto(produto);
     }
+     */
 }
