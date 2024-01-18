@@ -9,8 +9,8 @@ import java.util.List;
 public class EncomendaDTO {
     @Id
     private long id;
-    private long operadorId;
-    private long clienteId;
+    private String operadorUsarname;
+    private String clienteUsarname;
     private String morada;
     private String estado;
     private Date dataEntrega;
@@ -23,10 +23,10 @@ public class EncomendaDTO {
         embalagemTransporteDTOs = new ArrayList<EmbalagemTransporteDTO>();
     }
 
-    public EncomendaDTO(long id, long operadorId, long clienteId, String morada, String estado, Date dataEntrega, String armazem) {
+    public EncomendaDTO(long id, String operadorUsarname, String clienteUsarname, String morada, String estado, Date dataEntrega, String armazem) {
         this.id = id;
-        this.operadorId = operadorId;
-        this.clienteId = clienteId;
+        this.operadorUsarname = operadorUsarname;
+        this.clienteUsarname = clienteUsarname;
         this.morada = morada;
         this.estado = estado;
         this.dataEntrega = dataEntrega;
@@ -43,20 +43,20 @@ public class EncomendaDTO {
         this.id = id;
     }
 
-    public long getOperadorId() {
-        return operadorId;
+    public String getOperadorUsername() {
+        return operadorUsarname;
     }
 
-    public void setOperadorId(long operadorId) {
-        this.operadorId = operadorId;
+    public void setOperadorUsername(String operadorUsername) {
+        this.operadorUsarname = operadorUsername;
     }
 
-    public long getClienteId() {
-        return clienteId;
+    public String getClienteUsername() {
+        return clienteUsarname;
     }
 
-    public void setClienteId(long clienteId) {
-        this.clienteId = clienteId;
+    public void setClienteUsarname(String clienteUsarname) {
+        this.clienteUsarname = clienteUsarname;
     }
 
     public String getMorada() {
