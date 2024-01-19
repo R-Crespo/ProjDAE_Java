@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Stateless
 public class ObservacaoBean {
 
     @PersistenceContext

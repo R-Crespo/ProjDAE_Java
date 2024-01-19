@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17e22d69-a69e-458b-9d60-76436da7deda" name="Changes" comment="Users, security and exceptions added">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Encomenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Encomenda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ProjDAE_Java_war.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ProjDAE_Java_war_exploded.xml" beforeDir="false" />
+    <list default="true" id="311f281a-fab7-48b6-8b6e-a1e6c941ee49" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/dtos/ObservacaoDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ObservacaoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Produto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Produto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EncomendaBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EncomendaBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EncomendaProdutoBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EncomendaProdutoBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/RegraBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/RegraBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/SensorBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/SensorBean.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,16 +51,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -66,21 +58,30 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/joaoc/IdeaProjects/ProjDAE_Java&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  &lt;component name=&quot;PropertiesComponent&quot;&gt;{
+  &amp;quot;keyToString&amp;quot;: {
+    &amp;quot;RunOnceActivity.OpenProjectViewOnStart&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.ShowReadmeOnStart&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;SHARE_PROJECT_CONFIGURATION_FILES&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;WebServerToolWindowFactoryState&amp;quot;: &amp;quot;false&amp;quot;,
+    &amp;quot;git-widget-placeholder&amp;quot;: &amp;quot;master&amp;quot;,
+    &amp;quot;kotlin-language-version-configured&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;last_opened_file_path&amp;quot;: &amp;quot;C:/Users/joaoc/IdeaProjects/ProjDAE_Java&amp;quot;,
+    &amp;quot;node.js.detected.package.eslint&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;node.js.detected.package.tslint&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;node.js.selected.package.eslint&amp;quot;: &amp;quot;(autodetect)&amp;quot;,
+    &amp;quot;node.js.selected.package.tslint&amp;quot;: &amp;quot;(autodetect)&amp;quot;,
+    &amp;quot;nodejs_package_manager_path&amp;quot;: &amp;quot;npm&amp;quot;,
+    &amp;quot;vue.rearranger.settings.migration&amp;quot;: &amp;quot;true&amp;quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
 }</component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -92,7 +93,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="17e22d69-a69e-458b-9d60-76436da7deda" name="Changes" comment="" />
+      <changelist id="311f281a-fab7-48b6-8b6e-a1e6c941ee49" name="Changes" comment="" />
       <created>1705074954149</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -102,6 +103,7 @@
       <workItem from="1705213667982" duration="318000" />
       <workItem from="1705214004141" duration="721000" />
       <workItem from="1705214745006" duration="6417000" />
+      <workItem from="1705688628376" duration="2416000" />
     </task>
     <task id="LOCAL-00001" summary="Projects base configuration">
       <created>1705088121270</created>

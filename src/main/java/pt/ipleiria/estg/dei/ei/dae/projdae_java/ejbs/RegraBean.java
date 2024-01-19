@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -11,6 +12,7 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsExcepti
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
 import java.util.List;
+@Stateless
 
 public class RegraBean {
     @PersistenceContext

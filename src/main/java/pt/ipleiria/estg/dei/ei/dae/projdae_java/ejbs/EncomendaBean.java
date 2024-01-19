@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
@@ -9,6 +10,8 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 
 import java.util.Date;
 import java.util.List;
+
+@Stateless
 
 public class EncomendaBean {
 
