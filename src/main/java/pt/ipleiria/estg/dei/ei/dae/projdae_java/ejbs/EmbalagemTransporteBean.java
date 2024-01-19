@@ -52,7 +52,7 @@ public class EmbalagemTransporteBean {
 
         try {
             embalagemTransporte = new EmbalagemTransporte(id, tipo, funcao, dataFabrico, material, peso, volume, encomenda);
-            encomenda.addEmbalagem(embalagemTransporte);
+            encomenda.addEmbalagemTransporte(embalagemTransporte);
             em.persist(embalagemTransporte);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -66,7 +66,7 @@ public class EmbalagemTransporteBean {
             throw new MyEntityNotFoundException("EmbalagemTransporte com id '" + id + "' não existe");
         }
 
-        embalagemTransporte.getEncomenda().removeEmbalagem(embalagemTransporte);
+        embalagemTransporte.getEncomenda().removeEmbalagemTransporte(embalagemTransporte);
         em.remove(embalagemTransporte);
         return embalagemTransporte;
     }

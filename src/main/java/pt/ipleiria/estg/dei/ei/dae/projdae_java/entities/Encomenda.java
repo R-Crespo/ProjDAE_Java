@@ -32,7 +32,7 @@ public class Encomenda implements Serializable {
     private String morada;
     @NotNull
     private String estado;
-    @NotNull
+
     private Date dataEntrega;
     @NotNull
     private String armazem;
@@ -46,13 +46,13 @@ public class Encomenda implements Serializable {
         this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
     }
 
-    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem, Date dataEntrega) {
+    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem) {
         this.id = id;
         this.cliente = cliente;
         this.morada = morada;
         this.estado = estado;
         this.armazem = armazem;
-        this.dataEntrega = dataEntrega;
+        this.dataEntrega = null;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
         this.operador = null;
@@ -146,7 +146,7 @@ public class Encomenda implements Serializable {
         encomendaProdutos.remove(encomendaProduto);
     }
 
-    public void addEmbalagem(EmbalagemTransporte embalagemTransporte) {
+    public void addEmbalagemTransporte(EmbalagemTransporte embalagemTransporte) {
         if(embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
             return;
         }
@@ -154,7 +154,7 @@ public class Encomenda implements Serializable {
         embalagemTransportes.add(embalagemTransporte);
     }
 
-    public void removeEmbalagem(EmbalagemTransporte embalagemTransporte) {
+    public void removeEmbalagemTransporte(EmbalagemTransporte embalagemTransporte) {
         if(!embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
             return;
         }

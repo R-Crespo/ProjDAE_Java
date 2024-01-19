@@ -27,7 +27,7 @@ public class EncomendaBean {
         return em.createNamedQuery("getAllEncomendas", Encomenda.class).getResultList();
     }
 
-    public void create(long id, String clienteUsername, String morada, String estado, String armazem, Date dataEntrega) throws MyEntityExistsException, MyEntityNotFoundException {
+    public void create(long id, String clienteUsername, String morada, String estado, String armazem) throws MyEntityExistsException, MyEntityNotFoundException {
         Encomenda encomenda = find(id);
 
         if (encomenda != null) {
@@ -39,7 +39,7 @@ public class EncomendaBean {
             throw new MyEntityNotFoundException(
                     "Cliente '" + clienteUsername + "' não existe");
         }
-        encomenda = new Encomenda(id, cliente, morada, estado, armazem, dataEntrega);
+        encomenda = new Encomenda(id, cliente, morada, estado, armazem);
         cliente.addEncomenda(encomenda);
         em.persist(encomenda);
     }
@@ -73,6 +73,8 @@ public class EncomendaBean {
         em.lock(encomenda, LockModeType.OPTIMISTIC);
         encomenda.setMorada(morada);
         encomenda.setEstado(estado);
+        encomenda.setArmazem(armazem);
+        encomenda.setDataEntrega(dataEntrega);
     }
 
     public void delete(long id) throws MyEntityNotFoundException{
@@ -100,32 +102,4 @@ public class EncomendaBean {
         operador.removeEncomenda(encomenda);
         em.remove(encomenda);
     }
-
-    /* TODO meter a funcionar com a EncomendaProduto
-    public void enrollProdutoInEncomenda(long produtoId, long encomendaId){
-        Produto produto = em.find(Produto.class, produtoId);
-        Encomenda encomenda = find(encomendaId);
-
-        if(produto == null || encomenda == null || produto.getEncomenda() != null || encomenda.getProdutos().contains(produto)){
-            return;
-        }
-
-        em.lock(encomenda, LockModeType.OPTIMISTIC);
-        produto.setEncomenda(encomenda);
-        encomenda.addProduto(produto);
-    }
-
-    public void unrollProdutoInEncomenda(long produtoId, long encomendaId){
-        Produto produto = em.find(Produto.class, produtoId);
-        Encomenda encomenda = find(encomendaId);
-
-        if(produto == null || encomenda == null || produto.getEncomenda() == null || !(encomenda.getProdutos().contains(produto))){
-            return;
-        }
-
-        em.lock(encomenda, LockModeType.OPTIMISTIC);
-        produto.setEncomenda(null);
-        encomenda.removeProduto(produto);
-    }
-     */
 }
