@@ -146,7 +146,7 @@ public class Encomenda implements Serializable {
         encomendaProdutos.remove(encomendaProduto);
     }
 
-    public void addEmbalagem(EmbalagemTransporte embalagemTransporte) {
+    public void addEmbalagemTransporte(EmbalagemTransporte embalagemTransporte) {
         if(embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
             return;
         }
@@ -154,7 +154,7 @@ public class Encomenda implements Serializable {
         embalagemTransportes.add(embalagemTransporte);
     }
 
-    public void removeEmbalagem(EmbalagemTransporte embalagemTransporte) {
+    public void removeEmbalagemTransporte(EmbalagemTransporte embalagemTransporte) {
         if(!embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
             return;
         }
