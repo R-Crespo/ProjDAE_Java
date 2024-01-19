@@ -1,20 +1,28 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
+import jakarta.ejb.EJB;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemTransporte;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Observacao;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ObservacaoBean {
 
     @PersistenceContext
     private EntityManager em;
+
+    @EJB
+    private EncomendaBean encomendaBean;
+
+    @EJB
+    private ProdutoBean produtoBean;
 
     private SensorBean sensorBean;
 
@@ -39,6 +47,58 @@ public class ObservacaoBean {
         sensor.addObservacao(observacao);
         em.persist(observacao);
     }
+
+
+    public List<Observacao> getObservacoesPorEncomenda(long encomendaId) {
+        List<Observacao> observacoes = new ArrayList<>();
+
+        Encomenda encomenda = em.find(Encomenda.class, encomendaId);
+        if (encomenda == null) {
+            return observacoes; // Retorna lista vazia se a encomenda não existir
+        }
+
+        // Adiciona observações das embalagens de transporte
+        for (EmbalagemTransporte embalagemTransporte : encomenda.getEmbalagemTransportes()) {
+            for (Sensor sensor : embalagemTransporte.getSensores()) {
+                observacoes.addAll(sensor.getObservacoes());
+            }
+        }
+
+        // Adiciona observações das embalagens dos produtos nas encomendas de produtos
+        for (EncomendaProduto encomendaProduto : encomenda.getEncomendaProdutos()) {
+            Produto produto = encomendaProduto.getProduto();
+            for (EmbalagemProduto embalagemProduto : produto.getEmbalagensProduto()) {
+                for (Sensor sensor : embalagemProduto.getSensores()) {
+                    observacoes.addAll(sensor.getObservacoes());
+                }
+            }
+        }
+
+        return observacoes;
+    }
+
+
+
+
+
+    public List<Observacao> getObservacoesPorProduto(long produtoId) {
+        List<Observacao> observacoes = new ArrayList<>();
+
+        Produto produto = em.find(Produto.class, produtoId);
+        if (produto == null) {
+            return observacoes; // Retorna lista vazia se o produto não existir
+        }
+
+        // Adiciona observações das embalagens de produto
+        for (EmbalagemProduto embalagemProduto : produto.getEmbalagensProduto()) {
+            for (Sensor sensor : embalagemProduto.getSensores()) {
+                observacoes.addAll(sensor.getObservacoes());
+            }
+        }
+
+        return observacoes;
+    }
+
 
     public void delete(long id) throws MyEntityNotFoundException{
         Observacao observacao = find(id);
