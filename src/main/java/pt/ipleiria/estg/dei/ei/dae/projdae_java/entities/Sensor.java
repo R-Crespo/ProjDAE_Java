@@ -20,6 +20,11 @@ public class Sensor implements Serializable {
     private long id;
     @NotNull
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(name = "encomenda_id")
+    private Encomenda encomenda;
+
     @ManyToOne
     @JoinColumn(name = "embalagem_id")
     private Embalagem embalagem;
@@ -30,10 +35,9 @@ public class Sensor implements Serializable {
         this.observacoes = new ArrayList<Observacao>();
     }
 
-    public Sensor(long id,String nome,Embalagem embalagem) {
+    public Sensor(long id,String nome) {
         this.id = id;
         this.nome = nome;
-        this.embalagem = embalagem;
         this.observacoes = new ArrayList<Observacao>();
     }
 
@@ -43,6 +47,14 @@ public class Sensor implements Serializable {
 
     public void setEmbalagem(Embalagem embalagem) {
         this.embalagem = embalagem;
+    }
+
+    public Encomenda getEncomenda() {
+        return encomenda;
+    }
+
+    public void setEncomenda(Encomenda encomenda) {
+        this.encomenda = encomenda;
     }
 
     public long getId() {

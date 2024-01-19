@@ -14,7 +14,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEncomendas",
-                query = "Select e From Encomenda e JOIN FETCH e.encomendaProdutos JOIN FETCH e.embalagemTransportes Order By e.dataEntrega"
+                query = "Select e From Encomenda e JOIN FETCH e.encomendaProdutos JOIN FETCH e.embalagemTransporte Order By e.dataEntrega"
         )
 }
 )
@@ -38,23 +38,30 @@ public class Encomenda implements Serializable {
     private String armazem;
     @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<EncomendaProduto> encomendaProdutos;
-    @OneToMany(mappedBy = "encomenda", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<EmbalagemTransporte> embalagemTransportes;
+
+    @ManyToOne
+    @JoinColumn(name = "embalagemTransporte_id")
+    @NotNull
+    private EmbalagemTransporte embalagemTransporte;
+
+    @OneToMany(mappedBy = "encomenda" ,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Sensor> sensores;
 
     public Encomenda() {
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
-        this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
+        this.sensores = new ArrayList<Sensor>();
     }
 
-    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem, Date dataEntrega) {
+    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem, Date dataEntrega, EmbalagemTransporte embalagemTransporte) {
         this.id = id;
         this.cliente = cliente;
         this.morada = morada;
         this.estado = estado;
         this.armazem = armazem;
         this.dataEntrega = dataEntrega;
+        this.embalagemTransporte = embalagemTransporte;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
-        this.embalagemTransportes = new ArrayList<EmbalagemTransporte>();
+        this.sensores = new ArrayList<Sensor>();
         this.operador = null;
     }
 
@@ -122,13 +129,6 @@ public class Encomenda implements Serializable {
         this.encomendaProdutos = encomendaProdutos;
     }
 
-    public List<EmbalagemTransporte> getEmbalagemTransportes() {
-        return new ArrayList<>(embalagemTransportes);
-    }
-
-    public void setEmbalagemTransportes(List<EmbalagemTransporte> embalagemTransportes) {
-        this.embalagemTransportes = embalagemTransportes;
-    }
 
     public void addEncomendaProduto(EncomendaProduto encomendaProduto){
         if(encomendaProduto == null || encomendaProdutos.contains(encomendaProduto)){
@@ -146,19 +146,33 @@ public class Encomenda implements Serializable {
         encomendaProdutos.remove(encomendaProduto);
     }
 
-    public void addEmbalagem(EmbalagemTransporte embalagemTransporte) {
-        if(embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
-            return;
-        }
-
-        embalagemTransportes.add(embalagemTransporte);
+    public List<Sensor> getSensores() {
+        return sensores;
     }
 
-    public void removeEmbalagem(EmbalagemTransporte embalagemTransporte) {
-        if(!embalagemTransportes.contains(embalagemTransporte) || embalagemTransporte == null) {
+    public void setSensores(List<Sensor> sensores) {
+        this.sensores = sensores;
+    }
+
+    public void removeSensor(Sensor sensor){
+        if(sensor == null || !sensores.contains(sensor)) {
             return;
         }
+        sensores.remove(sensor);
+    }
 
-        embalagemTransportes.remove(embalagemTransporte);
+    public void addSensor(Sensor sensor){
+        if(sensor == null || sensores.contains(sensor)) {
+            return;
+        }
+        sensores.remove(sensor);
+    }
+
+    public EmbalagemTransporte getEmbalagemTransporte() {
+        return embalagemTransporte;
+    }
+
+    public void setEmbalagemTransporte(EmbalagemTransporte embalagemTransporte) {
+        this.embalagemTransporte = embalagemTransporte;
     }
 }

@@ -20,7 +20,7 @@ public class ConfigBean {
     private OperadorBean operadorBean;
 
     @EJB
-    private FornecedorBean fornecedorBean;
+    private AdministratorBean administratorBean;
 
     @EJB
     private ProdutoBean produtoBean;
@@ -30,9 +30,9 @@ public class ConfigBean {
 
     @PostConstruct
     public void populateDB() throws MyEntityNotFoundException, MyEntityExistsException {
-        fornecedorBean.create("Forn1", "123", "Coca-Cola", "coca_cola@sapo.pt");
-        fornecedorBean.create("Forn2", "123", "Pepsi", "pepsi@sapo.pt");
-        fornecedorBean.create("Forn3", "123", "Fanta", "fanta@sapo.pt");
+        administratorBean.create("Admin1", "123", "Admin1", "Admin1@sapo.pt");
+        administratorBean.create("Admin2", "123", "Admin2", "Admin2@sapo.pt");
+        administratorBean.create("Admin3", "123", "Admin3", "Admin3@sapo.pt");
         operadorBean.create("Roger10", "123", "Rogerio Sousa", "roger10@sapo.pt");
         operadorBean.create("Pinto12", "123", "Anibal Pinto", "pinto@sapo.pt");
         operadorBean.create("Mario12", "123", "Mario Miguel", "mario1@sapo.pt");

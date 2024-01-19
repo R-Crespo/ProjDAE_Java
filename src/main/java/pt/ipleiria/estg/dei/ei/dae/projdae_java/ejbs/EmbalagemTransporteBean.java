@@ -2,12 +2,14 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemTransporte;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -51,8 +53,7 @@ public class EmbalagemTransporteBean {
         EmbalagemTransporte embalagemTransporte = null;
 
         try {
-            embalagemTransporte = new EmbalagemTransporte(id, tipo, funcao, dataFabrico, material, peso, volume, encomenda);
-            encomenda.addEmbalagem(embalagemTransporte);
+            embalagemTransporte = new EmbalagemTransporte(id, tipo, funcao, dataFabrico, material, peso, volume);
             em.persist(embalagemTransporte);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
@@ -65,8 +66,14 @@ public class EmbalagemTransporteBean {
         if (embalagemTransporte == null) {
             throw new MyEntityNotFoundException("EmbalagemTransporte com id '" + id + "' não existe");
         }
-
-        embalagemTransporte.getEncomenda().removeEmbalagem(embalagemTransporte);
+        List<Encomenda> encomendas = embalagemTransporte.getEncomendas();
+        if (encomendas != null) {
+            for (Encomenda encomenda : encomendas) {
+                em.lock(encomenda, LockModeType.OPTIMISTIC);
+                encomenda.setEmbalagemTransporte(null); // Supondo que existe um método setEncomenda em Sensor
+            }
+            encomendas.clear();
+        }
         em.remove(embalagemTransporte);
         return embalagemTransporte;
     }

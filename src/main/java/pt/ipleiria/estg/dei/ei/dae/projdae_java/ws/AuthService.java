@@ -28,7 +28,6 @@ public class AuthService {
     @EJB
     private UserBean userBean;
 
-    private AuthenticationFilter authenticationFilter;
     @POST
     @Path("/login")
     public Response authenticate(@Valid AuthDTO auth) {
