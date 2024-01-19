@@ -12,28 +12,37 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEmbalagensTransporte",
-                query = "SELECT DISTINCT e FROM EmbalagemTransporte e LEFT JOIN FETCH e.encomenda ORDER BY e.id"
+                query = "SELECT DISTINCT e FROM EmbalagemTransporte e ORDER BY e.id"
         )
 })
 public class EmbalagemTransporte extends Embalagem implements Serializable {
-    @ManyToOne
-    @JoinColumn(name = "encomenda_id")
-    @NotNull
-    private Encomenda encomenda;
+
+    @OneToMany(mappedBy = "embalagemTransporte", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Encomenda> encomendas;
 
     public EmbalagemTransporte() {
     }
 
-    public EmbalagemTransporte(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Encomenda encomenda) {
+    public EmbalagemTransporte(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
         super(id, tipo, funcao, dataFabrico, material, peso, volume);
-        this.encomenda = encomenda;
+        this.encomendas = new ArrayList<Encomenda>();
     }
 
-    public Encomenda getEncomenda() {
-        return encomenda;
+    public List<Encomenda> getEncomendas() {
+        return encomendas;
     }
 
-    public void setEncomenda(Encomenda encomenda) {
-        this.encomenda = encomenda;
+    public void addEncomenda(Encomenda encomenda){
+        if(encomenda == null || encomendas.contains(encomenda)){
+            return;
+        }
+        encomendas.add(encomenda);
+    }
+
+    public void removeEncomenda(Encomenda encomenda){
+        if(encomenda == null || !encomendas.contains(encomenda)){
+            return;
+        }
+        encomendas.remove(encomenda);
     }
 }

@@ -1,12 +1,14 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.security;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import io.jsonwebtoken.Jwts;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class TokenIssuer {

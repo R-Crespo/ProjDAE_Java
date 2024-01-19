@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
@@ -10,6 +11,7 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 import java.util.Date;
 import java.util.List;
 
+@Stateless
 public class EncomendaBean {
 
     @PersistenceContext
@@ -29,7 +31,6 @@ public class EncomendaBean {
 
     public void create(long id, String clienteUsername, String morada, String estado, String armazem) throws MyEntityExistsException, MyEntityNotFoundException {
         Encomenda encomenda = find(id);
-
         if (encomenda != null) {
             throw new MyEntityExistsException(
                     "Encomenda com id '" + id + "' ja existe");
@@ -83,23 +84,29 @@ public class EncomendaBean {
             throw new MyEntityNotFoundException("Encomenda com id '" + id +"' não existe");
         }
         List<EncomendaProduto> Encomendaprodutos = encomenda.getEncomendaProdutos();
-        List<EmbalagemTransporte> embalagemTransportes = encomenda.getEmbalagemTransportes();
+        List<Sensor> sensores = encomenda.getSensores();
+        EmbalagemTransporte embalagemTransporte = encomenda.getEmbalagemTransporte();
 
         if (Encomendaprodutos != null) {
-            Encomendaprodutos.clear();
             for (EncomendaProduto Encomendaproduto : Encomendaprodutos){
                 em.lock(Encomendaproduto, LockModeType.OPTIMISTIC);
                 Encomendaproduto.setEncomenda(null);
             }
+            Encomendaprodutos.clear();
         }
-        if(embalagemTransportes != null){
-            embalagemTransportes.clear();
+        if (sensores != null) {
+            for (Sensor sensor : sensores) {
+                em.lock(sensor, LockModeType.OPTIMISTIC);
+                sensor.setEncomenda(null); // Supondo que existe um método setEncomenda em Sensor
+            }
+            sensores.clear();
         }
 
         Cliente cliente = encomenda.getCliente();
         Operador operador = encomenda.getOperador();
         cliente.removeEncomenda(encomenda);
         operador.removeEncomenda(encomenda);
+        embalagemTransporte.removeEncomenda(encomenda);
         em.remove(encomenda);
     }
 }
