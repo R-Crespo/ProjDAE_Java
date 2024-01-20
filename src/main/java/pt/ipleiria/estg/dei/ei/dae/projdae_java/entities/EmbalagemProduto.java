@@ -8,10 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(
-        name="embalagens",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"id"})
-)
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEmbalagensProduto",
@@ -19,8 +15,7 @@ import java.util.List;
         )
 })
 public class EmbalagemProduto extends Embalagem{
-    @ManyToOne
-    @JoinColumn(name = "produto_id")
+    @OneToOne
     private Produto produto;
 
     public EmbalagemProduto() {

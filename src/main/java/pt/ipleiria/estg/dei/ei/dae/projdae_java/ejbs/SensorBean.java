@@ -5,13 +5,15 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 @Stateless
-
 public class SensorBean {
     @PersistenceContext
     private EntityManager em;
@@ -29,21 +31,8 @@ public class SensorBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id,String nome, long embalagemId) throws MyEntityExistsException, MyEntityNotFoundException {
-        Sensor sensor = find(id);
-
-        if(exists(id)){
-            throw new MyEntityExistsException("Sensor " + nome + " já existe");
-        }
-
-        Embalagem embalagem = em.find(Embalagem.class, embalagemId);
-        if (embalagem == null) {
-            throw new MyEntityNotFoundException(
-                    "Embalagem com id '" + embalagemId + "' não existe"
-            );
-        }
-
-        sensor = new Sensor(id,nome, embalagem);
+    public void create(String nome) throws MyEntityExistsException, MyEntityNotFoundException {
+        Sensor sensor = new Sensor(nome);
         em.persist(sensor);
     }
 
@@ -77,4 +66,36 @@ public class SensorBean {
         embalagem.removeSensor(sensor);
         em.remove(sensor);
     }
+
+    public List<Sensor> getSensoresAtivos(){
+        List<Long> encomendasIds = em.createQuery("SELECT e.id FROM Encomenda e WHERE e.estado = :estado", Long.class)
+            .setParameter("estado", "EmProgresso")
+            .getResultList();
+
+        if (!encomendasIds.isEmpty()) {
+            return em.createQuery(
+                            "SELECT s FROM Sensor s WHERE s.encomenda.id IN :encomendasIds", Sensor.class)
+                    .setParameter("encomendasIds", encomendasIds)
+                    .getResultList();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public Observacao getUltimaObservacao(Sensor sensor) {
+        if (sensor == null) {
+            return new Observacao();
+        }
+
+        try {
+            return em.createQuery(
+                            "SELECT o FROM Observacao o WHERE o.sensor.id = :sensorId ORDER BY o.timestamp DESC", Observacao.class)
+                    .setParameter("sensorId", sensor.getId())
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return new Observacao();
+        }
+    }
+
 }

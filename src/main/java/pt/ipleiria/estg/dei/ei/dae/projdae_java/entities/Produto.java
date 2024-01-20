@@ -9,11 +9,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "produtos")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NamedQueries({
         @NamedQuery(
                 name = "getAllProdutos",
-                query = "SELECT p FROM Produto p JOIN FETCH p.embalagensProdutos ORDER BY p.nome" // JPQL
+                query = "SELECT p FROM Produto p JOIN FETCH p.encomendaProdutos ORDER BY p.nome" // JPQL
         )
 })
 public class Produto implements Serializable {
@@ -35,13 +34,8 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<EncomendaProduto> encomendaProdutos;
 
-    @ManyToOne
-    @JoinColumn(name = "fornecedor_username")
-    @NotNull
-    private Fornecedor fornecedor;
-
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
-    private List<EmbalagemProduto> embalagensProdutos;
+    @OneToOne
+    private EmbalagemProduto embalagemProduto;
 
     @ManyToMany
     @JoinTable(
@@ -59,10 +53,9 @@ public class Produto implements Serializable {
 
     public Produto(){
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
-        this.embalagensProdutos = new ArrayList<EmbalagemProduto>();
     }
 
-    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Fornecedor fornecedor) {
+    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
@@ -72,8 +65,7 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.descricao = descricao;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
-        this.fornecedor = fornecedor;
-        this.embalagensProdutos = new ArrayList<EmbalagemProduto>();
+        this.embalagemProduto = null;
         this.regras = new ArrayList<Regra>();
     }
 
@@ -163,38 +155,6 @@ public class Produto implements Serializable {
         encomendaProdutos.remove(encomendaProduto);
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
-
-    public List<EmbalagemProduto> getEmbalagensProduto() {
-        return new ArrayList<>(embalagensProdutos);
-    }
-
-    public void setEmbalagensProduto(List<EmbalagemProduto> embalagensProduto) {
-        this.embalagensProdutos = embalagensProduto;
-    }
-
-    public void addEmbalagemProduto(EmbalagemProduto embalagemProduto){
-        if(embalagemProduto == null || embalagensProdutos.contains(embalagemProduto)){
-            return;
-        }
-        embalagemProduto.setProduto(this);
-        embalagensProdutos.add(embalagemProduto);
-    }
-
-    public void removeEmbalagemProduto(EmbalagemProduto embalagemProduto){
-        if(embalagemProduto == null || !(embalagensProdutos.contains(embalagemProduto))){
-            return;
-        }
-        embalagemProduto.setProduto(null);
-        embalagensProdutos.remove(embalagemProduto);
-    }
-
     public List<Regra> getRegras() {
         return regras;
     }
@@ -215,5 +175,17 @@ public class Produto implements Serializable {
             return;
         }
         regras.remove(regra);
+    }
+
+    public List<EncomendaProduto> getEncomendaProdutos() {
+        return encomendaProdutos;
+    }
+
+    public EmbalagemProduto getEmbalagemProduto() {
+        return embalagemProduto;
+    }
+
+    public void setEmbalagemProduto(EmbalagemProduto embalagemProduto) {
+        this.embalagemProduto = embalagemProduto;
     }
 }
