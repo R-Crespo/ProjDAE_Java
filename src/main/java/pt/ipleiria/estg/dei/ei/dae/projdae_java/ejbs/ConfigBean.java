@@ -4,7 +4,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+<<<<<<< HEAD
 
+=======
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
+>>>>>>> 7570296f2cba3d7b60edc3a20697736c909fcedc
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -36,6 +40,9 @@ public class ConfigBean {
 
     private EmbalagemTransporteBean embalagemTransporteBean;
 
+    @EJB
+    private EmbalagemProdutoBean embalagemProdutoBean;
+
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
 
@@ -52,8 +59,7 @@ public class ConfigBean {
         clienteBean.create("Rui", "123", "Rui Miguel", "rui@sapo.pt");
 
         embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
-
-
+        
         embalagemTransporteBean.create("tipo1", "guardar", new Date(), "cartão", 10, 10);
         encomendaBean.create("Marco", "Pousos",  "Leiria", 1, new ArrayList<>());
         encomendaBean.create("Marco", "pousos",  "leiria", 1, new ArrayList<>());
@@ -61,6 +67,9 @@ public class ConfigBean {
         encomendaBean.create("Ricardo", "leiria",  "lisboa", 1, new ArrayList<>());
         encomendaBean.update(1,"Roger10","Marco","pousos", "Entregue",new Date(),"leiria", 1);
 
+        embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20,null);
+        Produto produto = produtoBean.create("Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"");
+        embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20, produto);
         /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         produtoBean.create(2,"Coca-cola","Refrigerante","Coca-cola", 330, "mL", 1.00f,"","Forn1");
         produtoBean.create(3,"Coca-cola","Refrigerante","Coca-cola", 500, "mL", 1.19f,"","Forn1");

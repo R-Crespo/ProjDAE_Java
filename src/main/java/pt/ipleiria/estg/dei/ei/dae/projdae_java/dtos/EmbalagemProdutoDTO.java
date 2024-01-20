@@ -14,7 +14,7 @@ public class EmbalagemProdutoDTO {
     private String material;
     private int peso;
     private int volume;
-    private long produto_id;
+    private long produtoId;
 
     public EmbalagemProdutoDTO() {
     }
@@ -27,7 +27,7 @@ public class EmbalagemProdutoDTO {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.produto_id = produto_id;
+        this.produtoId = produto_id;
     }
 
     public long getId() {
@@ -86,11 +86,11 @@ public class EmbalagemProdutoDTO {
         this.volume = volume;
     }
 
-    public long getProduto_id() {
-        return produto_id;
+    public long getProdutoId() {
+        return produtoId;
     }
 
-    public void setProduto_id(long produto_id) {
-        this.produto_id = produto_id;
+    public void setProdutoId(long produto_id) {
+        this.produtoId = produto_id;
     }
 }

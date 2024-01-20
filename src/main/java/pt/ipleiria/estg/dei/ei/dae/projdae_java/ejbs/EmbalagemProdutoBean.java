@@ -8,10 +8,8 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemTransporte;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.EmbalagemProdutoDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -27,6 +25,15 @@ public class EmbalagemProdutoBean {
 
     public EmbalagemProduto find(long id) {
         return em.find(EmbalagemProduto.class, id);
+    }
+
+    public EmbalagemProduto getEmbalagemProduto(){
+        List<EmbalagemProduto> embalagens = em.createNamedQuery("getAllEmbalagensProduto", EmbalagemProduto.class).getResultList();
+        if (!embalagens.isEmpty()) {
+            return embalagens.get(0);
+        } else {
+            return new EmbalagemProduto();
+        }
     }
 
     public List<EmbalagemProduto> getAll(){
@@ -54,13 +61,17 @@ public class EmbalagemProdutoBean {
         return embalagemProduto;
     }
 
-    public EmbalagemProduto delete(long id) throws MyEntityNotFoundException {
-        EmbalagemProduto embalagemProduto = find(id);
+    public void update(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) throws  MyEntityNotFoundException{
+        EmbalagemProduto embalagemProduto = em.find(EmbalagemProduto.class, id);
         if (embalagemProduto == null) {
-            throw new MyEntityNotFoundException("EmbalagemProduto com id '" + id + "' não existe");
+            throw new MyEntityNotFoundException("Embalagem de Produto com id '" + id + "' não existe");
         }
-
-        em.remove(embalagemProduto);
-        return embalagemProduto;
+        em.lock(embalagemProduto, LockModeType.OPTIMISTIC);
+        embalagemProduto.setTipo(tipo);
+        embalagemProduto.setFuncao(funcao);
+        embalagemProduto.setDataFabrico(dataFabrico);
+        embalagemProduto.setMaterial(material);
+        embalagemProduto.setPeso(peso);
+        embalagemProduto.setVolume(volume);
     }
 }
