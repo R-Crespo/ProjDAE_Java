@@ -15,6 +15,9 @@ import java.util.List;
         )
 })
 public class EmbalagemProduto extends Embalagem{
+
+    @Version
+    private long version;
     @OneToOne
     private Produto produto;
 

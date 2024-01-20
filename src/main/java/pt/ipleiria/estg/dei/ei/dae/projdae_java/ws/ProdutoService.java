@@ -15,6 +15,7 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.EmbalagemProdutoBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.ProdutoBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.RegraBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EncomendaProduto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Regra;
 
@@ -56,6 +57,14 @@ public class ProdutoService {
         );
     }
 
+    private ProdutoDTO toDTOEncomenda(Produto produto){
+        return new ProdutoDTO(
+                produto.getId(),
+                produto.getNome(),
+                encomendasToDTOs(produto.getEncomendaProdutos())
+        );
+    }
+
     private RegraDTO toDTO(Regra regra){
         return new RegraDTO(
                 regra.getId(),
@@ -66,8 +75,21 @@ public class ProdutoService {
                 regra.getProduto().getId()
         );
     }
+
+    private EncomendaProdutoDTO toDTO(EncomendaProduto encomendaProduto){
+        return new EncomendaProdutoDTO(
+                encomendaProduto.getId(),
+                encomendaProduto.getEncomenda().getId(),
+                encomendaProduto.getProduto().getId(),
+                encomendaProduto.getQuantidade()
+        );
+    }
     public List<RegraDTO> regrasToDTOs(List<Regra> regras){
         return regras.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public List<EncomendaProdutoDTO> encomendasToDTOs(List<EncomendaProduto> encomendas){
+        return encomendas.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public List<ProdutoDTO> toDTOs(List<Produto> produtos){
@@ -84,6 +106,12 @@ public class ProdutoService {
     @Path("{id}")
     public ProdutoDTO getProduto(@PathParam("id") long id) {
         return toDTO(produtoBean.find(id));
+    }
+
+    @GET
+    @Path("{id}/encomendas")
+    public ProdutoDTO getEncomendasProduto(@PathParam("id") long id) {
+        return toDTOEncomenda(produtoBean.find(id));
     }
 
     @POST
@@ -140,32 +168,52 @@ public class ProdutoService {
         }
         ProdutoDTO produtoDTO = toDTO(produto);
         produtoDTO.setRegras(regrasToDTOs(regras));
+        produtoDTO.setEmbalagemProdutoId(embalagemProduto.getId());
         return Response.status(Response.Status.CREATED).entity(produtoDTO).build();
     }
 
     @PUT
     @Path("{id}")
-    public Response updateProduto (ProdutoDTO produtoDTO){
+    public Response updateProduto (ProdutoEmbalagemRegraDTO produtoEmbalagemRegraDTO){
         try {
             produtoBean.update(
-                    produtoDTO.getId(),
-                    produtoDTO.getNome(),
-                    produtoDTO.getTipo(),
-                    produtoDTO.getMarca(),
-                    produtoDTO.getQuantidade(),
-                    produtoDTO.getUnidadeMedida(),
-                    produtoDTO.getPreco(),
-                    produtoDTO.getDescricao(),
+                    produtoEmbalagemRegraDTO.getProduto().getId(),
+                    produtoEmbalagemRegraDTO.getProduto().getNome(),
+                    produtoEmbalagemRegraDTO.getProduto().getTipo(),
+                    produtoEmbalagemRegraDTO.getProduto().getMarca(),
+                    produtoEmbalagemRegraDTO.getProduto().getQuantidade(),
+                    produtoEmbalagemRegraDTO.getProduto().getUnidadeMedida(),
+                    produtoEmbalagemRegraDTO.getProduto().getPreco(),
+                    produtoEmbalagemRegraDTO.getProduto().getDescricao(),
                     null,null
             );
+
+            embalagemProdutoBean.update(
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getId(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getTipo(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getFuncao(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getDataFabrico(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getMaterial(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getPeso(),
+                    produtoEmbalagemRegraDTO.getEmbalagemProduto().getVolume()
+            );
+
+            for(RegraDTO regraDTO : produtoEmbalagemRegraDTO.getRegras()){
+                    regraBean.update(
+                            regraDTO.getId(),
+                            regraDTO.getValor(),
+                            regraDTO.getComparador(),
+                            regraDTO.getMensagem(),
+                            regraDTO.getTipo_sensor()
+                    );
+            }
+            Produto produto = produtoBean.find(produtoEmbalagemRegraDTO.getProduto().getId());
+            return Response.status(Response.Status.OK).entity(toDTO(produto)).build();
         }catch(Exception ex){
             System.err.println("Erro na atualização dos dados do produto: " + ex);
-        }
-        Produto produto = produtoBean.find(produtoDTO.getId());
-        if(produto == null)
             return Response.status(Response.Status.BAD_REQUEST).build();
-        return
-                Response.status(Response.Status.OK).entity(toDTO(produto)).build();
+        }
+
     }
 
     @DELETE

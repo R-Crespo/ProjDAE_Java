@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolationException;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
@@ -25,7 +26,11 @@ public class ProdutoBean {
     private AdministratorBean administratorBean;
 
     public Produto find(long id){
-        return em.find(Produto.class, id);
+        Produto produto = em.find(Produto.class, id);
+        if(produto != null){
+            Hibernate.initialize(produto.getEncomendaProdutos());
+        }
+        return produto;
     }
 
     public List<Produto> getAll() {
@@ -69,6 +74,10 @@ public class ProdutoBean {
                 throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
             }
             em.remove(produto.getEmbalagemProduto());
+            List<Regra> regras = produto.getRegras();
+            if(regras != null) {
+                regras.clear();
+            }
             em.remove(produto);
         }catch(ConstraintViolationException e){
             throw new MyConstraintViolationException(e);
