@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ws;
 
 import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.hibernate.Hibernate;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 public class SensorService {
     @EJB
     SensorBean sensorBean;
+
+    @Inject
+    ObservacaoService observacaoService;
 
     @GET
     @Path("/ativos")
@@ -35,6 +39,6 @@ public class SensorService {
                 sensor.getId(),
                 sensor.getNome(),
                 encomendaId,
-                sensorBean.getUltimaObservacao(sensor));
+                observacaoService.toDTO(sensorBean.getUltimaObservacao(sensor)));
     }
 }

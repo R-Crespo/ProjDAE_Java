@@ -24,7 +24,7 @@ public class ObservacaoService {
     private ObservacaoBean observacaoBean;
 
     // Converte uma entidade Observacao para um DTO Observacao
-    private ObservacaoDTO toDTO(Observacao observacao) {
+    public ObservacaoDTO toDTO(Observacao observacao) {
         return new ObservacaoDTO(
                 observacao.getId(),
                 observacao.getSensor().getId(),

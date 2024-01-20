@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ws;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -21,6 +22,7 @@ import java.util.List;
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
 @Authenticated
+@RolesAllowed("Administrador")
 public class EmbalagemTransporteService {
     @EJB
     private EmbalagemTransporteBean embalagemTransporteBean;
@@ -56,7 +58,7 @@ public class EmbalagemTransporteService {
     public Response updateEmbalagemTransporte(EmbalagemTransporteDTO embalagemTransporteDTO) {
         try {
             embalagemTransporteBean.update(embalagemTransporteDTO.getId(), embalagemTransporteDTO.getTipo(), embalagemTransporteDTO.getFuncao(), embalagemTransporteDTO.getMaterial(), embalagemTransporteDTO.getPeso(), embalagemTransporteDTO.getVolume(), embalagemTransporteDTO.getSensores());
-            return Response.ok().build();
+            return Response.ok(toDTO(embalagemTransporteBean.getEmbalagemTransporte())).build();
         } catch (MyEntityNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         } catch (Exception e) {
