@@ -1,9 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos;
 
 import jakarta.persistence.Id;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,12 +15,13 @@ public class EmbalagemTransporteDTO {
     private String material;
     private int peso;
     private int volume;
-
     private List<SensorDTO> sensores;
+    private List<EncomendaDTO> encomendaDTOs;
+
     public EmbalagemTransporteDTO() {
     }
 
-    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, List<SensorDTO> sensores) {
+    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
         this.id = id;
         this.tipo = tipo;
         this.funcao = funcao;
@@ -29,7 +29,8 @@ public class EmbalagemTransporteDTO {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.sensores = sensores;
+        this.sensores = new ArrayList<SensorDTO>();
+        this.encomendaDTOs = new ArrayList<EncomendaDTO>();
     }
 
     public long getId() {
@@ -87,12 +88,19 @@ public class EmbalagemTransporteDTO {
     public void setVolume(int volume) {
         this.volume = volume;
     }
-
     public List<SensorDTO> getSensores() {
-        return sensores;
+        return new ArrayList<>(sensores);
     }
 
     public void setSensores(List<SensorDTO> sensores) {
         this.sensores = sensores;
+    }
+
+    public List<EncomendaDTO> getEncomendaDTOs() {
+        return new ArrayList<>(encomendaDTOs);
+    }
+
+    public void setEncomendaDTOs(List<EncomendaDTO> encomendaDTOs) {
+        this.encomendaDTOs = encomendaDTOs;
     }
 }

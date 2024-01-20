@@ -31,10 +31,7 @@ public class EncomendaProdutoBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id, long encomendaId, long produtoId, int quantidade) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
-        if (exists(id)) {
-            throw new MyEntityExistsException("EncomendaProduto com id '" + id + "' já existe");
-        }
+    public EncomendaProduto create(long encomendaId, long produtoId, int quantidade) throws MyEntityNotFoundException, MyConstraintViolationException {
         Encomenda encomenda = encomendaBean.find(encomendaId);
         if (encomenda == null) {
             throw new MyEntityNotFoundException(
@@ -51,13 +48,15 @@ public class EncomendaProdutoBean {
 
         EncomendaProduto encomendaProduto = null;
         try {
-            encomendaProduto = new EncomendaProduto(id, encomenda, produto, quantidade);
+            encomendaProduto = new EncomendaProduto(encomenda, produto, quantidade);
             em.persist(encomendaProduto);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
         encomenda.addEncomendaProduto(encomendaProduto);
         produto.addEncomendaProduto(encomendaProduto);
+
+        return encomendaProduto;
     }
 
     public EncomendaProduto delete(long id) throws MyEntityNotFoundException {

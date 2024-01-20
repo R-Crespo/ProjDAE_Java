@@ -93,8 +93,8 @@ public class ProdutoService {
                         regraDTO.getValor(),
                         regraDTO.getComparador(),
                         regraDTO.getMensagem(),
-                        regraDTO.getTipo_sensor(),
-                        produto
+                        regraDTO.getTipoSensor(),
+                        produto.getId()
                 ));
             }
         }catch(Exception ex){
