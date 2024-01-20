@@ -45,10 +45,9 @@ public class ObservacaoService {
     public Response createObservacao( ObservacaoDTO observacaoDTO) {
         try {
             observacaoBean.create(
-                    observacaoDTO.getId(),
                     observacaoDTO.getSensorId(),
-                    observacaoDTO.getTipo(),
                     observacaoDTO.getValor(),
+                    observacaoDTO.getTipo(),
                     observacaoDTO.getUnidadeMedida()
             );
             // Aqui poderíamos buscar a observação recém-criada para retornar o DTO correspondente

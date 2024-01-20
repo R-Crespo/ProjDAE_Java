@@ -32,20 +32,15 @@ public class ObservacaoBean {
         return em.find(Observacao.class, id);
     }
 
-    public void create(long id, long sensorId, String tipo, double valor, String unidadeMedida) throws MyEntityExistsException, MyEntityNotFoundException {
-        Observacao observacao = find(id);
+    public void create( long sensorId, double valor, String tipo, String unidadeMedida) throws MyEntityExistsException, MyEntityNotFoundException {
         Sensor sensor = sensorBean.find(sensorId);
-
-        if(observacao != null){
-            throw new MyEntityExistsException("Observacão com o codigo '" + id +"' já existe");
-        }
 
         if(sensor == null){
             throw new MyEntityNotFoundException("Sensor com o ID '" + sensorId +"' não existe");
         }
 
         Date timestamp = new Date();
-        observacao = new Observacao(id, sensor, timestamp ,tipo, valor, unidadeMedida);
+        Observacao observacao = new Observacao(sensor, timestamp, tipo, valor, unidadeMedida);
         sensor.addObservacao(observacao);
         em.persist(observacao);
     }

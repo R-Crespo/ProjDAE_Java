@@ -1,8 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ws;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,6 +36,7 @@ public class ProdutoService {
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
 
+
     private ProdutoDTO toDTO(Produto produto){
         return new ProdutoDTO(
                 produto.getId(),
@@ -41,8 +46,23 @@ public class ProdutoService {
                 produto.getDescricao(),
                 produto.getQuantidade(),
                 produto.getUnidadeMedida(),
-                produto.getPreco()
+                produto.getPreco(),
+                regrasToDTOs(produto.getRegras())
         );
+    }
+
+    private RegraDTO toDTO(Regra regra){
+        return new RegraDTO(
+                regra.getId(),
+                regra.getValor(),
+                regra.getComparador(),
+                regra.getMensagem(),
+                regra.getTipo_sensor(),
+                regra.getProduto().getId()
+        );
+    }
+    public List<RegraDTO> regrasToDTOs(List<Regra> regras){
+        return regras.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     public List<ProdutoDTO> toDTOs(List<Produto> produtos){
@@ -94,7 +114,7 @@ public class ProdutoService {
                         regraDTO.getComparador(),
                         regraDTO.getMensagem(),
                         regraDTO.getTipo_sensor(),
-                        produto
+                        produto.getId()
                 ));
             }
         }catch(Exception ex){
@@ -113,7 +133,9 @@ public class ProdutoService {
                 System.err.println("Exceção "+ e +" na operação");
             }
         }
-        return Response.status(Response.Status.CREATED).entity(toDTO(produto)).build();
+        ProdutoDTO produtoDTO = toDTO(produto);
+        produtoDTO.setRegras(regrasToDTOs(regras));
+        return Response.status(Response.Status.CREATED).entity(produtoDTO).build();
     }
 
     @PUT

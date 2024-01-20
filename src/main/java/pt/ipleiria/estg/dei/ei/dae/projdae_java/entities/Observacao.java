@@ -17,6 +17,7 @@ import java.util.Date;
 })
 public class Observacao implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     @JoinColumn(name = "sensor_nome")
@@ -31,8 +32,7 @@ public class Observacao implements Serializable {
     public Observacao() {
     }
 
-    public Observacao(long id, Sensor sensor, Date timestamp, String tipo, double valor, String unidadeMedida) {
-        this.id = id;
+    public Observacao(Sensor sensor, Date timestamp, String tipo, double valor, String unidadeMedida) {
         this.sensor = sensor;
         this.timestamp = timestamp;
         this.tipo = tipo;
