@@ -53,27 +53,21 @@ public class ObservacaoBean {
 
     public List<Observacao> getObservacoesPorEncomenda(long encomendaId) {
         List<Observacao> observacoes = new ArrayList<>();
-
         Encomenda encomenda = em.find(Encomenda.class, encomendaId);
+
         if (encomenda == null) {
             return observacoes; // Retorna lista vazia se a encomenda não existir
         }
 
-        // Adiciona observações das embalagens de transporte
-        for (EmbalagemTransporte embalagemTransporte : encomenda.getEmbalagemTransportes()) {
-            for (Sensor sensor : embalagemTransporte.getSensores()) {
-                observacoes.addAll(sensor.getObservacoes());
-            }
+        // Adiciona observações dos sensores associados diretamente à encomenda
+        for (Sensor sensor : encomenda.getSensores()) {
+            observacoes.addAll(sensor.getObservacoes());
         }
 
-        // Adiciona observações das embalagens dos produtos nas encomendas de produtos
-        for (EncomendaProduto encomendaProduto : encomenda.getEncomendaProdutos()) {
-            Produto produto = encomendaProduto.getProduto();
-            for (EmbalagemProduto embalagemProduto : produto.getEmbalagensProduto()) {
-                for (Sensor sensor : embalagemProduto.getSensores()) {
-                    observacoes.addAll(sensor.getObservacoes());
-                }
-            }
+        // Adiciona observações dos sensores associados à embalagem de transporte
+        EmbalagemTransporte embalagemTransporte = encomenda.getEmbalagemTransporte();
+        for (Sensor sensor : embalagemTransporte.getSensores()) {
+            observacoes.addAll(sensor.getObservacoes());
         }
 
         return observacoes;
@@ -85,14 +79,15 @@ public class ObservacaoBean {
 
     public List<Observacao> getObservacoesPorProduto(long produtoId) {
         List<Observacao> observacoes = new ArrayList<>();
-
         Produto produto = em.find(Produto.class, produtoId);
+
         if (produto == null) {
             return observacoes; // Retorna lista vazia se o produto não existir
         }
 
-        // Adiciona observações das embalagens de produto
-        for (EmbalagemProduto embalagemProduto : produto.getEmbalagensProduto()) {
+        // Adiciona observações dos sensores associados à embalagem do produto
+        EmbalagemProduto embalagemProduto = produto.getEmbalagemProduto();
+        if (embalagemProduto != null) {
             for (Sensor sensor : embalagemProduto.getSensores()) {
                 observacoes.addAll(sensor.getObservacoes());
             }

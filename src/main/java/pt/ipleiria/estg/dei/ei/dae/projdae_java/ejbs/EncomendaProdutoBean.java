@@ -13,7 +13,6 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 import jakarta.validation.ConstraintViolationException;
 
 @Stateless
-
 public class EncomendaProdutoBean {
     @PersistenceContext
     private EntityManager em;
