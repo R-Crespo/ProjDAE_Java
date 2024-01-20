@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolationException;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
@@ -25,7 +26,11 @@ public class ProdutoBean {
     private AdministratorBean administratorBean;
 
     public Produto find(long id){
-        return em.find(Produto.class, id);
+        Produto produto = em.find(Produto.class, id);
+        if(produto != null){
+            Hibernate.initialize(produto.getEncomendaProdutos());
+        }
+        return produto;
     }
 
     public List<Produto> getAll() {
@@ -62,11 +67,20 @@ public class ProdutoBean {
         }
     }
 
-    public void delete(long id) throws  MyEntityNotFoundException,MyConstraintViolationException {
+    public void delete(long id) throws MyEntityNotFoundException, MyConstraintViolationException, MyEntityExistsException {
         try {
             Produto produto = em.find(Produto.class, id);
             if (produto == null) {
                 throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
+            }
+            if(!produto.getEncomendaProdutos().isEmpty()){
+                throw new MyEntityExistsException("Produto com id '" + id + "' não pode ser apagado pois existem encomendas relacionadas");
+            }
+            for(Regra regra : produto.getRegras()){
+                em.remove(regra);
+            }
+            for(Sensor sensor : produto.getEmbalagemProduto().getSensores()){
+                em.remove(sensor);
             }
             em.remove(produto.getEmbalagemProduto());
             em.remove(produto);

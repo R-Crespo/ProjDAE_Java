@@ -84,9 +84,8 @@ public class SensorBean {
 
     public Observacao getUltimaObservacao(Sensor sensor) {
         if (sensor == null) {
-            return new Observacao();
+            return null;
         }
-
         try {
             return em.createQuery(
                             "SELECT o FROM Observacao o WHERE o.sensor.id = :sensorId ORDER BY o.timestamp DESC", Observacao.class)
@@ -94,7 +93,7 @@ public class SensorBean {
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (NoResultException e) {
-            return new Observacao();
+            return null;
         }
     }
 

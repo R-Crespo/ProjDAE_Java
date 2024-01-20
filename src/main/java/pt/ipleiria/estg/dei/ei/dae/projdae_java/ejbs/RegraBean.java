@@ -57,7 +57,6 @@ public class RegraBean {
         return regra;
     }
 
-
     public void update(long id, int valor, String comparador, String mensagem, String tipoSensro, long produtoId) throws MyEntityNotFoundException {
         Regra regra = find(id);
         if (regra == null) {

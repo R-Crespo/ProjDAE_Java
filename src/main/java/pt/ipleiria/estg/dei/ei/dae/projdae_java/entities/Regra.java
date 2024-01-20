@@ -16,6 +16,8 @@ import jakarta.validation.constraints.NotNull;
         )
 })
 public class Regra {
+    @Version
+    private long version;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -28,8 +30,6 @@ public class Regra {
     @NotNull
     private Produto produto;
 
-    @Version
-    private int version;
     public Regra() {
     }
 
