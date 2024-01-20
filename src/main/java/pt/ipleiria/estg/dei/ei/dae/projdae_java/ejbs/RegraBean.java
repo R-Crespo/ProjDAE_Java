@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
@@ -34,15 +35,16 @@ public class RegraBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,MyEntityNotFoundException, MyConstraintViolationException {
+    public Regra create(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,MyEntityNotFoundException, MyConstraintViolationException {
         Regra regra = null;
         try {
             regra = new Regra(valor, comparador, mensagem, tipo_sensor, produto);
-            produto.addRegra(regra);
             em.persist(regra);
+            em.flush();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
+        return regra;
     }
 
     /*public Regra delete(int id) throws MyEntityNotFoundException {

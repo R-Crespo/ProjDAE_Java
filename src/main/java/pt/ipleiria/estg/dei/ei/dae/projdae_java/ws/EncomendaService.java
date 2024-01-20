@@ -58,7 +58,7 @@ public class EncomendaService {
 
     @POST
     @Path("/") // /api/encomendas
-    public Response createNewStudent (EncomendaDTO encomendaDTO) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
+    public Response createNewEncomenda (EncomendaDTO encomendaDTO) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         encomendaBean.create(
                 encomendaDTO.getId(),
                 encomendaDTO.getClienteUsername(),

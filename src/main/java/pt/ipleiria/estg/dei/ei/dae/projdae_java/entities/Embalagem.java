@@ -25,7 +25,7 @@ public class Embalagem implements Serializable {
     private String tipo;
     @NotNull
     private String funcao;
-    @OneToMany(mappedBy = "embalagem" ,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "embalagem" ,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private List<Sensor> sensores;
     private Date dataFabrico;
     @NotNull

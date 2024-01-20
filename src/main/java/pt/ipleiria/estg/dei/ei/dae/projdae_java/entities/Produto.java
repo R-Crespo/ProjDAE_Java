@@ -44,11 +44,12 @@ public class Produto implements Serializable {
     private List<Regra> regras;
 
     public Produto(){
+
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
+        this.regras = new ArrayList<Regra>();
     }
 
     public Produto(String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) {
-        this.id = id;
         this.nome = nome;
         this.tipo = tipo;
         this.marca = marca;
@@ -57,6 +58,7 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.descricao = descricao;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
+        this.embalagemProduto = null;
         this.regras = new ArrayList<Regra>();
     }
 

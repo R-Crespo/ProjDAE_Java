@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
@@ -39,15 +40,16 @@ public class EmbalagemProdutoBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
+    public EmbalagemProduto create(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         EmbalagemProduto embalagemProduto = null;
         try {
             embalagemProduto = new EmbalagemProduto(tipo, funcao, dataFabrico, material, peso, volume, produto);
-            produto.setEmbalagemProduto(embalagemProduto);
             em.persist(embalagemProduto);
+            em.flush();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
+        return embalagemProduto;
     }
 
     public EmbalagemProduto delete(long id) throws MyEntityNotFoundException {

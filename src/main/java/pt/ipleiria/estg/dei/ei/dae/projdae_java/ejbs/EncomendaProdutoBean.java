@@ -11,6 +11,7 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolation
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+
 @Stateless
 public class EncomendaProdutoBean {
     @PersistenceContext

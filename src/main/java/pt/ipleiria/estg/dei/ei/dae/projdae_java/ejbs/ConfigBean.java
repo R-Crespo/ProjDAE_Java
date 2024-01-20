@@ -4,9 +4,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 @Startup
@@ -25,11 +27,14 @@ public class ConfigBean {
     @EJB
     private ProdutoBean produtoBean;
 
+    @EJB
+    private EmbalagemTransporteBean embalagemTransporteBean;
+
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
 
     @PostConstruct
-    public void populateDB() throws MyEntityNotFoundException, MyEntityExistsException {
+    public void populateDB() throws MyEntityNotFoundException, MyEntityExistsException, MyConstraintViolationException {
         administratorBean.create("Admin1", "123", "Admin1", "Admin1@sapo.pt");
         administratorBean.create("Admin2", "123", "Admin2", "Admin2@sapo.pt");
         administratorBean.create("Admin3", "123", "Admin3", "Admin3@sapo.pt");
@@ -39,6 +44,7 @@ public class ConfigBean {
         clienteBean.create("Marco", "123", "Marco Miguel", "marco@sapo.pt");
         clienteBean.create("Ricardo", "123", "Ricardo Miguel", "ricardo@sapo.pt");
         clienteBean.create("Rui", "123", "Rui Miguel", "rui@sapo.pt");
+        embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
         /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         produtoBean.create(2,"Coca-cola","Refrigerante","Coca-cola", 330, "mL", 1.00f,"","Forn1");
         produtoBean.create(3,"Coca-cola","Refrigerante","Coca-cola", 500, "mL", 1.19f,"","Forn1");

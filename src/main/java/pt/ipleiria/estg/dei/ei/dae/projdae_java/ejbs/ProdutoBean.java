@@ -37,7 +37,7 @@ public class ProdutoBean {
         return produto;
     }
 
-    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) throws MyEntityNotFoundException {
+    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Long regraId, Long embalagemProdutoId) throws MyEntityNotFoundException {
         Produto produto = em.find(Produto.class, id);
         if (produto == null) {
             throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
@@ -50,7 +50,14 @@ public class ProdutoBean {
         produto.setMarca(marca);
         produto.setUnidadeMedida(unidadeMedida);
         produto.setQuantidade(quantidade);
-
+        if(embalagemProdutoId != null){
+            EmbalagemProduto embalagemProduto = em.find(EmbalagemProduto.class, embalagemProdutoId);
+            produto.setEmbalagemProduto(embalagemProduto);
+        }
+        if(regraId != null) {
+            Regra regra = em.find(Regra.class, regraId);
+            produto.addRegra(regra);
+        }
     }
 
     public void delete(long id) throws  MyEntityNotFoundException,MyConstraintViolationException {

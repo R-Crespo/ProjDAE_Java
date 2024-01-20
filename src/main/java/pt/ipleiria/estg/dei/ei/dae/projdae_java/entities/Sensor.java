@@ -17,6 +17,7 @@ import java.util.List;
 })
 public class Sensor implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     private String nome;
@@ -35,8 +36,7 @@ public class Sensor implements Serializable {
         this.observacoes = new ArrayList<Observacao>();
     }
 
-    public Sensor(long id,String nome) {
-        this.id = id;
+    public Sensor(String nome) {
         this.nome = nome;
         this.observacoes = new ArrayList<Observacao>();
     }

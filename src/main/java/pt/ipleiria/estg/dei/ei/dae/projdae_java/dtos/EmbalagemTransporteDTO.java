@@ -1,8 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos;
 
 import jakarta.persistence.Id;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
 
 import java.util.Date;
+import java.util.List;
 
 public class EmbalagemTransporteDTO {
     @Id
@@ -13,12 +16,12 @@ public class EmbalagemTransporteDTO {
     private String material;
     private int peso;
     private int volume;
-    private long encomendaId;
 
+    private List<SensorDTO> sensores;
     public EmbalagemTransporteDTO() {
     }
 
-    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long encomendaId) {
+    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, List<SensorDTO> sensores) {
         this.id = id;
         this.tipo = tipo;
         this.funcao = funcao;
@@ -26,7 +29,7 @@ public class EmbalagemTransporteDTO {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.encomendaId = encomendaId;
+        this.sensores = sensores;
     }
 
     public long getId() {
@@ -85,11 +88,11 @@ public class EmbalagemTransporteDTO {
         this.volume = volume;
     }
 
-    public long getEncomendaId() {
-        return encomendaId;
+    public List<SensorDTO> getSensores() {
+        return sensores;
     }
 
-    public void setEncomendaId(long encomendaId) {
-        this.encomendaId = encomendaId;
+    public void setSensores(List<SensorDTO> sensores) {
+        this.sensores = sensores;
     }
 }
