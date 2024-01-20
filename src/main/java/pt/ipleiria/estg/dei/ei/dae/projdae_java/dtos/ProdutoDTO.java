@@ -20,7 +20,7 @@ public class ProdutoDTO {
     private String unidadeMedida;
     private float preco;
     private long embalagemProdutoId;
-    private List<EncomendaProduto> encomendaProdutos;
+    private List<EncomendaProdutoDTO> encomendaProdutos;
     private List<RegraDTO> regras;
 
     public ProdutoDTO() {
@@ -28,7 +28,7 @@ public class ProdutoDTO {
         this.regras = new ArrayList<>();
     }
 
-    public ProdutoDTO(long id, String nome, String tipo ,String marca, String descricao, long quantidade, String unidadeMedida, float preco, List<RegraDTO> regras) {
+    public ProdutoDTO(long id, String nome, String tipo ,String marca, String descricao, long quantidade, String unidadeMedida, float preco, List<RegraDTO> regras, long embalagemProdutoId) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
@@ -38,6 +38,13 @@ public class ProdutoDTO {
         this.unidadeMedida = unidadeMedida;
         this.preco = preco;
         this.regras = regras;
+        this.embalagemProdutoId = embalagemProdutoId;
+    }
+
+    public ProdutoDTO(long id, String nome, List<EncomendaProdutoDTO> encomendas) {
+        this.id = id;
+        this.nome = nome;
+        this.encomendaProdutos = encomendas;
     }
 
     public String getNome() {
@@ -107,11 +114,11 @@ public class ProdutoDTO {
         this.embalagemProdutoId = embalagemProdutoId;
     }
 
-    public List<EncomendaProduto> getEncomendaProdutos() {
+    public List<EncomendaProdutoDTO> getEncomendaProdutos() {
         return encomendaProdutos;
     }
 
-    public void setEncomendaProdutos(List<EncomendaProduto> encomendaProdutos) {
+    public void setEncomendaProdutos(List<EncomendaProdutoDTO> encomendaProdutos) {
         this.encomendaProdutos = encomendaProdutos;
     }
 

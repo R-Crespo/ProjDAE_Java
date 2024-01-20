@@ -53,16 +53,16 @@ public class RegraBean {
         return regra;
     }
 
-    /*public Regra delete(int id) throws MyEntityNotFoundException {
+    public void update(long id, int valor, String comparador, String mensagem, String tipo_sensor) throws MyEntityNotFoundException{
         Regra regra = find(id);
         if (regra == null) {
             throw new MyEntityNotFoundException("Regra with id '" + id + "' not found");
         }
 
-        for (Produto produtoRegra : regra.getProdutos()) {
-            produtoRegra.removeRegra(regra);
-        }
-        em.remove(regra);
-        return regra;
-    }*/
+        em.lock(regra, LockModeType.OPTIMISTIC);
+        regra.setValor(valor);
+        regra.setComparador(comparador);
+        regra.setMensagem(mensagem);
+        regra.setTipo_sensor(tipo_sensor);
+    }
 }

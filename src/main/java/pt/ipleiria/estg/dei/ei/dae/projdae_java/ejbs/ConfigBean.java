@@ -17,6 +17,8 @@ import java.util.logging.Logger;
 public class ConfigBean {
 
     @EJB
+    private EncomendaProdutoBean encomendaProdutoBean;
+    @EJB
     private ClienteBean clienteBean;
 
     @EJB
@@ -33,6 +35,9 @@ public class ConfigBean {
 
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
+
+    @EJB
+    private EncomendaBean encomendaBean;
 
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 

@@ -15,6 +15,8 @@ import java.util.List;
         )
 })
 public class Regra {
+    @Version
+    private long version;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
