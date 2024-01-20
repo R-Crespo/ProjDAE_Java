@@ -67,17 +67,22 @@ public class ProdutoBean {
         }
     }
 
-    public void delete(long id) throws  MyEntityNotFoundException,MyConstraintViolationException {
+    public void delete(long id) throws MyEntityNotFoundException, MyConstraintViolationException, MyEntityExistsException {
         try {
             Produto produto = em.find(Produto.class, id);
             if (produto == null) {
                 throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
             }
-            em.remove(produto.getEmbalagemProduto());
-            List<Regra> regras = produto.getRegras();
-            if(regras != null) {
-                regras.clear();
+            if(!produto.getEncomendaProdutos().isEmpty()){
+                throw new MyEntityExistsException("Produto com id '" + id + "' não pode ser apagado pois existem encomendas relacionadas");
             }
+            for(Regra regra : produto.getRegras()){
+                em.remove(regra);
+            }
+            for(Sensor sensor : produto.getEmbalagemProduto().getSensores()){
+                em.remove(sensor);
+            }
+            em.remove(produto.getEmbalagemProduto());
             em.remove(produto);
         }catch(ConstraintViolationException e){
             throw new MyConstraintViolationException(e);

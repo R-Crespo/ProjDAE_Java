@@ -42,9 +42,6 @@ public class ConfigBean {
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
 
-    @EJB
-    private EncomendaBean encomendaBean;
-
     private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
 
 
@@ -62,7 +59,7 @@ public class ConfigBean {
 
         embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
 
-        embalagemTransporteBean.create("tipo1", "guardar", new Date(), "cartão", 10, 10);
+        /*embalagemTransporteBean.create("tipo1", "guardar", new Date(), "cartão", 10, 10);
         encomendaBean.create("Marco", "Pousos",  "Leiria", 1, new ArrayList<>());
         encomendaBean.create("Marco", "pousos",  "leiria", 1, new ArrayList<>());
         encomendaBean.create("Rui", "leiria",  "lisboa", 1, new ArrayList<>());
@@ -72,7 +69,7 @@ public class ConfigBean {
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20,null);
         Produto produto = produtoBean.create("Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"");
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20, produto);
-        /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
+        produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         produtoBean.create(2,"Coca-cola","Refrigerante","Coca-cola", 330, "mL", 1.00f,"","Forn1");
         produtoBean.create(3,"Coca-cola","Refrigerante","Coca-cola", 500, "mL", 1.19f,"","Forn1");
         produtoBean.create(4,"Pepsi","Refrigerante","Pepsi", 1, "L", 1.79f,"","Forn2");

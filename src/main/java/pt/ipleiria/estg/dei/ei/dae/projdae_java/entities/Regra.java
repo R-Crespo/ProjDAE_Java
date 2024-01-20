@@ -30,8 +30,6 @@ public class Regra {
     @NotNull
     private Produto produto;
 
-    @Version
-    private int version;
     public Regra() {
     }
 

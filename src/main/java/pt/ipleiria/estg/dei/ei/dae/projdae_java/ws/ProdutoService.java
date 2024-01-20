@@ -199,13 +199,23 @@ public class ProdutoService {
             );
 
             for(RegraDTO regraDTO : produtoEmbalagemRegraDTO.getRegras()){
+                if(regraDTO.getId() < 0){
+                    regraBean.create(
+                            regraDTO.getValor(),
+                            regraDTO.getComparador(),
+                            regraDTO.getMensagem(),
+                            regraDTO.getTipoSensor(),
+                            produtoEmbalagemRegraDTO.getProduto().getId());
+                }else {
                     regraBean.update(
                             regraDTO.getId(),
                             regraDTO.getValor(),
                             regraDTO.getComparador(),
                             regraDTO.getMensagem(),
-                            regraDTO.getTipo_sensor()
+                            regraDTO.getTipoSensor(),
+                            regraDTO.getProdutoId()
                     );
+                }
             }
             Produto produto = produtoBean.find(produtoEmbalagemRegraDTO.getProduto().getId());
             return Response.status(Response.Status.OK).entity(toDTO(produto)).build();
