@@ -37,18 +37,7 @@ public class Produto implements Serializable {
     @OneToOne
     private EmbalagemProduto embalagemProduto;
 
-    @ManyToMany
-    @JoinTable(
-        name = "produtos_regras",
-        joinColumns = @JoinColumn(
-            name = "produto_id",
-            referencedColumnName = "id"
-        ),
-        inverseJoinColumns = @JoinColumn(
-            name = "regra_id",
-            referencedColumnName = "id"
-        )
-    )
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Regra> regras;
 
     public Produto(){

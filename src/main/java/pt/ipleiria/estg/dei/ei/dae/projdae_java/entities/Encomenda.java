@@ -52,10 +52,11 @@ public class Encomenda implements Serializable {
     @NotNull
     private EmbalagemTransporte embalagemTransporte;
 
-    @Version
-    private int version;
     @OneToMany(mappedBy = "encomenda" ,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Sensor> sensores;
+
+    @Version
+    private int version;
 
     public Encomenda() {
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();

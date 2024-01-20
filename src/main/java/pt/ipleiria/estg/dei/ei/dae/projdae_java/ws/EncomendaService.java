@@ -101,7 +101,7 @@ public class EncomendaService {
     }
 
     @PUT
-    @Path("/{username}/{encomendaId}") // /api/encomendas/{username}/{id}
+    @Path("/{encomendaId}") // /api/encomendas/{id}
     public Response updateEncomenda (EncomendaDTO encomendaDTO) throws MyEntityNotFoundException{
         encomendaBean.update(
                 encomendaDTO.getId(),

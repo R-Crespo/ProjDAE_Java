@@ -70,9 +70,9 @@ public class EncomendaBean {
 
             for(int i=0; i<encomendaProdutoDTO.getQuantidade(); i++){
                 for (Regra regra: produto.getRegras()) {
-                    if(!listaTiposSensores.contains(regra.getTipo_sensor())) {
-                        listaTiposSensores.add(regra.getTipo_sensor());
-                        sensor = new Sensor(regra.getTipo_sensor());
+                    if(!listaTiposSensores.contains(regra.getTipoSensor())) {
+                        listaTiposSensores.add(regra.getTipoSensor());
+                        sensor = new Sensor(regra.getTipoSensor());
                         encomenda.addSensor(sensor);
                     }
                 }
@@ -86,7 +86,7 @@ public class EncomendaBean {
     }
 
     public void update(long id, String operadorUsername, String clienteUsername, String morada, String estado, Date dataEntrega, String armazem, long embalagemTransporteId) throws MyEntityNotFoundException {
-        Encomenda encomenda = em.find(Encomenda.class, id);
+        Encomenda encomenda = find(id);
         if (encomenda == null) {
             throw new MyEntityNotFoundException("Encomenda com id '" + id +"' não existe");
         }

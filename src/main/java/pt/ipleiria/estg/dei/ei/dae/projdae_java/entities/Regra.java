@@ -1,9 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "regras")
@@ -11,30 +9,36 @@ import java.util.List;
         @NamedQuery(
                 name = "getAllRegras",
                 query = "SELECT r FROM Regra r ORDER BY r.id" // JPQL
+        ),
+        @NamedQuery(
+                name = "getAllRegrasProduto",
+                query = "SELECT r FROM Regra r WHERE r.produto.id = :produtoId ORDER BY r.id" // JPQL
         )
 })
 public class Regra {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int valor;
     private String comparador;
     private String mensagem;
-    private String tipo_sensor;
+    private String tipoSensor;
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
+    @NotNull
+    private Produto produto;
 
-    @ManyToMany(mappedBy = "regras")
-    private List<Produto> produtos;
-
+    @Version
+    private int version;
     public Regra() {
-        this.produtos = new ArrayList<>();
     }
 
-    public Regra(long id, int valor, String comparador, String mensagem, String tipo_sensor) {
-        this.id = id;
+    public Regra(int valor, String comparador, String mensagem, String tipoSensor, Produto produto) {
         this.valor = valor;
         this.comparador = comparador;
         this.mensagem = mensagem;
-        this.tipo_sensor = tipo_sensor;
-        this.produtos = new ArrayList<>();
+        this.tipoSensor = tipoSensor;
+        this.produto = produto;
     }
 
     public long getId() {
@@ -69,19 +73,19 @@ public class Regra {
         this.mensagem = mensagem;
     }
 
-    public String getTipo_sensor() {
-        return tipo_sensor;
+    public String getTipoSensor() {
+        return tipoSensor;
     }
 
-    public void setTipo_sensor(String tipo_sensor) {
-        this.tipo_sensor = tipo_sensor;
+    public void setTipoSensor(String tipo_sensor) {
+        this.tipoSensor = tipo_sensor;
     }
 
-    public List<Produto> getProdutos() {
-        return new ArrayList<>(produtos);
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 }
