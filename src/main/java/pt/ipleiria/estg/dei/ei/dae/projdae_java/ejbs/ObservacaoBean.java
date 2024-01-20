@@ -71,6 +71,23 @@ public class ObservacaoBean {
 
 
 
+    public List<Observacao> getObservacoesPorProduto(long produtoId) {
+        List<Observacao> observacoes = new ArrayList<>();
+
+        Produto produto = em.find(Produto.class, produtoId);
+        if (produto == null) {
+            return observacoes; // Retorna lista vazia se o produto não existir
+        }
+
+        List<EncomendaProduto> encomendaProdutos = produto.getEncomendaProdutos();
+        for (EncomendaProduto encomendaProduto : encomendaProdutos){
+            for (Sensor sensor : encomendaProduto.getEncomenda().getSensores()) {
+                observacoes.addAll(sensor.getObservacoes());
+            }
+        }
+
+        return observacoes;
+    }
 
     public void delete(long id) throws MyEntityNotFoundException{
         Observacao observacao = find(id);

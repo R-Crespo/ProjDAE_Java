@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="311f281a-fab7-48b6-8b6e-a1e6c941ee49" name="Changes" comment="Users, security and exceptions added">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ObservacaoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ObservacaoService.java" afterDir="false" />
@@ -99,6 +100,7 @@
       <workItem from="1705688628376" duration="2416000" />
       <workItem from="1705748021481" duration="883000" />
       <workItem from="1705753408580" duration="176000" />
+      <workItem from="1705753749658" duration="316000" />
     </task>
     <task id="LOCAL-00001" summary="Projects base configuration">
       <created>1705088121270</created>
