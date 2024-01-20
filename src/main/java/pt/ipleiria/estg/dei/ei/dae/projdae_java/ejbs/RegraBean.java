@@ -57,25 +57,14 @@ public class RegraBean {
         return regra;
     }
 
-    public void update(long id, int valor, String comparador, String mensagem, String tipoSensro, long produtoId) throws MyEntityNotFoundException {
+    public void update(long id, int valor, String comparador, String mensagem, String tipoSensro) throws MyEntityNotFoundException {
         Regra regra = find(id);
         if (regra == null) {
             throw new MyEntityNotFoundException("Regra com id '" + id + "' não existe");
         }
 
-        Produto produto = em.find(Produto.class, produtoId);
-        if (produto == null) {
-            throw new MyEntityNotFoundException(
-                    "Produto '" + produtoId + "' não existe");
-        }
-
         em.lock(regra, LockModeType.OPTIMISTIC);
 
-        if (produto != regra.getProduto()) {
-            regra.getProduto().removeRegra(regra);
-            regra.setProduto(produto);
-            produto.addRegra(regra);
-        }
 
         regra.setValor(valor);
         regra.setComparador(comparador);

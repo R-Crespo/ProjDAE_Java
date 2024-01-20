@@ -73,21 +73,26 @@ public class ProdutoBean {
             if (produto == null) {
                 throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
             }
-            if(!produto.getEncomendaProdutos().isEmpty()){
-                throw new MyEntityExistsException("Produto com id '" + id + "' não pode ser apagado pois existem encomendas relacionadas");
-            }
-            for(Regra regra : produto.getRegras()){
-                em.remove(regra);
-            }
-            for(Sensor sensor : produto.getEmbalagemProduto().getSensores()){
-                em.remove(sensor);
-            }
             em.remove(produto.getEmbalagemProduto());
-            em.remove(produto);
-        }catch(ConstraintViolationException e){
-            throw new MyConstraintViolationException(e);
+            List<Regra> regras = produto.getRegras();
+            if (regras != null) {
+                for (Regra regra : regras) {
+                    em.remove(regra);
+                }
+                regras.clear();
+            }
+
+                if (!produto.getEncomendaProdutos().isEmpty()) {
+                    throw new MyEntityExistsException("Produto com id '" + id + "' não pode ser apagado pois existem encomendas relacionadas");
+                }
+
+                for (Sensor sensor : produto.getEmbalagemProduto().getSensores()) {
+                    em.remove(sensor);
+                }
+                em.remove(produto.getEmbalagemProduto());
+                em.remove(produto);
+            }catch(ConstraintViolationException e){
+                throw new MyConstraintViolationException(e);
+            }
         }
     }
-
-
-}

@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6420ca15-2573-4618-b3b9-392c303067c7" name="Changes" comment="" />
+<<<<<<< HEAD
+    <list default="true" id="6420ca15-2573-4618-b3b9-392c303067c7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Regra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Regra.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ProdutoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ProdutoService.java" afterDir="false" />
+=======
+    <list default="true" id="6420ca15-2573-4618-b3b9-392c303067c7" name="Changes" comment="ProdutoDTO fixed">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/dtos/EmbalagemTransporteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/dtos/EmbalagemTransporteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ConfigBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ConfigBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EmbalagemTransporteBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/EmbalagemTransporteBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ProdutoBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ProdutoBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/SensorBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/SensorBean.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Regra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Regra.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Sensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/entities/Sensor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/EmbalagemTransporteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/EmbalagemTransporteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ProdutoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/ProdutoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/SensorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ws/SensorService.java" afterDir="false" />
+>>>>>>> master
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +43,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -82,7 +107,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6420ca15-2573-4618-b3b9-392c303067c7" name="Changes" comment="" />
+      <changelist id="6b2487a6-374e-49ba-85e4-c0fe5cc2b4b4" name="Changes" comment="Users, security and exceptions added" />
       <created>1705074954149</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -97,8 +122,6 @@
       <workItem from="1705753408580" duration="176000" />
       <workItem from="1705753749658" duration="316000" />
       <workItem from="1705761842563" duration="6231000" />
-      <workItem from="1705782755599" duration="683000" />
-      <workItem from="1705783460019" duration="8844000" />
     </task>
     <task id="LOCAL-00001" summary="Projects base configuration">
       <created>1705088121270</created>
