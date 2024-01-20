@@ -45,6 +45,10 @@ public class EncomendaBean {
         }
 
         EmbalagemTransporte embalagemTransporte = em.find(EmbalagemTransporte.class, embalagemTranporteId);
+        if (embalagemTransporte == null) {
+            throw new MyEntityNotFoundException(
+                    "embalagemTransporte '" + embalagemTranporteId + "' não existe");
+        }
 
         Encomenda encomenda = null;
         try {
@@ -56,19 +60,24 @@ public class EncomendaBean {
 
         Produto produto = null;
         EncomendaProduto encomendaProduto = null;
+        Sensor sensor = null;
+        List<String> listaTiposSensores = null;
         for (EncomendaProdutoDTO encomendaProdutoDTO: encomendaProdutoDTOS) {
             encomendaProduto = encomendaProdutoBean.create(encomenda.getId(), encomendaProdutoDTO.getProdutoId(), encomendaProdutoDTO.getQuantidade());
             produto = em.find(Produto.class, encomendaProdutoDTO.getProdutoId());
             produto.addEncomendaProduto(encomendaProduto);
             encomenda.addEncomendaProduto(encomendaProduto);
 
-            /* TODO corrigir new sensor
             for(int i=0; i<encomendaProdutoDTO.getQuantidade(); i++){
                 for (Regra regra: produto.getRegras()) {
-                    Sensor sensor = new Sensor(1, regra.getTipo_sensor());
-                    encomenda.addSensor(sensor);
+                    if(!listaTiposSensores.contains(regra.getTipo_sensor())) {
+                        listaTiposSensores.add(regra.getTipo_sensor());
+                        sensor = new Sensor(regra.getTipo_sensor());
+                        encomenda.addSensor(sensor);
+                    }
                 }
-            }*/
+            }
+            listaTiposSensores.clear();
         }
 
         cliente.addEncomenda(encomenda);

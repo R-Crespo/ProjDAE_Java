@@ -26,14 +26,8 @@ public class SensorBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id,String nome) throws MyEntityExistsException, MyEntityNotFoundException {
-        Sensor sensor = find(id);
-
-        if(exists(id)){
-            throw new MyEntityExistsException("Sensor " + nome + " já existe");
-        }
-
-        sensor = new Sensor(id,nome);
+    public void create(String nome) throws MyEntityExistsException, MyEntityNotFoundException {
+        Sensor sensor = new Sensor(nome);
         em.persist(sensor);
     }
 
