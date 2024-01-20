@@ -12,11 +12,11 @@ public class SensorDTO implements Serializable {
 
     private String nome;
 
-    private long encomendaId;
+    private Long encomendaId;
 
     private Observacao ultimaObservação;
 
-    public SensorDTO(long id, String nome, long encomendaId, Observacao ultimaObservação){
+    public SensorDTO(long id, String nome, Long encomendaId, Observacao ultimaObservação){
         this.id = id;
         this.nome = nome;
         this.encomendaId = encomendaId;
@@ -41,11 +41,11 @@ public class SensorDTO implements Serializable {
         this.nome = nome;
     }
 
-    public long getEncomendaId() {
+    public Long getEncomendaId() {
         return encomendaId;
     }
 
-    public void setEncomendaId(long encomendaId) {
+    public void setEncomendaId(Long encomendaId) {
         this.encomendaId = encomendaId;
     }
 

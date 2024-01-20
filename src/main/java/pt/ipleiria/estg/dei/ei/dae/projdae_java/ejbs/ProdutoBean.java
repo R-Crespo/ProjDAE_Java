@@ -30,18 +30,13 @@ public class ProdutoBean {
         return em.createNamedQuery("getAllProdutos", Produto.class).getResultList();
     }
 
-    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, long embalagemProdutoId) throws MyEntityNotFoundException,MyEntityExistsException{
+    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) throws MyEntityNotFoundException,MyEntityExistsException{
         Produto produto = find(id);
         if(produto != null){
             throw new MyEntityExistsException("Produto com id '"+ id +"' já existe");
         }
-        EmbalagemProduto embalagemProduto = em.find(EmbalagemProduto.class, embalagemProdutoId);
-        if(embalagemProduto == null){
-            throw new MyEntityNotFoundException(
-                    "Embalagem Produto '" + embalagemProdutoId + "' não existe");
-        }
 
-        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao, embalagemProduto);
+        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao);
         em.persist(produto);
     }
 

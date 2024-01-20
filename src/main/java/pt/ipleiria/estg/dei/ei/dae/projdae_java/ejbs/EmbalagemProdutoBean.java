@@ -52,7 +52,7 @@ public class EmbalagemProdutoBean {
         EmbalagemProduto embalagemProduto = null;
         try {
             embalagemProduto = new EmbalagemProduto(id, tipo, funcao, dataFabrico, material, peso, volume, produto);
-            produto.addEmbalagemProduto(embalagemProduto);
+            produto.setEmbalagemProduto(embalagemProduto);
             em.persist(embalagemProduto);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);

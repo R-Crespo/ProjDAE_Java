@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -26,14 +27,8 @@ public class SensorBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id,String nome) throws MyEntityExistsException, MyEntityNotFoundException {
-        Sensor sensor = find(id);
-
-        if(exists(id)){
-            throw new MyEntityExistsException("Sensor " + nome + " já existe");
-        }
-
-        sensor = new Sensor(id,nome);
+    public void create(String nome) throws MyEntityExistsException, MyEntityNotFoundException {
+        Sensor sensor = new Sensor(nome);
         em.persist(sensor);
     }
 
@@ -84,11 +79,19 @@ public class SensorBean {
     }
 
     public Observacao getUltimaObservacao(Sensor sensor) {
-        if (sensor == null || sensor.getObservacoes().isEmpty()) {
+        if (sensor == null) {
             return new Observacao();
         }
 
-        List<Observacao> observacoes = sensor.getObservacoes();
-        return observacoes.get(observacoes.size() - 1);
+        try {
+            return em.createQuery(
+                            "SELECT o FROM Observacao o WHERE o.sensor.id = :sensorId ORDER BY o.timestamp DESC", Observacao.class)
+                    .setParameter("sensorId", sensor.getId())
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return new Observacao();
+        }
     }
+
 }

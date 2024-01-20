@@ -55,7 +55,7 @@ public class Produto implements Serializable {
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
     }
 
-    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, EmbalagemProduto embalagemProduto) {
+    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
@@ -65,7 +65,7 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.descricao = descricao;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
-        this.embalagemProduto = embalagemProduto;
+        this.embalagemProduto = null;
         this.regras = new ArrayList<Regra>();
     }
 

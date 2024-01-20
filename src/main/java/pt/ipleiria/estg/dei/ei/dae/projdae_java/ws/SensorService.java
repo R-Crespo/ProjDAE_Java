@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ws;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.SensorDTO;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.SensorBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
@@ -24,15 +25,16 @@ public class SensorService {
         return sensorToDTOs(sensorBean.getSensoresAtivos());
     }
 
-    private List<SensorDTO> sensorToDTOs(List<Sensor> sensores) {
+    public List<SensorDTO> sensorToDTOs(List<Sensor> sensores) {
         return sensores.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    private SensorDTO toDTO(Sensor sensor){
+    public SensorDTO toDTO(Sensor sensor){
+        Long encomendaId = sensor.getEncomenda() != null ? sensor.getEncomenda().getId() >= 0 ? sensor.getEncomenda().getId() :null : null;
         return new SensorDTO(
                 sensor.getId(),
                 sensor.getNome(),
-                sensor.getEncomenda().getId(),
+                encomendaId,
                 sensorBean.getUltimaObservacao(sensor));
     }
 }
