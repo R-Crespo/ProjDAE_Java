@@ -81,8 +81,7 @@ public class RegraService {
                 regraDTO.getValor(),
                 regraDTO.getComparador(),
                 regraDTO.getMensagem(),
-                regraDTO.getTipoSensor(),
-                regraDTO.getProdutoId()
+                regraDTO.getTipoSensor()
                 );
         Regra regra = regraBean.find(regraDTO.getId());
         return Response.status(Response.Status.OK).entity(toDTO(regra)).build();

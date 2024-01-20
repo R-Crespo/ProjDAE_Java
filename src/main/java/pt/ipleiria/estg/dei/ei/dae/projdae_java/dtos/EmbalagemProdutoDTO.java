@@ -2,8 +2,11 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos;
 
 import jakarta.persistence.Id;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Sensor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EmbalagemProdutoDTO {
     @Id
@@ -16,7 +19,10 @@ public class EmbalagemProdutoDTO {
     private int volume;
     private long produtoId;
 
+    private List<SensorDTO> sensores;
+
     public EmbalagemProdutoDTO() {
+        this.sensores = new ArrayList<>();
     }
 
     public EmbalagemProdutoDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long produto_id) {
@@ -28,6 +34,7 @@ public class EmbalagemProdutoDTO {
         this.peso = peso;
         this.volume = volume;
         this.produtoId = produto_id;
+        this.sensores = new ArrayList<>();
     }
 
     public long getId() {
@@ -92,5 +99,13 @@ public class EmbalagemProdutoDTO {
 
     public void setProdutoId(long produto_id) {
         this.produtoId = produto_id;
+    }
+
+    public List<SensorDTO> getSensores() {
+        return sensores;
+    }
+
+    public void setSensores(List<SensorDTO> sensores) {
+        this.sensores = sensores;
     }
 }

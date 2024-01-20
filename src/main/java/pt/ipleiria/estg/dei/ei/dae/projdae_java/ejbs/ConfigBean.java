@@ -64,8 +64,8 @@ public class ConfigBean {
         encomendaBean.create("Marco", "pousos",  "leiria", 1, new ArrayList<>());
         encomendaBean.create("Rui", "leiria",  "lisboa", 1, new ArrayList<>());
         encomendaBean.create("Ricardo", "leiria",  "lisboa", 1, new ArrayList<>());
+        /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         encomendaBean.update(1,"Roger10","Marco","pousos", "Entregue",new Date(),"leiria", 1);
-
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20,null);
         Produto produto = produtoBean.create("Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"");
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20, produto);
