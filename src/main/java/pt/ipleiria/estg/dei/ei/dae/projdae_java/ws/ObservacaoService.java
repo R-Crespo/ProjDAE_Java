@@ -66,10 +66,5 @@ public class ObservacaoService {
         return Response.ok(toDTOs(observacoes)).build();
     }
 
-    @GET
-    @Path("/{produtoId}")
-    public Response getObservacoesPorProduto(@PathParam("produtoId") long produtoId) {
-        List<Observacao> observacoes = observacaoBean.getObservacoesPorProduto(produtoId);
-        return Response.ok(toDTOs(observacoes)).build();
-    }
+
 }

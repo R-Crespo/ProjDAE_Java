@@ -64,37 +64,12 @@ public class ObservacaoBean {
             observacoes.addAll(sensor.getObservacoes());
         }
 
-        // Adiciona observações dos sensores associados à embalagem de transporte
-        EmbalagemTransporte embalagemTransporte = encomenda.getEmbalagemTransporte();
-        for (Sensor sensor : embalagemTransporte.getSensores()) {
-            observacoes.addAll(sensor.getObservacoes());
-        }
+
 
         return observacoes;
     }
 
 
-
-
-
-    public List<Observacao> getObservacoesPorProduto(long produtoId) {
-        List<Observacao> observacoes = new ArrayList<>();
-        Produto produto = em.find(Produto.class, produtoId);
-
-        if (produto == null) {
-            return observacoes; // Retorna lista vazia se o produto não existir
-        }
-
-        // Adiciona observações dos sensores associados à embalagem do produto
-        EmbalagemProduto embalagemProduto = produto.getEmbalagemProduto();
-        if (embalagemProduto != null) {
-            for (Sensor sensor : embalagemProduto.getSensores()) {
-                observacoes.addAll(sensor.getObservacoes());
-            }
-        }
-
-        return observacoes;
-    }
 
 
     public void delete(long id) throws MyEntityNotFoundException{
