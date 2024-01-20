@@ -36,8 +36,12 @@ public class ProdutoService {
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
 
-
     private ProdutoDTO toDTO(Produto produto){
+        EmbalagemProduto embalagemProduto = produto.getEmbalagemProduto();
+        long embalagemProdutoId = 0;
+        if (embalagemProduto != null){
+            embalagemProdutoId = embalagemProduto.getId();
+        }
         return new ProdutoDTO(
                 produto.getId(),
                 produto.getNome(),
@@ -47,7 +51,8 @@ public class ProdutoService {
                 produto.getQuantidade(),
                 produto.getUnidadeMedida(),
                 produto.getPreco(),
-                regrasToDTOs(produto.getRegras())
+                regrasToDTOs(produto.getRegras()),
+                embalagemProdutoId
         );
     }
 
