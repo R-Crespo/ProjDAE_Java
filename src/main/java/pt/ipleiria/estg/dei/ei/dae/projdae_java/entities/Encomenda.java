@@ -71,7 +71,6 @@ public class Encomenda implements Serializable {
         this.sensores = new ArrayList<Sensor>();
     }
 
-
     public Encomenda(Cliente cliente, String morada, String estado, String armazem, EmbalagemTransporte embalagemTransporte) {
         this.cliente = cliente;
         this.morada = morada;
