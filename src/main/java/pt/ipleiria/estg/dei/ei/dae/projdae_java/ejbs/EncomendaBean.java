@@ -37,7 +37,15 @@ public class EncomendaBean {
         return em.createNamedQuery("getEncomendasOperador", Encomenda.class).setParameter("operadorUsername", operadorUsername).getResultList();
     }
 
-    public Encomenda create(String clienteUsername, String morada, String estado, String armazem, long embalagemTranporteId, List<EncomendaProdutoDTO> encomendaProdutoDTOS) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
+    public List<Encomenda> getEncomendasOperadorEntreges(String operadorUsername) {
+        return em.createNamedQuery("getEncomendasOperadorEntreges", Encomenda.class).setParameter("operadorUsername", operadorUsername).getResultList();
+    }
+
+    public List<Encomenda> getEncomendasCliente(String clienteUsername) {
+        return em.createNamedQuery("getEncomendasCliente", Encomenda.class).setParameter("clienteUsername", clienteUsername).getResultList();
+    }
+
+    public Encomenda create(String clienteUsername, String morada, String armazem, long embalagemTranporteId, List<EncomendaProdutoDTO> encomendaProdutoDTOS) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         Cliente cliente = em.find(Cliente.class, clienteUsername);
         if (cliente == null) {
             throw new MyEntityNotFoundException(
@@ -52,7 +60,7 @@ public class EncomendaBean {
 
         Encomenda encomenda = null;
         try {
-            encomenda = new Encomenda(cliente, morada, estado, armazem, embalagemTransporte);
+            encomenda = new Encomenda(cliente, morada, "Pendente", armazem, embalagemTransporte);
             em.persist(encomenda);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);

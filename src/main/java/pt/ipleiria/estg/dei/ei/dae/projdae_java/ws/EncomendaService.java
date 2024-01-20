@@ -76,6 +76,18 @@ public class EncomendaService {
     }
 
     @GET
+    @Path("/operador/{username}/entregas") // /api/encomendas/operador/{username}/entregas
+    public List<EncomendaDTO> getEncomendasOperadorEntreges(@PathParam("username") String operadorUsername) {
+        return toDTOs(encomendaBean.getEncomendasOperadorEntreges(operadorUsername));
+    }
+
+    @GET
+    @Path("/cliente/{username}") // /api/encomendas/clientes/{username}
+    public List<EncomendaDTO> getEncomendasCliente(@PathParam("username") String clienteUsername) {
+        return toDTOs(encomendaBean.getEncomendasCliente(clienteUsername));
+    }
+
+    @GET
     @Path("/{encomendaId}") // /api/encomendas/{encomendaId}
     public Response getEncomendaDetails(@PathParam("encomendaId") long encomendaId) {
         Encomenda encomenda = encomendaBean.find(encomendaId);
@@ -91,7 +103,6 @@ public class EncomendaService {
         Encomenda encomenda = encomendaBean.create(
                 encomendaDTO.getClienteUsername(),
                 encomendaDTO.getMorada(),
-                encomendaDTO.getEstado(),
                 encomendaDTO.getArmazem(),
                 encomendaDTO.getEmbalagemTransporteId(),
                 encomendaDTO.getEncomendaProdutoDTOs()

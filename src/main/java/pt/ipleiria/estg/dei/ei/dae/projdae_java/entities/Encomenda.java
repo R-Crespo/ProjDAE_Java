@@ -23,6 +23,14 @@ import java.util.List;
         @NamedQuery(
                 name = "getEncomendasOperador",
                 query = "Select e From Encomenda e WHERE e.operador.username LIKE :operadorUsername Order By e.dataEntrega"
+        ),
+        @NamedQuery(
+                name = "getEncomendasOperadorEntreges",
+                query = "Select e From Encomenda e WHERE e.operador.username LIKE :operadorUsername AND UPPER(e.estado) LIKE 'ENTREGE' ORDER By e.dataEntrega"
+        ),
+        @NamedQuery(
+                name = "getEncomendasCliente",
+                query = "Select e From Encomenda e WHERE e.cliente.username LIKE :clienteUsername Order By e.dataEntrega"
         )
 }
 )
