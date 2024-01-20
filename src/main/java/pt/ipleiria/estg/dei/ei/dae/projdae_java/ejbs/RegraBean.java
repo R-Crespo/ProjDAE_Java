@@ -39,7 +39,6 @@ public class RegraBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-
     public Regra create(int valor, String comparador, String mensagem, String tipoSensor, long produtoId) throws MyEntityExistsException, MyConstraintViolationException, MyEntityNotFoundException {
         Produto produto = em.find(Produto.class, produtoId);
         if (produto == null) {
@@ -50,8 +49,8 @@ public class RegraBean {
         Regra regra = null;
         try {
             regra = new Regra(valor, comparador, mensagem, tipoSensor, produto);
+            produto.addRegra(regra);
             em.persist(regra);
-            em.flush();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }

@@ -40,7 +40,7 @@ public class Produto implements Serializable {
     @OneToOne
     private EmbalagemProduto embalagemProduto;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Regra> regras;
 
     public Produto(){
