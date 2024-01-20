@@ -23,8 +23,8 @@ public class EmbalagemTransporte extends Embalagem implements Serializable {
     public EmbalagemTransporte() {
     }
 
-    public EmbalagemTransporte(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
-        super(id, tipo, funcao, dataFabrico, material, peso, volume);
+    public EmbalagemTransporte(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
+        super(tipo, funcao, dataFabrico, material, peso, volume);
         this.encomendas = new ArrayList<Encomenda>();
     }
 

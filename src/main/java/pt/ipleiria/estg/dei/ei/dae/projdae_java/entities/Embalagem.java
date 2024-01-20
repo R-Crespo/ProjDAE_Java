@@ -19,6 +19,7 @@ import java.util.List;
 })
 public class Embalagem implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     private String tipo;
@@ -38,8 +39,7 @@ public class Embalagem implements Serializable {
         this.sensores = new ArrayList<Sensor>();
     }
 
-    public Embalagem(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
-        this.id = id;
+    public Embalagem(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
         this.tipo = tipo;
         this.funcao = funcao;
         this.dataFabrico = dataFabrico;

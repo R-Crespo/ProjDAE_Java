@@ -39,20 +39,11 @@ public class EmbalagemProdutoBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, long produtoId) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
-        if (exists(id)) {
-            throw new MyEntityExistsException("Embalagem produto com id '" + id + "' já existe");
-        }
-
-        Produto produto = produtoBean.find(produtoId);
-        if(produto == null){
-            throw new MyEntityNotFoundException("Produto com id "+ produtoId + " não existe");
-        }
-
+    public void create(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         EmbalagemProduto embalagemProduto = null;
         try {
-            embalagemProduto = new EmbalagemProduto(id, tipo, funcao, dataFabrico, material, peso, volume, produto);
-            produto.addEmbalagemProduto(embalagemProduto);
+            embalagemProduto = new EmbalagemProduto(tipo, funcao, dataFabrico, material, peso, volume, produto);
+            produto.setEmbalagemProduto(embalagemProduto);
             em.persist(embalagemProduto);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);

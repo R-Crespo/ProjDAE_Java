@@ -34,21 +34,18 @@ public class RegraBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id, int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,/* MyEntityNotFoundException,*/ MyConstraintViolationException {
-        if (exists(id)) {
-            throw new MyEntityExistsException("Regra with id '" + id + "' already exists");
-        }
-
+    public void create(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,MyEntityNotFoundException, MyConstraintViolationException {
         Regra regra = null;
         try {
-            regra = new Regra(id, valor, comparador, mensagem, tipo_sensor);
+            regra = new Regra(valor, comparador, mensagem, tipo_sensor, produto);
+            produto.addRegra(regra);
             em.persist(regra);
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
     }
 
-    public Regra delete(int id) throws MyEntityNotFoundException {
+    /*public Regra delete(int id) throws MyEntityNotFoundException {
         Regra regra = find(id);
         if (regra == null) {
             throw new MyEntityNotFoundException("Regra with id '" + id + "' not found");
@@ -59,5 +56,5 @@ public class RegraBean {
         }
         em.remove(regra);
         return regra;
-    }
+    }*/
 }
