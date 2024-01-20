@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="311f281a-fab7-48b6-8b6e-a1e6c941ee49" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c130bff0-adbe-4e7d-8419-d3af4e426085.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pt/ipleiria/estg/dei/ei/dae/projdae_java/ejbs/ObservacaoBean.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,6 +97,7 @@
       <workItem from="1705214004141" duration="721000" />
       <workItem from="1705214745006" duration="6417000" />
       <workItem from="1705688628376" duration="2416000" />
+      <workItem from="1705748021481" duration="883000" />
     </task>
     <task id="LOCAL-00001" summary="Projects base configuration">
       <created>1705088121270</created>
