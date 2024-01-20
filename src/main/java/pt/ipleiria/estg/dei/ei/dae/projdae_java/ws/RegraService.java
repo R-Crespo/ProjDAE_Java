@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Path("regras") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
-//@Authenticated
+@Authenticated
 public class RegraService {
     @EJB
     private RegraBean regraBean;
