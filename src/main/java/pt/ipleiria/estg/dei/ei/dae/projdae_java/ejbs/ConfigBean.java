@@ -4,11 +4,8 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
-<<<<<<< HEAD
 
-=======
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
->>>>>>> 7570296f2cba3d7b60edc3a20697736c909fcedc
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -59,7 +56,7 @@ public class ConfigBean {
         clienteBean.create("Rui", "123", "Rui Miguel", "rui@sapo.pt");
 
         embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
-        
+
         embalagemTransporteBean.create("tipo1", "guardar", new Date(), "cartão", 10, 10);
         encomendaBean.create("Marco", "Pousos",  "Leiria", 1, new ArrayList<>());
         encomendaBean.create("Marco", "pousos",  "leiria", 1, new ArrayList<>());
