@@ -14,12 +14,21 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllEncomendas",
-                query = "Select e From Encomenda e JOIN FETCH e.encomendaProdutos JOIN FETCH e.embalagemTransporte Order By e.dataEntrega"
+                query = "Select e From Encomenda e Order By e.dataEntrega"
+        ),
+        @NamedQuery(
+                name = "getAllEncomendasNaoAtribuidas",
+                query = "Select e From Encomenda e WHERE e.operador = null Order By e.dataEntrega"
+        ),
+        @NamedQuery(
+                name = "getEncomendasOperador",
+                query = "Select e From Encomenda e WHERE e.operador.username LIKE :operadorUsername Order By e.dataEntrega"
         )
 }
 )
 public class Encomenda implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     @JoinColumn(name = "operador_username")
@@ -32,7 +41,6 @@ public class Encomenda implements Serializable {
     private String morada;
     @NotNull
     private String estado;
-    @NotNull
     private Date dataEntrega;
     @NotNull
     private String armazem;
@@ -44,6 +52,8 @@ public class Encomenda implements Serializable {
     @NotNull
     private EmbalagemTransporte embalagemTransporte;
 
+    @Version
+    private int version;
     @OneToMany(mappedBy = "encomenda" ,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Sensor> sensores;
 
@@ -52,13 +62,12 @@ public class Encomenda implements Serializable {
         this.sensores = new ArrayList<Sensor>();
     }
 
-    public Encomenda(long id, Cliente cliente, String morada, String estado, String armazem, Date dataEntrega, EmbalagemTransporte embalagemTransporte) {
-        this.id = id;
+    public Encomenda(Cliente cliente, String morada, String estado, String armazem, EmbalagemTransporte embalagemTransporte) {
         this.cliente = cliente;
         this.morada = morada;
         this.estado = estado;
         this.armazem = armazem;
-        this.dataEntrega = dataEntrega;
+        this.dataEntrega = null;
         this.embalagemTransporte = embalagemTransporte;
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.sensores = new ArrayList<Sensor>();
