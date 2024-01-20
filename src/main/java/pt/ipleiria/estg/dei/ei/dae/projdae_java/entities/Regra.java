@@ -3,15 +3,16 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "regras")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllRegras",
                 query = "SELECT r FROM Regra r ORDER BY r.id" // JPQL
+        ),
+        @NamedQuery(
+                name = "getAllRegrasProduto",
+                query = "SELECT r FROM Regra r WHERE r.produto.id = :produtoId ORDER BY r.id" // JPQL
         )
 })
 public class Regra {
@@ -23,20 +24,22 @@ public class Regra {
     private int valor;
     private String comparador;
     private String mensagem;
-    private String tipo_sensor;
+    private String tipoSensor;
     @ManyToOne
     @JoinColumn(name = "produto_id")
     @NotNull
     private Produto produto;
 
+    @Version
+    private int version;
     public Regra() {
     }
 
-    public Regra(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) {
+    public Regra(int valor, String comparador, String mensagem, String tipoSensor, Produto produto) {
         this.valor = valor;
         this.comparador = comparador;
         this.mensagem = mensagem;
-        this.tipo_sensor = tipo_sensor;
+        this.tipoSensor = tipoSensor;
         this.produto = produto;
     }
 
@@ -72,12 +75,12 @@ public class Regra {
         this.mensagem = mensagem;
     }
 
-    public String getTipo_sensor() {
-        return tipo_sensor;
+    public String getTipoSensor() {
+        return tipoSensor;
     }
 
-    public void setTipo_sensor(String tipo_sensor) {
-        this.tipo_sensor = tipo_sensor;
+    public void setTipoSensor(String tipoSensor) {
+        this.tipoSensor = tipoSensor;
     }
 
     public Produto getProduto() {

@@ -1,9 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos;
 
 import jakarta.persistence.Id;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
-
-import java.util.List;
 
 public class RegraDTO {
     @Id
@@ -11,18 +8,19 @@ public class RegraDTO {
     private int valor;
     private String comparador;
     private String mensagem;
-    private String tipo_sensor;
-    private long produto_id;
+    private String tipoSensor;
+    private long produtoId;
+
     public RegraDTO() {
     }
 
-    public RegraDTO(long id, int valor, String comparador, String mensagem, String tipo_sensor,long produto_id) {
+    public RegraDTO(long id, int valor, String comparador, String mensagem, String tipoSensor, long produtoId) {
         this.id = id;
         this.valor = valor;
         this.comparador = comparador;
         this.mensagem = mensagem;
-        this.tipo_sensor = tipo_sensor;
-        this.produto_id = produto_id;
+        this.tipoSensor = tipoSensor;
+        this.produtoId = produtoId;
     }
 
     public long getId() {
@@ -57,19 +55,19 @@ public class RegraDTO {
         this.mensagem = mensagem;
     }
 
-    public String getTipo_sensor() {
-        return tipo_sensor;
+    public String getTipoSensor() {
+        return tipoSensor;
     }
 
-    public void setTipo_sensor(String tipo_sensor) {
-        this.tipo_sensor = tipo_sensor;
+    public void setTipoSensor(String tipoSensor) {
+        this.tipoSensor = tipoSensor;
     }
 
-    public long getProduto_id() {
-        return produto_id;
+    public long getProdutoId() {
+        return produtoId;
     }
 
-    public void setProduto_id(long produto_id) {
-        this.produto_id = produto_id;
+    public void setProdutoId(long produtoId) {
+        this.produtoId = produtoId;
     }
 }

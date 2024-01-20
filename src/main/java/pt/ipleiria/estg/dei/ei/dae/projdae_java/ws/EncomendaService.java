@@ -12,7 +12,6 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsExcepti
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.security.Authenticated;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,16 +23,34 @@ public class EncomendaService {
     @EJB
     private EncomendaBean encomendaBean;
 
-    // Converts an entity Student to a DTO Student class
+    // Converts an entity Encomenda to a DTO Encomenda class
     private EncomendaDTO toDTO(Encomenda encomenda) {
+        /*
+        private long id;
+        private String operadorUsername;
+        private String clienteUsername;
+        private String morada;
+        private String estado;
+        private Date dataEntrega;
+        private String armazem;
+        private List<EncomendaProdutoDTO> encomendaProdutoDTOs;
+        private long embalagemTransporteId;
+        private List<SensorDTO> sensoreDTOs;
+        */
+        String operadorUsername = "Não Atribuido";
+        if (encomenda.getOperador() != null){
+            operadorUsername = encomenda.getOperador().getUsername();
+        }
         return new EncomendaDTO(
                 encomenda.getId(),
-                encomenda.getOperador().getUsername(),
+                operadorUsername,
                 encomenda.getCliente().getUsername(),
                 encomenda.getMorada(),
                 encomenda.getEstado(),
                 encomenda.getDataEntrega(),
-                encomenda.getArmazem());
+                encomenda.getArmazem(),
+                encomenda.getEmbalagemTransporte().getId()
+        );
     }
     // converts an entire list of entities into a list of DTOs
     private List<EncomendaDTO> toDTOs(List<Encomenda> encomendas) {
@@ -44,6 +61,30 @@ public class EncomendaService {
     @Path("/") // /api/encomendas
     public List<EncomendaDTO> getAllEncomendas() {
         return toDTOs(encomendaBean.getAll());
+    }
+
+    @GET
+    @Path("/naoAtribuidas") // /api/encomendas/naoAtribuidas
+    public List<EncomendaDTO> getAllEncomendasNaoAtribuidas() {
+        return toDTOs(encomendaBean.getAllNaoAtribuidas());
+    }
+
+    @GET
+    @Path("/operador/{username}") // /api/encomendas/operador/{username}
+    public List<EncomendaDTO> getEncomendasOperador(@PathParam("username") String operadorUsername) {
+        return toDTOs(encomendaBean.getEncomendasOperador(operadorUsername));
+    }
+
+    @GET
+    @Path("/operador/{username}/entregas") // /api/encomendas/operador/{username}/entregas
+    public List<EncomendaDTO> getEncomendasOperadorEntreges(@PathParam("username") String operadorUsername) {
+        return toDTOs(encomendaBean.getEncomendasOperadorEntreges(operadorUsername));
+    }
+
+    @GET
+    @Path("/cliente/{username}") // /api/encomendas/clientes/{username}
+    public List<EncomendaDTO> getEncomendasCliente(@PathParam("username") String clienteUsername) {
+        return toDTOs(encomendaBean.getEncomendasCliente(clienteUsername));
     }
 
     @GET
@@ -59,21 +100,30 @@ public class EncomendaService {
     @POST
     @Path("/") // /api/encomendas
     public Response createNewEncomenda (EncomendaDTO encomendaDTO) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
-        encomendaBean.create(
-                encomendaDTO.getId(),
+        Encomenda encomenda = encomendaBean.create(
                 encomendaDTO.getClienteUsername(),
                 encomendaDTO.getMorada(),
-                encomendaDTO.getEstado(),
-                encomendaDTO.getArmazem()
+                encomendaDTO.getArmazem(),
+                encomendaDTO.getEmbalagemTransporteId(),
+                encomendaDTO.getEncomendaProdutoDTOs()
         );
-        Encomenda encomenda = encomendaBean.find(encomendaDTO.getId());
+        //Encomenda encomenda = encomendaBean.find(encomendaDTO.getId());
         return Response.status(Response.Status.CREATED).entity(toDTO(encomenda)).build();
     }
 
     @PUT
-    @Path("/{username}/{encomendaId}") // /api/encomendas/{id}
+    @Path("/{encomendaId}") // /api/encomendas/{id}
     public Response updateEncomenda (EncomendaDTO encomendaDTO) throws MyEntityNotFoundException{
-        encomendaBean.update(encomendaDTO.getId(), encomendaDTO.getClienteUsername(), encomendaDTO.getMorada(), encomendaDTO.getEstado(), encomendaDTO.getArmazem(), encomendaDTO.getDataEntrega(), encomendaDTO.getOperadorUsername());
+        encomendaBean.update(
+                encomendaDTO.getId(),
+                encomendaDTO.getOperadorUsername(),
+                encomendaDTO.getClienteUsername(),
+                encomendaDTO.getMorada(),
+                encomendaDTO.getEstado(),
+                encomendaDTO.getDataEntrega(),
+                encomendaDTO.getArmazem(),
+                encomendaDTO.getEmbalagemTransporteId());
+
         Encomenda encomenda = encomendaBean.find(encomendaDTO.getId());
         return Response.status(Response.Status.OK).entity(toDTO(encomenda)).build();
     }

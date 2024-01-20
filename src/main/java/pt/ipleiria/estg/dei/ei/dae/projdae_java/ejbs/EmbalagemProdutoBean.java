@@ -51,8 +51,10 @@ public class EmbalagemProdutoBean {
 
     public EmbalagemProduto create(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         EmbalagemProduto embalagemProduto = null;
+        produto = em.merge(produto);
         try {
             embalagemProduto = new EmbalagemProduto(tipo, funcao, dataFabrico, material, peso, volume, produto);
+            produto.setEmbalagemProduto(embalagemProduto);
             em.persist(embalagemProduto);
             em.flush();
         } catch (ConstraintViolationException e) {

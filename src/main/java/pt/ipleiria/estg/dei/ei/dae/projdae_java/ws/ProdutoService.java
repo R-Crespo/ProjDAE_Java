@@ -37,7 +37,6 @@ public class ProdutoService {
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
 
-
     private ProdutoDTO toDTO(Produto produto){
         EmbalagemProduto embalagemProduto = produto.getEmbalagemProduto();
         long embalagemProdutoId = 0;
@@ -72,7 +71,7 @@ public class ProdutoService {
                 regra.getValor(),
                 regra.getComparador(),
                 regra.getMensagem(),
-                regra.getTipo_sensor(),
+                regra.getTipoSensor(),
                 regra.getProduto().getId()
         );
     }
@@ -147,7 +146,7 @@ public class ProdutoService {
                         regraDTO.getValor(),
                         regraDTO.getComparador(),
                         regraDTO.getMensagem(),
-                        regraDTO.getTipo_sensor(),
+                        regraDTO.getTipoSensor(),
                         produto.getId()
                 ));
             }

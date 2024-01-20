@@ -9,30 +9,33 @@ import java.util.List;
 public class EncomendaDTO {
     @Id
     private long id;
-    private String operadorUsarname;
-    private String clienteUsarname;
+    private String operadorUsername;
+    private String clienteUsername;
     private String morada;
     private String estado;
     private Date dataEntrega;
     private String armazem;
     private List<EncomendaProdutoDTO> encomendaProdutoDTOs;
-    private List<EmbalagemTransporteDTO> embalagemTransporteDTOs;
+
+    private long embalagemTransporteId;
+    private List<SensorDTO> sensoreDTOs;
 
     public EncomendaDTO() {
         encomendaProdutoDTOs = new ArrayList<EncomendaProdutoDTO>();
-        embalagemTransporteDTOs = new ArrayList<EmbalagemTransporteDTO>();
+        sensoreDTOs = new ArrayList<SensorDTO>();
     }
 
-    public EncomendaDTO(long id, String operadorUsarname, String clienteUsarname, String morada, String estado, Date dataEntrega, String armazem) {
+    public EncomendaDTO(long id, String operadorUsername, String clienteUsarname, String morada, String estado, Date dataEntrega, String armazem, long embalagemTransporteId) {
         this.id = id;
-        this.operadorUsarname = operadorUsarname;
-        this.clienteUsarname = clienteUsarname;
+        this.operadorUsername = operadorUsername;
+        this.clienteUsername = clienteUsarname;
         this.morada = morada;
         this.estado = estado;
         this.dataEntrega = dataEntrega;
         this.armazem = armazem;
-        encomendaProdutoDTOs = new ArrayList<EncomendaProdutoDTO>();
-        embalagemTransporteDTOs = new ArrayList<EmbalagemTransporteDTO>();
+        this.encomendaProdutoDTOs = new ArrayList<EncomendaProdutoDTO>();
+        this.embalagemTransporteId = embalagemTransporteId;
+        this.sensoreDTOs = new ArrayList<SensorDTO>();
     }
 
     public long getId() {
@@ -44,19 +47,19 @@ public class EncomendaDTO {
     }
 
     public String getOperadorUsername() {
-        return operadorUsarname;
+        return operadorUsername;
     }
 
     public void setOperadorUsername(String operadorUsername) {
-        this.operadorUsarname = operadorUsername;
+        this.operadorUsername = operadorUsername;
     }
 
     public String getClienteUsername() {
-        return clienteUsarname;
+        return clienteUsername;
     }
 
-    public void setClienteUsarname(String clienteUsarname) {
-        this.clienteUsarname = clienteUsarname;
+    public void setClienteUsername(String clienteUsername) {
+        this.clienteUsername = clienteUsername;
     }
 
     public String getMorada() {
@@ -99,11 +102,19 @@ public class EncomendaDTO {
         this.encomendaProdutoDTOs = encomendaProdutoDTOs;
     }
 
-    public List<EmbalagemTransporteDTO> getEmbalagemTransporteDTOs() {
-        return new ArrayList<>(embalagemTransporteDTOs);
+    public long getEmbalagemTransporteId() {
+        return embalagemTransporteId;
     }
 
-    public void setEmbalagemTransporteDTOs(List<EmbalagemTransporteDTO> embalagemTransporteDTOs) {
-        this.embalagemTransporteDTOs = embalagemTransporteDTOs;
+    public void setEmbalagemTransporteId(long embalagemTransporteId) {
+        this.embalagemTransporteId = embalagemTransporteId;
+    }
+
+    public List<SensorDTO> getSensoreDTOs() {
+        return new ArrayList<>(sensoreDTOs);
+    }
+
+    public void setSensoreDTOs(List<SensorDTO> sensoreDTOs) {
+        this.sensoreDTOs = sensoreDTOs;
     }
 }

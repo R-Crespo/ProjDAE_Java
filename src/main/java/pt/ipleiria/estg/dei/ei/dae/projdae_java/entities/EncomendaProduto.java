@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 )
 public class EncomendaProduto {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     @JoinColumn(name = "encomenda_id")
@@ -21,8 +22,7 @@ public class EncomendaProduto {
     public EncomendaProduto() {
     }
 
-    public EncomendaProduto(long id, Encomenda encomenda, Produto produto, int quantidade) {
-        this.id = id;
+    public EncomendaProduto(Encomenda encomenda, Produto produto, int quantidade) {
         this.encomenda = encomenda;
         this.produto = produto;
         this.quantidade = quantidade;

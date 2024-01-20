@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" external-system-id="Maven" name="ProjDAE_Java:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>ProjDAE_Java</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ProjDAE_Java.war">
+      <element id="artifact" artifact-name="ProjDAE_Java:war exploded" />
+    </root>
+  </artifact>
+</component>

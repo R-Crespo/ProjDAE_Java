@@ -41,8 +41,7 @@ public class EmbalagemTransporteService {
                 embalagemTransporte.getDataFabrico(),
                 embalagemTransporte.getMaterial(),
                 embalagemTransporte.getPeso(),
-                embalagemTransporte.getVolume(),
-                sensores);
+                embalagemTransporte.getVolume());
     }
 
 
