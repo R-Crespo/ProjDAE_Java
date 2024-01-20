@@ -6,6 +6,7 @@ import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.*;
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundException;
@@ -13,7 +14,6 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 import java.util.ArrayList;
 import java.util.List;
 @Stateless
-
 public class SensorBean {
     @PersistenceContext
     private EntityManager em;
