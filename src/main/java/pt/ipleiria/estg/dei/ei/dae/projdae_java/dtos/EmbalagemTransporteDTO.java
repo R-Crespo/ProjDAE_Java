@@ -21,7 +21,7 @@ public class EmbalagemTransporteDTO {
     public EmbalagemTransporteDTO() {
     }
 
-    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume) {
+    public EmbalagemTransporteDTO(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, List<SensorDTO> sensores) {
         this.id = id;
         this.tipo = tipo;
         this.funcao = funcao;
@@ -29,7 +29,7 @@ public class EmbalagemTransporteDTO {
         this.material = material;
         this.peso = peso;
         this.volume = volume;
-        this.sensores = new ArrayList<SensorDTO>();
+        this.sensores = sensores;
         this.encomendaDTOs = new ArrayList<EncomendaDTO>();
     }
 

@@ -30,6 +30,7 @@ public class Sensor implements Serializable {
     @JoinColumn(name = "embalagem_id")
     private Embalagem embalagem;
     @OneToMany(mappedBy = "sensor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("timestamp DESC")
     private List<Observacao> observacoes;
 
     public Sensor() {

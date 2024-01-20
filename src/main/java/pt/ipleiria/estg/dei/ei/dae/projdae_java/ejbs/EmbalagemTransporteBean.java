@@ -61,7 +61,7 @@ public class EmbalagemTransporteBean {
         if(!exists()){
             throw new MyEntityNotFoundException("EmbalagemTransporte nao existe ainda");
         }
-        EmbalagemTransporte embalagemTransporte = find(id);
+        EmbalagemTransporte embalagemTransporte = getEmbalagemTransporte();
         embalagemTransporte.setTipo(tipo);
         embalagemTransporte.setFuncao(funcao);
         embalagemTransporte.setMaterial(material);
@@ -69,9 +69,10 @@ public class EmbalagemTransporteBean {
         embalagemTransporte.setVolume(volume);
 
         // Atualiza os sensores
-        List<Sensor> sensoresAtuais = new ArrayList<>(embalagemTransporte.getSensores());
+        List<Sensor> sensoresAtuais = embalagemTransporte.getSensores();
+
         for (SensorDTO sensorDTO : sensores) {
-            Sensor sensor = sensoresAtuais.stream()
+            Sensor sensor = sensoresAtuais.isEmpty() ? null : sensoresAtuais.stream()
                     .filter(s -> sensorDTO.getId() == s.getId())
                     .findFirst()
                     .orElse(null);
