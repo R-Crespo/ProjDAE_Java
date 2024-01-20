@@ -71,7 +71,7 @@ public class ObservacaoBean {
         return observacoes;
     }
 
-    
+
 
 
     public void delete(long id) throws MyEntityNotFoundException{
