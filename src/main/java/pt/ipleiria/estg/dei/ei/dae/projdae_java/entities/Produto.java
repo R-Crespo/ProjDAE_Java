@@ -44,7 +44,6 @@ public class Produto implements Serializable {
     private List<Regra> regras;
 
     public Produto(){
-
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
         this.regras = new ArrayList<Regra>();
     }
