@@ -13,7 +13,6 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 
 import java.util.List;
 @Stateless
-
 public class RegraBean {
     @PersistenceContext
     private EntityManager em;

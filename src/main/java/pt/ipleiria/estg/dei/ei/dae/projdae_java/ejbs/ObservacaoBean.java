@@ -1,6 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
+<<<<<<< HEAD
 import jakarta.ejb.EJB;
+=======
+>>>>>>> 04f874dfe6e78fb1ff130738f5665ff145c0bbaf
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
