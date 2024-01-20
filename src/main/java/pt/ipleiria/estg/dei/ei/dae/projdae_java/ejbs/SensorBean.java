@@ -31,9 +31,10 @@ public class SensorBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(String nome) throws MyEntityExistsException, MyEntityNotFoundException {
-        Sensor sensor = new Sensor(nome);
+    public Sensor create(String nome, Embalagem embalagem) throws MyEntityExistsException, MyEntityNotFoundException {
+        Sensor sensor = new Sensor(nome, embalagem);
         em.persist(sensor);
+        return sensor;
     }
 
     public void update(long id, String nome) throws MyEntityNotFoundException {

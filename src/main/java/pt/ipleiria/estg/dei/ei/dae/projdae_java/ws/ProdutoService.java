@@ -14,10 +14,8 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.*;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.EmbalagemProdutoBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.ProdutoBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.RegraBean;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EmbalagemProduto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EncomendaProduto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
-import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Regra;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.SensorBean;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,12 @@ public class ProdutoService {
     private ProdutoBean produtoBean;
 
     @EJB
+    private SensorBean sensorBean;
+
+    @EJB
     private RegraBean regraBean;
+
+    private SensorService sensorService;
 
     @EJB
     private EmbalagemProdutoBean embalagemProdutoBean;
@@ -65,6 +68,25 @@ public class ProdutoService {
         );
     }
 
+    private ObservacaoDTO ObservacoesToDTO(Observacao observacao){
+        return new ObservacaoDTO(
+                observacao.getId(),
+                observacao.getSensor().getId(),
+                observacao.getTimestamp(),
+                observacao.getTipo(),
+                observacao.getValor(),
+                observacao.getUnidadeMedida()
+        );
+    }
+
+    private SensorDTO toDTO(Sensor sensor){
+        return new SensorDTO(
+                sensor.getId(),
+                sensor.getNome(),
+                sensor.getEmbalagem().getId()
+        );
+    }
+
     private RegraDTO toDTO(Regra regra){
         return new RegraDTO(
                 regra.getId(),
@@ -73,6 +95,19 @@ public class ProdutoService {
                 regra.getMensagem(),
                 regra.getTipoSensor(),
                 regra.getProduto().getId()
+        );
+    }
+
+    private EmbalagemProdutoDTO toDTO(EmbalagemProduto embalagemProduto){
+        return new EmbalagemProdutoDTO(
+                embalagemProduto.getId(),
+                embalagemProduto.getTipo(),
+                embalagemProduto.getFuncao(),
+                embalagemProduto.getDataFabrico(),
+                embalagemProduto.getMaterial(),
+                embalagemProduto.getPeso(),
+                embalagemProduto.getVolume(),
+                embalagemProduto.getProduto().getId()
         );
     }
 
@@ -119,6 +154,7 @@ public class ProdutoService {
     public Response createNewProduto(ProdutoEmbalagemRegraDTO produtoEmbalagemRegraDTO){
         Produto produto = null;
         EmbalagemProduto embalagemProduto = null;
+        Sensor sensor = null;
         List<Regra> regras = new ArrayList<Regra>();
         try{
             produto = produtoBean.create(
@@ -141,6 +177,8 @@ public class ProdutoService {
                     produto
             );
 
+            EmbalagemProdutoDTO embalagemProdutoDTO = toDTO(embalagemProduto);
+
             for(RegraDTO regraDTO : produtoEmbalagemRegraDTO.getRegras()){
                 regras.add(regraBean.create(
                         regraDTO.getValor(),
@@ -149,7 +187,14 @@ public class ProdutoService {
                         regraDTO.getTipoSensor(),
                         produto.getId()
                 ));
+
+                sensor = sensorBean.create(regraDTO.getTipoSensor(), embalagemProduto);
+                sensor.setEmbalagem(embalagemProduto);
+                embalagemProdutoDTO.getSensores().add(toDTO(sensor));
+                embalagemProduto.getSensores().add(sensor);
+
             }
+
         }catch(Exception ex){
             System.err.println("Exceção " + ex + " na operação");
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -204,7 +249,7 @@ public class ProdutoService {
                             regraDTO.getValor(),
                             regraDTO.getComparador(),
                             regraDTO.getMensagem(),
-                            regraDTO.getTipo_sensor()
+                            regraDTO.getTipoSensor()
                     );
             }
             Produto produto = produtoBean.find(produtoEmbalagemRegraDTO.getProduto().getId());

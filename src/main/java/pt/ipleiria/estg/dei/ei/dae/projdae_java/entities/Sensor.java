@@ -41,6 +41,12 @@ public class Sensor implements Serializable {
         this.observacoes = new ArrayList<Observacao>();
     }
 
+    public Sensor(String nome, Embalagem embalagem) {
+        this.nome = nome;
+        this.embalagem = embalagem;
+        this.observacoes = new ArrayList<Observacao>();
+    }
+
     public Embalagem getEmbalagem() {
         return embalagem;
     }

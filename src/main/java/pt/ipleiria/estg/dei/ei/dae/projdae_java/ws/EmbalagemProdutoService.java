@@ -32,7 +32,7 @@ public class EmbalagemProdutoService {
     @EJB
     private ProdutoBean produtoBean;
 
-    private EmbalagemProdutoDTO toDTO(EmbalagemProduto embalagemProduto){
+    public EmbalagemProdutoDTO toDTO(EmbalagemProduto embalagemProduto){
         return new EmbalagemProdutoDTO(
                 embalagemProduto.getId(),
                 embalagemProduto.getTipo(),

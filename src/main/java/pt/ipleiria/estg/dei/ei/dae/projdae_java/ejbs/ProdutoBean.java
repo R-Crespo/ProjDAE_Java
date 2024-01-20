@@ -76,6 +76,9 @@ public class ProdutoBean {
             em.remove(produto.getEmbalagemProduto());
             List<Regra> regras = produto.getRegras();
             if(regras != null) {
+                for(Regra regra : regras){
+                    em.remove(regra);
+                }
                 regras.clear();
             }
             em.remove(produto);
