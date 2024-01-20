@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintViolationException;
@@ -34,21 +35,19 @@ public class RegraBean {
         return (Long)query.getSingleResult() > 0L;
     }
 
-    public void create(long id, int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,/* MyEntityNotFoundException,*/ MyConstraintViolationException {
-        if (exists(id)) {
-            throw new MyEntityExistsException("Regra with id '" + id + "' already exists");
-        }
-
+    public Regra create(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) throws MyEntityExistsException,MyEntityNotFoundException, MyConstraintViolationException {
         Regra regra = null;
         try {
-            regra = new Regra(id, valor, comparador, mensagem, tipo_sensor);
+            regra = new Regra(valor, comparador, mensagem, tipo_sensor, produto);
             em.persist(regra);
+            em.flush();
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(e);
         }
+        return regra;
     }
 
-    public Regra delete(int id) throws MyEntityNotFoundException {
+    /*public Regra delete(int id) throws MyEntityNotFoundException {
         Regra regra = find(id);
         if (regra == null) {
             throw new MyEntityNotFoundException("Regra with id '" + id + "' not found");
@@ -59,5 +58,5 @@ public class RegraBean {
         }
         em.remove(regra);
         return regra;
-    }
+    }*/
 }

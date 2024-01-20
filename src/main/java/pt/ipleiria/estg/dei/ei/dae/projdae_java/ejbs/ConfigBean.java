@@ -44,7 +44,7 @@ public class ConfigBean {
         clienteBean.create("Marco", "123", "Marco Miguel", "marco@sapo.pt");
         clienteBean.create("Ricardo", "123", "Ricardo Miguel", "ricardo@sapo.pt");
         clienteBean.create("Rui", "123", "Rui Miguel", "rui@sapo.pt");
-        embalagemTransporteBean.create(0,"Transporte","Tranportar",new Date(), "Cartao", 1, 500);
+        embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
         /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         produtoBean.create(2,"Coca-cola","Refrigerante","Coca-cola", 330, "mL", 1.00f,"","Forn1");
         produtoBean.create(3,"Coca-cola","Refrigerante","Coca-cola", 500, "mL", 1.19f,"","Forn1");

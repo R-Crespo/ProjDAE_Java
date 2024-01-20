@@ -12,11 +12,14 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllProdutos",
-                query = "SELECT p FROM Produto p JOIN FETCH p.encomendaProdutos ORDER BY p.nome" // JPQL
+                query = "SELECT p FROM Produto p LEFT JOIN FETCH p.encomendaProdutos ORDER BY p.nome" // JPQL
         )
 })
 public class Produto implements Serializable {
+    @Version
+    private long version;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotNull
     private String nome;
@@ -37,26 +40,16 @@ public class Produto implements Serializable {
     @OneToOne
     private EmbalagemProduto embalagemProduto;
 
-    @ManyToMany
-    @JoinTable(
-        name = "produtos_regras",
-        joinColumns = @JoinColumn(
-            name = "produto_id",
-            referencedColumnName = "id"
-        ),
-        inverseJoinColumns = @JoinColumn(
-            name = "regra_id",
-            referencedColumnName = "id"
-        )
-    )
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Regra> regras;
 
     public Produto(){
+
         this.encomendaProdutos = new ArrayList<EncomendaProduto>();
+        this.regras = new ArrayList<Regra>();
     }
 
-    public Produto(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) {
-        this.id = id;
+    public Produto(String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) {
         this.nome = nome;
         this.tipo = tipo;
         this.marca = marca;

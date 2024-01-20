@@ -21,8 +21,8 @@ public class EmbalagemProduto extends Embalagem{
     public EmbalagemProduto() {
     }
 
-    public EmbalagemProduto(long id, String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) {
-        super(id, tipo, funcao, dataFabrico, material, peso, volume);
+    public EmbalagemProduto(String tipo, String funcao, Date dataFabrico, String material, int peso, int volume, Produto produto) {
+        super(tipo, funcao, dataFabrico, material, peso, volume);
         this.produto = produto;
     }
 

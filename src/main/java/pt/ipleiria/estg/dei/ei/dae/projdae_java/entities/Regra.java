@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.projdae_java.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,26 +16,26 @@ import java.util.List;
 })
 public class Regra {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int valor;
     private String comparador;
     private String mensagem;
     private String tipo_sensor;
-
-    @ManyToMany(mappedBy = "regras")
-    private List<Produto> produtos;
+    @ManyToOne
+    @JoinColumn(name = "produto_id")
+    @NotNull
+    private Produto produto;
 
     public Regra() {
-        this.produtos = new ArrayList<>();
     }
 
-    public Regra(long id, int valor, String comparador, String mensagem, String tipo_sensor) {
-        this.id = id;
+    public Regra(int valor, String comparador, String mensagem, String tipo_sensor, Produto produto) {
         this.valor = valor;
         this.comparador = comparador;
         this.mensagem = mensagem;
         this.tipo_sensor = tipo_sensor;
-        this.produtos = new ArrayList<>();
+        this.produto = produto;
     }
 
     public long getId() {
@@ -77,11 +78,11 @@ public class Regra {
         this.tipo_sensor = tipo_sensor;
     }
 
-    public List<Produto> getProdutos() {
-        return new ArrayList<>(produtos);
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 }

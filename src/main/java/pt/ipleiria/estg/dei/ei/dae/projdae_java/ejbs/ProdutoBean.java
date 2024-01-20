@@ -30,17 +30,14 @@ public class ProdutoBean {
         return em.createNamedQuery("getAllProdutos", Produto.class).getResultList();
     }
 
-    public void create(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) throws MyEntityNotFoundException,MyEntityExistsException{
-        Produto produto = find(id);
-        if(produto != null){
-            throw new MyEntityExistsException("Produto com id '"+ id +"' já existe");
-        }
-
-        produto = new Produto(id, nome, tipo, marca, quantidade, unidadeMedida, preco, descricao);
+    public Produto create(String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) throws MyEntityNotFoundException,MyEntityExistsException{
+        Produto produto = new Produto(nome, tipo, marca, quantidade, unidadeMedida, preco, descricao);
         em.persist(produto);
+        em.flush();
+        return produto;
     }
 
-    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao) throws MyEntityNotFoundException {
+    public void update(long id, String nome, String tipo, String marca, long quantidade, String unidadeMedida, float preco, String descricao, Long regraId, Long embalagemProdutoId) throws MyEntityNotFoundException {
         Produto produto = em.find(Produto.class, id);
         if (produto == null) {
             throw new MyEntityNotFoundException("Produto com id '" + id + "' não existe");
@@ -53,7 +50,14 @@ public class ProdutoBean {
         produto.setMarca(marca);
         produto.setUnidadeMedida(unidadeMedida);
         produto.setQuantidade(quantidade);
-
+        if(embalagemProdutoId != null){
+            EmbalagemProduto embalagemProduto = em.find(EmbalagemProduto.class, embalagemProdutoId);
+            produto.setEmbalagemProduto(embalagemProduto);
+        }
+        if(regraId != null) {
+            Regra regra = em.find(Regra.class, regraId);
+            produto.addRegra(regra);
+        }
     }
 
     public void delete(long id) throws  MyEntityNotFoundException,MyConstraintViolationException {
