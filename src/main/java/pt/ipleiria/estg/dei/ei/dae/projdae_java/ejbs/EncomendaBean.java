@@ -45,7 +45,7 @@ public class EncomendaBean {
         return em.createNamedQuery("getEncomendasCliente", Encomenda.class).setParameter("clienteUsername", clienteUsername).getResultList();
     }
 
-    public Encomenda create(String clienteUsername, String morada, String armazem, long embalagemTranporteId, List<EncomendaProdutoDTO> encomendaProdutoDTOS) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
+    public Encomenda create(String clienteUsername, String morada, String armazem, long embalagemTranporteId) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
         Cliente cliente = em.find(Cliente.class, clienteUsername);
         if (cliente == null) {
             throw new MyEntityNotFoundException(
@@ -66,18 +66,11 @@ public class EncomendaBean {
             throw new MyConstraintViolationException(e);
         }
 
-        Produto produto = null;
-        EncomendaProduto encomendaProduto = null;
-        Sensor sensor = null;
         List<String> listaTiposSensores = null;
-        for (EncomendaProdutoDTO encomendaProdutoDTO: encomendaProdutoDTOS) {
-            encomendaProduto = encomendaProdutoBean.create(encomenda.getId(), encomendaProdutoDTO.getProdutoId(), encomendaProdutoDTO.getQuantidade());
-            produto = em.find(Produto.class, encomendaProdutoDTO.getProdutoId());
-            produto.addEncomendaProduto(encomendaProduto);
-            encomenda.addEncomendaProduto(encomendaProduto);
-
-            for(int i=0; i<encomendaProdutoDTO.getQuantidade(); i++){
-                for (Regra regra: produto.getRegras()) {
+        Sensor sensor = null;
+        for (EncomendaProduto encomendaProduto: encomenda.getEncomendaProdutos()){
+            for(int i=0; i<encomendaProduto.getQuantidade(); i++){
+                for (Regra regra: encomendaProduto.getProduto().getRegras()) {
                     if(!listaTiposSensores.contains(regra.getTipoSensor())) {
                         listaTiposSensores.add(regra.getTipoSensor());
                         sensor = new Sensor(regra.getTipoSensor());
@@ -179,5 +172,11 @@ public class EncomendaBean {
         embalagemTransporte.removeEncomenda(encomenda);
 
         em.remove(encomenda);
+    }
+
+    public void adicionarProdutoEmEncomenda(Encomenda encomenda, Produto produto){
+        EncomendaProduto encomendaProduto = new EncomendaProduto(encomenda, produto, 1);
+        encomenda.addEncomendaProduto(encomendaProduto);
+        produto.addEncomendaProduto(encomendaProduto);
     }
 }

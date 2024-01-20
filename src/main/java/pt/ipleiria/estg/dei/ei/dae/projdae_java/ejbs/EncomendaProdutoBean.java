@@ -16,8 +16,6 @@ import jakarta.validation.ConstraintViolationException;
 public class EncomendaProdutoBean {
     @PersistenceContext
     private EntityManager em;
-    private EncomendaBean encomendaBean;
-    private ProdutoBean produtoBean;
 
     public EncomendaProduto find(long id) {
         return em.find(EncomendaProduto.class, id);
@@ -32,14 +30,14 @@ public class EncomendaProdutoBean {
     }
 
     public EncomendaProduto create(long encomendaId, long produtoId, int quantidade) throws MyEntityNotFoundException, MyConstraintViolationException {
-        Encomenda encomenda = encomendaBean.find(encomendaId);
+        Encomenda encomenda = em.find(Encomenda.class, encomendaId);
         if (encomenda == null) {
             throw new MyEntityNotFoundException(
                     "Encomenda com id '" + encomendaId + "' não existe"
             );
         }
 
-        Produto produto = produtoBean.find(produtoId);
+        Produto produto = em.find(Produto.class, produtoId);
         if (produto == null) {
             throw new MyEntityNotFoundException(
                     "Produto com id '" + produtoId + "' não existe"

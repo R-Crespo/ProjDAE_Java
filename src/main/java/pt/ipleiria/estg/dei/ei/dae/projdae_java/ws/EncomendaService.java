@@ -5,7 +5,10 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.EncomendaDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.EncomendaProdutoDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.RegraDTO;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.EncomendaBean;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.ejbs.EncomendaProdutoBean;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
@@ -21,7 +24,8 @@ import java.util.stream.Collectors;
 @Authenticated
 public class EncomendaService {
     @EJB
-    private EncomendaBean encomendaBean;
+    private EncomendaBean encomendaBean;@EJB
+    private EncomendaProdutoBean encomendaProdutoBean;
 
     // Converts an entity Encomenda to a DTO Encomenda class
     private EncomendaDTO toDTO(Encomenda encomenda) {
@@ -100,13 +104,21 @@ public class EncomendaService {
     @POST
     @Path("/") // /api/encomendas
     public Response createNewEncomenda (EncomendaDTO encomendaDTO) throws MyEntityExistsException, MyEntityNotFoundException, MyConstraintViolationException {
+        System.out.println("HV");
         Encomenda encomenda = encomendaBean.create(
                 encomendaDTO.getClienteUsername(),
                 encomendaDTO.getMorada(),
                 encomendaDTO.getArmazem(),
-                encomendaDTO.getEmbalagemTransporteId(),
-                encomendaDTO.getEncomendaProdutoDTOs()
+                encomendaDTO.getEmbalagemTransporteId()
         );
+        System.out.println(encomenda.getId());
+        for(EncomendaProdutoDTO encomendaProdutoDTO : encomendaDTO.getEncomendaProdutoDTOs()){
+            encomendaProdutoBean.create(
+                    encomenda.getId(),
+                    encomendaProdutoDTO.getProdutoId(),
+                    encomendaProdutoDTO.getQuantidade());
+        }
+
         //Encomenda encomenda = encomendaBean.find(encomendaDTO.getId());
         return Response.status(Response.Status.CREATED).entity(toDTO(encomenda)).build();
     }

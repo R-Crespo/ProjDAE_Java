@@ -5,6 +5,11 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.EncomendaDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.EncomendaProdutoDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.dtos.ProdutoDTO;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Encomenda;
+import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.EncomendaProduto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.entities.Produto;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyConstraintViolationException;
 import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityExistsException;
@@ -13,6 +18,7 @@ import pt.ipleiria.estg.dei.ei.dae.projdae_java.exceptions.MyEntityNotFoundExcep
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Startup
@@ -58,15 +64,23 @@ public class ConfigBean {
         embalagemTransporteBean.create("Transporte","Tranportar",new Date(), "Cartao", 1, 500);
 
         embalagemTransporteBean.create("tipo1", "guardar", new Date(), "cartão", 10, 10);
-        encomendaBean.create("Marco", "Pousos",  "Leiria", 1, new ArrayList<>());
-        encomendaBean.create("Marco", "pousos",  "leiria", 1, new ArrayList<>());
-        encomendaBean.create("Rui", "leiria",  "lisboa", 1, new ArrayList<>());
-        encomendaBean.create("Ricardo", "leiria",  "lisboa", 1, new ArrayList<>());
+        encomendaBean.create("Marco", "Pousos",  "Leiria", 1);
+        Encomenda encomenda = encomendaBean.create("Marco", "pousos",  "leiria", 1);
+        encomendaBean.create("Rui", "leiria",  "lisboa", 1);
+        encomendaBean.create("Ricardo", "leiria",  "lisboa", 1);
         encomendaBean.update(1,"Roger10","Marco","pousos", "Entregue",new Date(),"leiria", 1);
 
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20,null);
         Produto produto = produtoBean.create("Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"");
         embalagemProdutoBean.create("caixa","carregar",new Date(),"madeira", 10,20, produto);
+
+        Produto produto1 = produtoBean.create("Fanta", "Refrigerante", "Cola", 1, "L", 1.99f, "Bebida");
+        Produto produto2 = produtoBean.create("Coca-Cola", "Refrigerante", "Cola", 2, "L", 1.99f, "Bebida");
+
+        encomendaBean.adicionarProdutoEmEncomenda(encomenda, produto1);
+        encomendaBean.adicionarProdutoEmEncomenda(encomenda,produto2);
+
+
         /*produtoBean.create(1,"Coca-cola","Refrigerante","Coca-cola", 1, "L", 1.79f,"","Forn1");
         produtoBean.create(2,"Coca-cola","Refrigerante","Coca-cola", 330, "mL", 1.00f,"","Forn1");
         produtoBean.create(3,"Coca-cola","Refrigerante","Coca-cola", 500, "mL", 1.19f,"","Forn1");
